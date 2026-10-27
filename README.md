@@ -115,15 +115,17 @@ Remove-Item Env:SITE_URL
 Remove-Item Env:BASE_PATH
 ```
 
-Rebuild without those variables to return to the root-domain configuration. Ordinary local builds use `https://eliascoleshill.ca` as the intended canonical origin; the domain has not been purchased or configured by this task.
+Rebuild without those variables to return to the root-domain configuration. Ordinary local builds use `https://eliascoleshill.ca` as the canonical origin.
 
 ### Custom domain
 
-After purchasing `eliascoleshill.ca`, verify ownership in GitHub's account Pages settings, add the domain in the repository's Pages settings, and configure the registrar's DNS records using GitHub's current instructions. Set up the apex/`www` relationship and enable HTTPS once available, then rerun the workflow so canonical/share URLs use the configured domain.
+`eliascoleshill.ca` is registered through Porkbun, verified with GitHub, and assigned to this repository. Its four root A records point to GitHub Pages; `www` is a CNAME to `ecoleshill8.github.io`. Keep the GitHub ownership-verification TXT record in DNS. HTTPS enforcement is enabled for the primary domain.
+
+When changing the custom domain in the future, update GitHub's Pages settings and the registrar's DNS records, verify certificate availability before enabling HTTPS, and rerun the workflow so root paths and canonical/share URLs use the configured domain. GitHub issues certificates for the apex and `www` hostnames; provisioning can finish at different times.
 
 Official instructions: [custom domains](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site), [domain verification](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/verifying-your-custom-domain-for-github-pages), [HTTPS](https://docs.github.com/en/pages/getting-started-with-github-pages/securing-your-github-pages-site-with-https).
 
-The source repository is [EColeshill8/Engineering-Portfolio](https://github.com/EColeshill8/Engineering-Portfolio), deployed through GitHub Actions at [the GitHub Pages address](https://ecoleshill8.github.io/Engineering-Portfolio/). Domain purchase and custom-domain configuration remain separate owner steps.
+The source repository is [EColeshill8/Engineering-Portfolio](https://github.com/EColeshill8/Engineering-Portfolio), deployed through GitHub Actions at [eliascoleshill.ca](https://eliascoleshill.ca/). Pushes to `main` continue to build, verify and publish the site automatically.
 
 ## Verification
 

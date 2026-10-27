@@ -2,8 +2,9 @@
 
 - [ ] Review the site's case-study wording and statuses, especially Baker Bot's ongoing software and combat robotics' design stage.
 - [ ] Review the separate two-page résumé draft and replace its review footer / provide the final approved PDF before applications. Original résumé remains unchanged.
-- [ ] Put the standalone portfolio folder at the GitHub repository root, choose Pages → GitHub Actions, and run the included workflow.
-- [ ] Purchase/configure the domain, complete ownership verification and DNS setup, enable HTTPS and test apex/`www` routing.
+- [x] Put the standalone portfolio folder at the GitHub repository root, choose Pages → GitHub Actions, and run the included workflow.
+- [x] Purchase/configure eliascoleshill.ca, complete GitHub ownership verification and DNS setup, enable HTTPS and verify the primary domain.
+- [ ] Confirm HTTPS certificate provisioning finishes for www.eliascoleshill.ca as well as the primary domain. The HTTP www redirect already reaches the HTTPS primary domain.
 - [ ] Check the real published URL on your own phone and laptop before using it in job applications. The October 27 CAD/media update includes browser screenshot review; layout/interaction checks are documented separately.
 
 ## Useful additions, without blocking the existing site
