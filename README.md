@@ -65,16 +65,23 @@ node scripts/convert-cad.cjs "Portfolio Content"
 node scripts/optimize-cad.mjs
 ```
 
-The first command tessellates the STEP assemblies with OpenCascade via `occt-import-js`. The second simplifies geometry conservatively, joins compatible render primitives and applies Meshopt compression. Generated uncompressed GLBs are archived under `../../work/cad-raw`, outside the deployed site.
+The first command tessellates the STEP assemblies with OpenCascade via `occt-import-js`. The second preserves a higher detail budget, joins compatible render primitives and applies Meshopt compression. Generated uncompressed GLBs are archived under the ignored `Portfolio Content/Generated CAD/` directory, inside this project and outside the deployed site. Original STEP files are untouched.
 
-| Assembly | Raw web tessellation | Compressed web model |
-| --- | --- | --- |
-| RI3D | About 37.1 MiB | About 4.0 MiB |
-| Baker Bot | About 55.0 MiB | About 8.6 MiB |
+The current exact file sizes, conversion settings and triangle counts are recorded in `src/data/models-web.json`. RI3D was retessellated at 0.35 mm tolerance and now retains about 3.16 million triangles, roughly 4.7 times its first web export. Baker Bot retains its existing approximately 1.54-million-triangle geometry with revised materials; a finer full STEP conversion was stopped after extended processing. Both use the new shading and material presentation.
+
+For quick material-only revisions without another STEP tessellation, use `node scripts/restyle-cad.mjs baker-bot` (or `ri3d`). This preserves existing geometry and updates the web manifest's size.
 
 Source hashes and conversion parameters are recorded in `src/data/models.json`; optimized file sizes/counts are in `models-web.json`. The web copies are for exploration, not manufacturing. Rotation/zoom/reset and keyboard interaction are provided; the geometry is not rigged to animate robot joints.
 
-`@google/model-viewer` is loaded only when a visitor selects Explore 3D. The Meshopt decoder is served from this site. If updating that dependency, refresh `public/vendor/meshopt_decoder.js` from `meshoptimizer/meshopt_decoder.cjs` and preserve its license.
+The viewer and optional Google effects add-on are loaded when an assembly enters the viewport, with an Explore 3D button and retry fallback. The presentation uses satin-metal / matte-polymer materials, lower exposure, filmic tone mapping, contact shading and edge smoothing. Materials are visualization choices, not a claim about every physical part's finish. The viewer rotates at four degrees per second, pauses for inspection or when offscreen, and starts stationary when the visitor requests reduced motion. Pause / Resume and Reset controls are available.
+
+The Meshopt decoder is served from this site. If updating that dependency, refresh `public/vendor/meshopt_decoder.js` from `meshoptimizer/meshopt_decoder.cjs` and preserve its license.
+
+### Public reference media
+
+FIO uses the official public company logo. Combat robotics temporarily uses credited photographs of other teams from the 2026 BotBrawl Summer Classic and the official **BBRL Season 2 Week 3 Highlights** video by BotBrawl Canada. The card and project page clearly identify these as competition reference media. The teams remain in the design phase.
+
+See `MEDIA-CREDITS.md` and `src/data/reference-media.json` for the source links and creators. To regenerate web copies, run `python scripts/prepare-reference-media.py`. Original downloads are stored in the ignored `Portfolio Content/Reference Media/` directory. The personal-image preparation script preserves these reference entries when updating its manifest.
 
 ### Video
 
@@ -116,7 +123,7 @@ After purchasing `eliascoleshill.ca`, verify ownership in GitHub's account Pages
 
 Official instructions: [custom domains](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site), [domain verification](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/verifying-your-custom-domain-for-github-pages), [HTTPS](https://docs.github.com/en/pages/getting-started-with-github-pages/securing-your-github-pages-site-with-https).
 
-No GitHub repository, domain purchase, account login or live deployment was performed by this local implementation task.
+The source repository is [EColeshill8/Engineering-Portfolio](https://github.com/EColeshill8/Engineering-Portfolio), deployed through GitHub Actions at [the GitHub Pages address](https://ecoleshill8.github.io/Engineering-Portfolio/). Domain purchase and custom-domain configuration remain separate owner steps.
 
 ## Verification
 
@@ -124,4 +131,4 @@ No GitHub repository, domain purchase, account login or live deployment was perf
 
 The browser checks covered desktop/mobile layout bounds, category filtering, mobile navigation, lightbox open/Escape/focus restoration, both models loading real geometry, model keyboard/reset controls, the weather-diagram keyboard interaction and the actual RI3D video player. See `VERIFICATION.md` for final results and limits.
 
-The large viewer JavaScript chunk is intentional and requested only when Explore 3D is selected. It is not an initial homepage download.
+The large viewer/effects JavaScript chunks are intentional and requested only when an assembly comes into view or Explore 3D is selected. They are not an initial homepage download.

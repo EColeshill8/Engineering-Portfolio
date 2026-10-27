@@ -1,19 +1,21 @@
 {
   "ri3d": {
     "file": "ri3d-web.glb",
-    "bytes": 4141932,
+    "bytes": 13432764,
     "parts": 174,
-    "triangles": 668425,
+    "triangles": 3162448,
     "source": "Full Assembly - Ri3D - 2026.step",
     "sourceSha256": "869f5ea77d3604844f8ca41896fca565595595887c57cc452f03a6aa07c72375",
-    "toleranceMeters": 0.00075,
-    "originalTriangles": 1439525,
-    "originalBytes": 38906780,
+    "toleranceMeters": 0.00035,
+    "angularDeflection": 0.22,
+    "materialTreatment": "satin-metal / matte-polymer viewing palette",
+    "originalTriangles": 3701378,
+    "originalBytes": 101523264,
     "compression": "EXT_meshopt_compression"
   },
   "baker-bot": {
     "file": "baker-bot-web.glb",
-    "bytes": 9036124,
+    "bytes": 9023912,
     "parts": 532,
     "triangles": 1539582,
     "source": "General Assembly - Baker Bot.step",
@@ -21,6 +23,8 @@
     "toleranceMeters": 0.00075,
     "originalTriangles": 1944339,
     "originalBytes": 57646604,
-    "compression": "EXT_meshopt_compression"
+    "compression": "EXT_meshopt_compression",
+    "materialTreatment": "satin-metal / matte-polymer viewing palette",
+    "geometryTreatment": "retained existing detailed assembly"
   }
 }

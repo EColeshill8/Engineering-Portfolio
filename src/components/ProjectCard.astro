@@ -8,9 +8,10 @@ const { project, index = 0, featured = false } = Astro.props;
 ---
 <article class:list={['project-card', {featured, 'text-card': !project.cover}]} data-project-card data-category={project.category}>
   <a class="card-link" href={href(`projects/${project.slug}/`)} aria-label={`Explore ${project.title}`}>
-    <div class="card-image">
+    <div class:list={['card-image', {'brand-image': project.cover?.kind === 'logo'}]}>
       {project.cover ? <Photo image={project.cover.key} alt={project.cover.alt} position={project.cover.position} sizes={featured ? '(max-width: 700px) 90vw, 33vw' : '(max-width: 700px) 90vw, (max-width: 1000px) 45vw, 33vw'} /> : <div class="industry-cover"><span class="mono">FIO / PRODUCTION ENGINEERING</span><span>Observe.<br/>Prototype.<br/><em>Improve.</em></span><span class="mono">FROM DIAGNOSIS TO INSTALLATION</span></div>}
       <span class:list={['card-status', project.tone]}>{project.status}</span>
+      {project.cover?.referenceLabel && <span class="reference-badge">{project.cover.referenceLabel}</span>}
       <span class="card-open"><Icon name="external" size={22} /></span>
     </div>
     <div class="card-copy">

@@ -1,0 +1,18 @@
+---
+import type { ReferenceMedia } from '../data/projects';
+import Gallery from './Gallery.astro';
+import Video from './Video.astro';
+import Icon from './Icon.astro';
+interface Props { media: ReferenceMedia }
+const { media } = Astro.props;
+---
+<section class="reference-section" id="competition-context" aria-labelledby="reference-heading">
+  <div class="reference-notice">
+    <span class="eyebrow">COMPETITION CONTEXT · TEMPORARY REFERENCE MEDIA</span>
+    <h2 id="reference-heading">The arena we’re building toward.</h2>
+    <p>{media.notice}</p>
+  </div>
+  <Gallery photos={media.photos} label="From the 2026 BotBrawl Summer Classic"/>
+  <Video id={media.video.id} title={media.video.title} poster={media.video.poster} heading="Highlights from the BotBrawl season." buttonLabel="Play the Week 3 highlights" posterAlt="Other teams’ robots in the BotBrawl arena; play the official Season 2 Week 3 highlights."/>
+  <p class="media-note">{media.video.caption}<a class="media-credit" href={media.video.credit.url} target="_blank" rel="noopener noreferrer">{media.video.credit.label}<Icon name="external" size={12}/></a></p>
+</section>

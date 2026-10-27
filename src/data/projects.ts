@@ -1,11 +1,16 @@
-export type Photo = { key: string; alt: string; caption: string; position?: string };
+export type MediaCredit = { label: string; url: string };
+export type Photo = { key: string; alt: string; caption: string; position?: string; kind?: 'logo'; credit?: MediaCredit; referenceLabel?: string };
+export type ReferenceMedia = {
+  notice: string; photos: Photo[];
+  video: { id: string; title: string; poster: string; caption: string; credit: MediaCredit };
+};
 export type StorySection = { title: string; paragraphs: string[] };
 export type Project = {
   slug: string; title: string; subtitle: string; category: string; year: string;
   role: string; status: string; tone?: 'progress' | 'award'; tags: string[];
   cover?: Photo; summary: string; context: string; contributions: string[];
   sections: StorySection[]; outcome: { title: string; text: string };
-  gallery: Photo[]; model?: string; video?: string; related: string[];
+  gallery: Photo[]; model?: string; video?: string; referenceMedia?: ReferenceMedia; related: string[];
 };
 
 export const projects: Project[] = [
@@ -31,7 +36,7 @@ export const projects: Project[] = [
     slug: 'combat-robotics', title: 'Combat robotics', subtitle: 'Helping two teams find their own solutions.',
     category: 'Robotics', year: 'September 2026–present', role: 'WE FIRST president · Technical mentorship',
     status: 'In design', tone: 'progress', tags: ['Design reviews', 'Manufacturing', 'Mentorship'],
-    cover: {key: 'recruiting', alt: 'WE FIRST members talking with students at a club recruitment event.', caption: 'WE FIRST recruiting: the club behind the combat robotics program. The robot designs are still in progress.'},
+    cover: {key: 'botbrawl-nv', alt: 'NV, a black three-pound combat robot built by Team Three Cheers, photographed at BotBrawl.', caption: 'Reference robot: NV (Easiest Thing in The World), Team Three Cheers, at the 2026 BotBrawl Summer Classic. Our robots are still in design.', credit: {label: 'Photo: Eric Laird / BotBrawl Canada', url: 'https://botbrawl.ca/blog/recap-summer-classic-26'}, referenceLabel: 'Reference robot · NV'},
     summary: 'Supporting two teams designing 3 lb robots for Bot Brawl, with guidance on materials, drive arrangements, weapon design and manufacturing.',
     context: 'Combat robotics is part of WE FIRST, the university club I lead. Marc leads the combat project itself. My role is to support both robot teams and help their members develop sound designs without taking their discoveries away from them.',
     contributions: ['Provide club-level oversight and support across both teams.', 'Help students work through mechanical and manufacturing decisions.', 'Bring experience with materials, drive arrangements and weapon design to reviews.', 'Support Marc and the team leads while keeping detailed design ownership with the builders.'],
@@ -41,6 +46,19 @@ export const projects: Project[] = [
     ],
     outcome: {title: 'The next milestone is the build.', text: 'The vertical- and horizontal-spinner concepts are in development. No completed robots or fight results are being claimed at this stage.'},
     gallery: [{key: 'workshop', alt: 'Students working together at a WE FIRST electronics workshop.', caption: 'The hands-on learning environment behind WE FIRST’s projects and workshops.'}],
+    referenceMedia: {
+      notice: 'The BotBrawl photographs and video below show other teams and the competition we are preparing for. They are temporary reference media, not WE FIRST builds, attendance or results. We will replace them with our own build and competition footage as the project progresses.',
+      photos: [
+        {key: 'botbrawl-fight', alt: 'NV and Cyclone facing each other inside the BotBrawl combat arena.', caption: 'NV and Cyclone at the 2026 Summer Classic — an example of the 3 lb competition our teams are designing for.', credit: {label: 'Photo: Liam Haddock / BotBrawl Canada', url: 'https://botbrawl.ca/blog/recap-summer-classic-26'}},
+        {key: 'botbrawl-shrubert', alt: 'Shrubert lifting JAK3 in a BotBrawl beetleweight match.', caption: 'Shrubert and JAK3 in the 2026 Summer Classic beetleweight bracket. These robots belong to other teams.', credit: {label: 'Photo: Liam Haddock / BotBrawl Canada', url: 'https://botbrawl.ca/blog/recap-summer-classic-26'}},
+        {key: 'botbrawl-crowd', alt: 'Spectators gathered around a robot combat arena at the BotBrawl Summer Classic.', caption: 'Around the arena at Bingemans, Kitchener, during the 2026 Summer Classic.', credit: {label: 'Photo: Liam Haddock / BotBrawl Canada', url: 'https://botbrawl.ca/blog/recap-summer-classic-26'}}
+      ],
+      video: {
+        id: 'XHBQaKOk97Y', title: 'BBRL Season 2 Week 3 Highlights', poster: 'botbrawl-fight',
+        caption: 'Official highlights from Week 3 of BotBrawl Robot League Season 2. This is organizer footage of other teams; it does not show our robots.',
+        credit: {label: 'Video: BotBrawl Canada', url: 'https://www.youtube.com/watch?v=XHBQaKOk97Y'}
+      }
+    },
     related: ['robotics-teaching', 'ri3d', 'frc-2024']
   },
   {
@@ -63,6 +81,7 @@ export const projects: Project[] = [
     slug: 'fio-production-engineering', title: 'Production engineering at FIO', subtitle: 'From watching a cell to improving its workflow.',
     category: 'Industry', year: 'Summer 2026', role: 'Production engineering co-op', status: 'Completed placement',
     tags: ['Root-cause analysis', 'SolidWorks', 'Manufacturing'],
+    cover: {key: 'fio-logo', alt: 'FIO Automotive Canada Corporation logo: the green FIO Futaba leaf emblem.', caption: 'Production engineering co-op at FIO Automotive Canada. The public company logo identifies the employer; internal project photographs and drawings remain private.', kind: 'logo', credit: {label: 'Logo: FIO Automotive Canada / Futaba North America', url: 'https://www.futabanorthamerica.com/ontario'}},
     summary: 'Mechanical upgrades, prototype iteration and installation coordination in an active automotive welding environment.',
     context: 'At FIO Automotive Canada, I worked on welding equipment and production issues. My projects began with observing a cell and understanding the problem, then moved through design, testing, fabrication and installation.',
     contributions: ['Observe equipment and investigate production and quality issues.', 'Develop mechanical upgrade packages in SolidWorks.', 'Test 3D-printed prototypes and iterate from what happened in the cell.', 'Coordinate contractors, maintenance, tool-room staff and installation teams.'],

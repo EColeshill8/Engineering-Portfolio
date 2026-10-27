@@ -457,5 +457,90 @@
         "height": 1867
       }
     }
+  },
+  "fio-logo": {
+    "source": "Reference Media/fio-logo.png",
+    "width": 500,
+    "height": 500,
+    "variants": {
+      "640": {
+        "file": "fio-logo-640.webp",
+        "width": 500,
+        "height": 500
+      },
+      "1400": {
+        "file": "fio-logo-1400.webp",
+        "width": 500,
+        "height": 500
+      }
+    }
+  },
+  "botbrawl-fight": {
+    "source": "Reference Media/botbrawl-nv-cyclone.jpg",
+    "width": 1200,
+    "height": 800,
+    "variants": {
+      "640": {
+        "file": "botbrawl-fight-640.webp",
+        "width": 640,
+        "height": 427
+      },
+      "1400": {
+        "file": "botbrawl-fight-1400.webp",
+        "width": 1200,
+        "height": 800
+      }
+    }
+  },
+  "botbrawl-nv": {
+    "source": "Reference Media/botbrawl-nv.jpg",
+    "width": 800,
+    "height": 600,
+    "variants": {
+      "640": {
+        "file": "botbrawl-nv-640.webp",
+        "width": 640,
+        "height": 480
+      },
+      "1400": {
+        "file": "botbrawl-nv-1400.webp",
+        "width": 800,
+        "height": 600
+      }
+    }
+  },
+  "botbrawl-crowd": {
+    "source": "Reference Media/botbrawl-arena-crowd.jpg",
+    "width": 1200,
+    "height": 674,
+    "variants": {
+      "640": {
+        "file": "botbrawl-crowd-640.webp",
+        "width": 640,
+        "height": 359
+      },
+      "1400": {
+        "file": "botbrawl-crowd-1400.webp",
+        "width": 1200,
+        "height": 674
+      }
+    }
+  },
+  "botbrawl-shrubert": {
+    "source": "Reference Media/botbrawl-shrubert-jak3.jpg",
+    "width": 1200,
+    "height": 800,
+    "variants": {
+      "640": {
+        "file": "botbrawl-shrubert-640.webp",
+        "width": 640,
+        "height": 427
+      },
+      "1400": {
+        "file": "botbrawl-shrubert-1400.webp",
+        "width": 1200,
+        "height": 800
+      }
+    }
   }
 }

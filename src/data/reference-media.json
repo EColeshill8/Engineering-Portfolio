@@ -1,0 +1,32 @@
+{
+  "fio-logo": {
+    "url": "https://static.wixstatic.com/media/1bac70_05799c777e444b8897d0f141077f41e7~mv2.png",
+    "filename": "fio-logo.png",
+    "sourcePage": "https://www.futabanorthamerica.com/ontario",
+    "credit": "FIO Automotive Canada / Futaba North America"
+  },
+  "botbrawl-fight": {
+    "url": "https://botbrawl.ca/uploads/articles/article_body_2f875e0022.jpg",
+    "filename": "botbrawl-nv-cyclone.jpg",
+    "sourcePage": "https://botbrawl.ca/blog/recap-summer-classic-26",
+    "credit": "Liam Haddock / BotBrawl Canada"
+  },
+  "botbrawl-nv": {
+    "url": "https://botbrawl.ca/uploads/articles/article_body_5f00f68601.jpg",
+    "filename": "botbrawl-nv.jpg",
+    "sourcePage": "https://botbrawl.ca/blog/recap-summer-classic-26",
+    "credit": "Eric Laird / BotBrawl Canada"
+  },
+  "botbrawl-crowd": {
+    "url": "https://botbrawl.ca/uploads/articles/article_body_da22bea28b.jpg",
+    "filename": "botbrawl-arena-crowd.jpg",
+    "sourcePage": "https://botbrawl.ca/blog/recap-summer-classic-26",
+    "credit": "Liam Haddock / BotBrawl Canada"
+  },
+  "botbrawl-shrubert": {
+    "url": "https://botbrawl.ca/uploads/articles/article_body_086b3c3fcf.jpg",
+    "filename": "botbrawl-shrubert-jak3.jpg",
+    "sourcePage": "https://botbrawl.ca/blog/recap-summer-classic-26",
+    "credit": "Liam Haddock / BotBrawl Canada"
+  }
+}

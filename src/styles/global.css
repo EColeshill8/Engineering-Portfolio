@@ -809,19 +809,19 @@
     border:1px solid var(--line);
     border-radius:12px;
     overflow:hidden;
-    background:#e4e7e9
+    background:#283440
   }
   .model-stage {
     height:550px;
     position:relative;
     overflow:hidden;
-    background:#e4e7e9
+    background:radial-gradient(ellipse at 50% 42%,#455564 0%,#2c3945 65%,#222e39 100%)
   }
   .model-poster {
     height:100%;
     width:100%;
     object-fit:contain;
-    filter:brightness(.8)
+    filter:brightness(.85)
   }
   .model-launch {
     position:absolute;
@@ -851,9 +851,9 @@
     inset:0;
     width:100%;
     height:100%;
-    background:#e4e7e9;
-    --progress-bar-color:#36596d;
-    --poster-color:#e4e7e9
+    background:transparent;
+    --progress-bar-color:#b5d4e7;
+    --poster-color:transparent
   }
   .model-toolbar {
     background:#1b2024;
@@ -870,7 +870,8 @@
   }
   .model-actions {
     display:flex;
-    gap:18px;
+    flex-wrap:wrap;
+    gap:10px 18px;
     flex-shrink:0
   }
   .model-actions button {
@@ -1959,6 +1960,78 @@
 @layer components {
   .project-hero-image > img {
     object-fit: contain;
+  }
+
+  .project-hero-image {
+    position:relative;
+  }
+  .brand-image {
+    background:#fff;
+  }
+  .brand-image>img {
+    object-fit:contain;
+    padding:30px;
+  }
+  .card-image.brand-image::after {
+    display:none;
+  }
+  .project-hero-image.brand-image>img {
+    height:360px;
+    padding:35px;
+  }
+  .reference-badge {
+    position:absolute;
+    bottom:14px;
+    left:14px;
+    z-index:1;
+    padding:7px 11px;
+    border-radius:5px;
+    background:#111315e8;
+    border:1px solid #ffffff30;
+    color:#d7e6ef;
+    font-size:.63rem;
+    max-width:calc(100% - 75px);
+  }
+  .media-credit {
+    display:flex;
+    align-items:center;
+    gap:6px;
+    width:fit-content;
+    margin-top:7px;
+    color:var(--accent);
+    font-size:.73rem;
+    text-decoration:underline;
+    text-underline-offset:3px;
+  }
+  .reference-section {
+    margin-top:45px;
+    border-top:1px solid var(--line);
+    padding-top:40px;
+    scroll-margin-top:110px;
+  }
+  .reference-notice {
+    padding:clamp(20px,4vw,38px);
+    border:1px solid #7693a855;
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    background:#b5d4e708;
+  }
+  .reference-notice h2 {
+    margin:14px 0 18px;
+    font-size:clamp(1.6rem,3vw,2.2rem);
+  }
+  .reference-notice p {
+    max-width:840px;
+    font-size:.9rem;
+    line-height:1.8;
+  }
+  .reference-section .project-gallery {
+    margin-top:28px;
+  }
+  @media(max-width:600px) {
+    .project-hero-image.brand-image>img {height:280px;}
+    .model-actions {gap:8px 18px;}
+    .model-toolbar p {max-width:100%;}
   }
   .sr-only {
     position: absolute;

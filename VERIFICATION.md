@@ -54,3 +54,15 @@ A separate corrected **two-page review draft** was generated from confirmed inte
 - Review the case-study wording/statuses and the résumé before publishing. Optional new photos/clips are listed in `LAUNCH-CHECKLIST.md`.
 
 The working preview is local to this computer. Run commands are in `README.md`.
+
+## CAD and public-media update — 27 October 2026
+
+The follow-up replaces the bright CAD presentation with lower exposure, filmic tone mapping, a contrasting studio background, tuned satin-metal / matte-polymer visualization materials, screen-space contact shading and antialiasing. RI3D was retessellated at 0.35 mm tolerance and optimized to about 3.16 million triangles. Baker Bot retains its existing 1.54-million-triangle mesh with the new material treatment; the finer STEP conversion was stopped after extended processing. Original STEP assemblies remain unchanged.
+
+Both viewers load when visible, rotate at four degrees per second, and provide Pause / Resume and Reset controls. Interaction pauses the turntable, and offscreen/background viewers stop rotating. The reduced-motion preference is read before starting rotation and listened to for changes; preference emulation was unavailable in the browser tooling.
+
+Browser checks and screenshots confirmed the revised geometry/material presentation, successful model loading, default rotation state, Pause / Resume state changes, reset and keyboard inspection. The optional shading add-on loaded without browser errors in the checked views. Screenshot capture, unavailable during the initial implementation, worked for this follow-up.
+
+The FIO card and project page now use the official public company logo with its source link. Combat robotics has a clearly marked NV reference cover, three credited 2026 Summer Classic photographs and the official **BBRL Season 2 Week 3 Highlights** video. YouTube oEmbed verified the title/publisher; the actual embedded player loaded and played. Gallery next-image/Escape controls, count/caption updates, photographer credits and focus restoration passed. Checked mobile media layouts had no horizontal overflow.
+
+The artifact verifier now also checks all 32 image sources, the revised CAD detail/material budgets, absence of raw CAD exports in the deployed models directory, FIO attribution, and combat reference disclosures/credits/video. See `MEDIA-CREDITS.md` for the original image/video sources. All code, raw CAD archives and reference originals are kept inside the permanent portfolio project; raw assets remain ignored by Git.

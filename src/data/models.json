@@ -1,12 +1,14 @@
 {
   "ri3d": {
     "file": "ri3d.glb",
-    "bytes": 38906780,
+    "bytes": 101523264,
     "parts": 174,
-    "triangles": 1439525,
+    "triangles": 3701378,
     "source": "Full Assembly - Ri3D - 2026.step",
     "sourceSha256": "869f5ea77d3604844f8ca41896fca565595595887c57cc452f03a6aa07c72375",
-    "toleranceMeters": 0.00075
+    "toleranceMeters": 0.00035,
+    "angularDeflection": 0.22,
+    "materialTreatment": "satin-metal / matte-polymer viewing palette"
   },
   "baker-bot": {
     "file": "baker-bot.glb",

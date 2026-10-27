@@ -25,7 +25,8 @@ names = {
  'wec-team': 'WEC Senior (2025) Podium.jpeg', 'wec-build': 'WEC Senior (2025) Robot Assembly.jpeg',
  'wec-robot': 'WEC Senior (2025) Robot.jpeg'
 }
-manifest = {}
+manifest_path = root / 'src' / 'data' / 'media.json'
+manifest = json.loads(manifest_path.read_text(encoding='utf-8')) if manifest_path.exists() else {}
 for key, name in names.items():
     with Image.open(args.source / name) as original:
         image = ImageOps.exif_transpose(original).convert('RGB')

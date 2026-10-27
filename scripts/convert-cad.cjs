@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
 const root = path.resolve(__dirname, '..');
-const source = path.resolve(process.argv[2] || path.join(root, '../../work/source-media/Portfolio Content'));
+const source = path.resolve(process.argv[2] || path.join(root, 'Portfolio Content'));
 const items = [
   ['ri3d', 'Full Assembly - Ri3D - 2026.step'],
   ['baker-bot', 'General Assembly - Baker Bot.step']
@@ -27,11 +27,18 @@ function makeGLB(result) {
   }
   function material(color) {
     const rgb = color || [0.62, 0.66, 0.7];
+    const average = (rgb[0] + rgb[1] + rgb[2]) / 3;
+    const neutral = Math.max(...rgb.slice(0, 3)) - Math.min(...rgb.slice(0, 3)) < 0.12;
+    // STEP has display colours, not physical materials. Give pale default faces a
+    // satin aluminium finish so white panels do not merge into blown highlights.
+    const display = neutral && average > 0.55 ? [0.64, 0.68, 0.73] : rgb.slice(0, 3).map(n => Math.max(0.055, n * 0.92));
     const key = rgb.map(n => n.toFixed(3)).join(',');
     if (!materialMap.has(key)) {
       materialMap.set(key, materials.push({name: `CAD ${key}`, pbrMetallicRoughness: {
-        baseColorFactor: [...rgb.slice(0, 3).map(srgb), 1], metallicFactor: 0.12, roughnessFactor: 0.65
-      }, doubleSided: true}) - 1);
+        baseColorFactor: [...display.map(srgb), 1],
+        metallicFactor: neutral && average > 0.35 ? 0.42 : 0.06,
+        roughnessFactor: average < 0.18 ? 0.82 : neutral ? 0.48 : 0.6
+      }, doubleSided: false}) - 1);
     }
     return materialMap.get(key);
   }
@@ -78,14 +85,17 @@ function makeGLB(result) {
 (async () => {
   const occt = await require('occt-import-js')();
   for (const [slug, filename] of items) {
+    const tolerance = slug === 'baker-bot' ? 0.00075 : 0.00035;
+    const angularDeflection = slug === 'baker-bot' ? 0.4 : 0.22;
     console.log(`Reading ${filename}`);
     const bytes = fs.readFileSync(path.join(source, filename));
-    const result = occt.ReadStepFile(bytes, {linearUnit: 'meter', linearDeflectionType: 'absolute_value', linearDeflection: 0.00075, angularDeflection: 0.4});
+    const result = occt.ReadStepFile(bytes, {linearUnit: 'meter', linearDeflectionType: 'absolute_value', linearDeflection: tolerance, angularDeflection});
     if (!result.success || !result.meshes?.length) throw new Error(`STEP conversion failed: ${filename}`);
     const output = makeGLB(result);
     fs.writeFileSync(path.join(root, `public/models/${slug}.glb`), output.data);
     manifest[slug] = {file: `${slug}.glb`, bytes: output.data.length, parts: output.parts, triangles: output.triangles,
-      source: filename, sourceSha256: crypto.createHash('sha256').update(bytes).digest('hex'), toleranceMeters: 0.00075};
+      source: filename, sourceSha256: crypto.createHash('sha256').update(bytes).digest('hex'), toleranceMeters: tolerance,
+      angularDeflection, materialTreatment: 'satin-metal / matte-polymer viewing palette'};
     fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
     console.log(`${slug}: ${output.parts} parts, ${output.triangles} triangles, ${(output.data.length / 1048576).toFixed(1)} MiB`);
   }

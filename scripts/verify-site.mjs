@@ -42,12 +42,20 @@ for(const slug of ['ri3d','baker-bot']){
   const json=JSON.parse(bytes.subarray(20,20+bytes.readUInt32LE(12)).toString());
   if(!json.meshes?.length || !json.extensionsUsed?.includes('EXT_meshopt_compression'))failures.push(`${slug}: missing compressed geometry`);
   if(bytes.length!==model.bytes)failures.push(`${slug}: manifest size mismatch`);
+  if(model.toleranceMeters > (slug==='ri3d' ? 0.00035 : 0.00075))failures.push(`${slug}: CAD export exceeds the detail tolerance`);
+  if(model.triangles < model.originalTriangles * (slug==='ri3d' ? 0.8 : 0.75))failures.push(`${slug}: geometry was simplified below the detail budget`);
+  if(json.materials.some(material=>Math.max(...material.pbrMetallicRoughness.baseColorFactor.slice(0,3))>0.85))failures.push(`${slug}: an untuned white CAD material remains`);
 }
+if(fs.readdirSync(path.join(dist,'models')).filter(name=>name.endsWith('.glb')).length!==2)failures.push('raw CAD exports must not be deployed');
 const media=JSON.parse(fs.readFileSync(path.join(root,'src/data/media.json')));
 for(const item of Object.values(media))for(const variant of Object.values(item.variants))if(!fs.existsSync(path.join(dist,'media',variant.file)))failures.push(`missing photo ${variant.file}`);
 const projectDirs=fs.readdirSync(path.join(dist,'projects'),{withFileTypes:true}).filter(x=>x.isDirectory());
 if(projectDirs.length!==12)failures.push(`expected 12 project pages, found ${projectDirs.length}`);
 if(!fs.readFileSync(path.join(dist,'projects/wec-2024/index.html'),'utf8').includes('6th place'))failures.push('WEC 2024 correction missing');
 if(!fs.existsSync(path.join(dist,'sitemap.xml')) || !fs.existsSync(path.join(dist,'robots.txt')))failures.push('missing search metadata');
+const combat=fs.readFileSync(path.join(dist,'projects/combat-robotics/index.html'),'utf8');
+if(!combat.includes('TEMPORARY REFERENCE MEDIA') || !combat.includes('Eric Laird') || !combat.includes('Liam Haddock') || !combat.includes('XHBQaKOk97Y'))failures.push('combat reference media disclosure/credits/video missing');
+const fio=fs.readFileSync(path.join(dist,'projects/fio-production-engineering/index.html'),'utf8');
+if(!fio.includes('fio-logo-1400.webp') || !fio.includes('futabanorthamerica.com/ontario'))failures.push('official FIO logo or source credit missing');
 if(failures.length){console.error(failures.join('\n'));process.exitCode=1;}
-else console.log(`PASS: ${files.length} HTML pages, ${projectDirs.length} case studies, ${links} local references, 27 source images and 2 compressed GLB models. Base: ${base || '/'}`);
+else console.log(`PASS: ${files.length} HTML pages, ${projectDirs.length} case studies, ${links} local references, ${Object.keys(media).length} image sources and 2 shaded compressed GLB models. Base: ${base || '/'}`);

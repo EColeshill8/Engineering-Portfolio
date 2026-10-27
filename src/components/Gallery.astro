@@ -11,11 +11,11 @@ const { photos, label = 'A closer look' } = Astro.props;
   <div class="section-heading"><h2>{label}</h2><span class="mono">SELECT AN IMAGE TO EXPAND</span></div>
   <div class:list={['gallery-grid', {'gallery-single': photos.length === 1}]} data-gallery>
     {photos.map(photo => <figure>
-      <a class="gallery-trigger" href={href(`media/${(assets as Record<string, any>)[photo.key].variants['1400'].file}`)} data-gallery-trigger data-src={href(`media/${(assets as Record<string, any>)[photo.key].variants['1400'].file}`)} data-caption={photo.caption} data-alt={photo.alt} aria-label={`Expand image: ${photo.alt}`}>
+      <a class="gallery-trigger" href={href(`media/${(assets as Record<string, any>)[photo.key].variants['1400'].file}`)} data-gallery-trigger data-src={href(`media/${(assets as Record<string, any>)[photo.key].variants['1400'].file}`)} data-caption={photo.caption + (photo.credit ? ` ${photo.credit.label}.` : '')} data-alt={photo.alt} aria-label={`Expand image: ${photo.alt}`}>
         <Photo image={photo.key} alt={photo.alt} position={photo.position} />
         <span class="gallery-expand"><Icon name="expand" /></span>
       </a>
-      <figcaption>{photo.caption}</figcaption>
+      <figcaption>{photo.caption}{photo.credit && <a class="media-credit" href={photo.credit.url} target="_blank" rel="noopener noreferrer">{photo.credit.label}<Icon name="external" size={12}/></a>}</figcaption>
     </figure>)}
   </div>
 </section>}

@@ -16,7 +16,7 @@ for (const [slug, info] of Object.entries(input)) {
   const sourcePath = path.join(root,`public/models/${info.file}`);
   if (!fs.existsSync(sourcePath)) continue;
   const document = await io.read(sourcePath);
-  await document.transform(dedup(),weld(),simplify({simplifier:MeshoptSimplifier,ratio:0.4,error:0.0005,lockBorder:true}),join({keepNamed:false}),prune(),meshopt({encoder:MeshoptEncoder,level:'high',quantizePosition:14,quantizeNormal:10}));
+  await document.transform(dedup(),weld(),simplify({simplifier:MeshoptSimplifier,ratio:0.85,error:0.00008,lockBorder:true}),join({keepNamed:false}),prune(),meshopt({encoder:MeshoptEncoder,level:'high',quantizePosition:16,quantizeNormal:12}));
   const filename = `${slug}-web.glb`;
   await io.write(path.join(root,`public/models/${filename}`),document);
   const bytes = fs.statSync(path.join(root,`public/models/${filename}`)).size;
@@ -24,7 +24,7 @@ for (const [slug, info] of Object.entries(input)) {
   for (const mesh of document.getRoot().listMeshes()) for (const primitive of mesh.listPrimitives()) triangles+=(primitive.getIndices()?.getCount() || 0)/3;
   web[slug]={...info,file:filename,bytes,triangles,originalTriangles:info.triangles,originalBytes:info.bytes,compression:'EXT_meshopt_compression'};
   fs.writeFileSync(webPath,JSON.stringify(web,null,2));
-  const archive = path.resolve(root,'../../work/cad-raw');
+  const archive = path.resolve(root,'Portfolio Content/Generated CAD');
   fs.mkdirSync(archive,{recursive:true});
   fs.copyFileSync(sourcePath,path.join(archive,info.file));
   fs.unlinkSync(sourcePath);
