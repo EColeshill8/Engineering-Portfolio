@@ -54,7 +54,7 @@ if(projectDirs.length!==12)failures.push(`expected 12 project pages, found ${pro
 if(!fs.readFileSync(path.join(dist,'projects/wec-2024/index.html'),'utf8').includes('6th place'))failures.push('WEC 2024 correction missing');
 if(!fs.existsSync(path.join(dist,'sitemap.xml')) || !fs.existsSync(path.join(dist,'robots.txt')))failures.push('missing search metadata');
 const combat=fs.readFileSync(path.join(dist,'projects/combat-robotics/index.html'),'utf8');
-if(!combat.includes('TEMPORARY REFERENCE MEDIA') || !combat.includes('Eric Laird') || !combat.includes('Liam Haddock') || !combat.includes('XHBQaKOk97Y'))failures.push('combat reference media disclosure/credits/video missing');
+if(!combat.includes('TEMPORARY REFERENCE MEDIA') || !combat.includes('botbrawl-logo-1400.webp') || !combat.includes('Logo: BotBrawl Canada') || !combat.includes('Liam Haddock') || !combat.includes('XHBQaKOk97Y'))failures.push('combat logo, reference disclosure, credits or video missing');
 const fio=fs.readFileSync(path.join(dist,'projects/fio-production-engineering/index.html'),'utf8');
 if(!fio.includes('fio-logo-1400.webp') || !fio.includes('futabanorthamerica.com/ontario'))failures.push('official FIO logo or source credit missing');
 if(failures.length){console.error(failures.join('\n'));process.exitCode=1;}

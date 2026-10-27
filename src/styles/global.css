@@ -1968,6 +1968,9 @@
   .brand-image {
     background:#fff;
   }
+  .brand-image-dark {
+    background:#18212b;
+  }
   .brand-image>img {
     object-fit:contain;
     padding:30px;

@@ -79,7 +79,7 @@ The Meshopt decoder is served from this site. If updating that dependency, refre
 
 ### Public reference media
 
-FIO uses the official public company logo. Combat robotics temporarily uses credited photographs of other teams from the 2026 BotBrawl Summer Classic and the official **BBRL Season 2 Week 3 Highlights** video by BotBrawl Canada. The card and project page clearly identify these as competition reference media. The teams remain in the design phase.
+FIO uses the official public company logo. Combat robotics uses the official BotBrawl logo as its neutral cover, with credited photographs of other teams from the 2026 Summer Classic and the official **BBRL Season 2 Week 3 Highlights** video by BotBrawl Canada further down the page. The page clearly identifies these as competition reference media. The teams remain in the design phase.
 
 See `MEDIA-CREDITS.md` and `src/data/reference-media.json` for the source links and creators. To regenerate web copies, run `python scripts/prepare-reference-media.py`. Original downloads are stored in the ignored `Portfolio Content/Reference Media/` directory. The personal-image preparation script preserves these reference entries when updating its manifest.
 

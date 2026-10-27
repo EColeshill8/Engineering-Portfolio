@@ -542,5 +542,22 @@
         "height": 800
       }
     }
+  },
+  "botbrawl-logo": {
+    "source": "Reference Media/botbrawl-logo.png",
+    "width": 640,
+    "height": 491,
+    "variants": {
+      "640": {
+        "file": "botbrawl-logo-640.webp",
+        "width": 640,
+        "height": 491
+      },
+      "1400": {
+        "file": "botbrawl-logo-1400.webp",
+        "width": 640,
+        "height": 491
+      }
+    }
   }
 }

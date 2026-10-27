@@ -1,4 +1,10 @@
 {
+  "botbrawl-logo": {
+    "url": "https://botbrawl.ca/static/img/logo-640.png",
+    "filename": "botbrawl-logo.png",
+    "sourcePage": "https://botbrawl.ca/",
+    "credit": "BotBrawl Canada"
+  },
   "fio-logo": {
     "url": "https://static.wixstatic.com/media/1bac70_05799c777e444b8897d0f141077f41e7~mv2.png",
     "filename": "fio-logo.png",

@@ -1,5 +1,5 @@
 export type MediaCredit = { label: string; url: string };
-export type Photo = { key: string; alt: string; caption: string; position?: string; kind?: 'logo'; credit?: MediaCredit; referenceLabel?: string };
+export type Photo = { key: string; alt: string; caption: string; position?: string; kind?: 'logo' | 'logo-dark'; credit?: MediaCredit; referenceLabel?: string };
 export type ReferenceMedia = {
   notice: string; photos: Photo[];
   video: { id: string; title: string; poster: string; caption: string; credit: MediaCredit };
@@ -36,7 +36,7 @@ export const projects: Project[] = [
     slug: 'combat-robotics', title: 'Combat robotics', subtitle: 'Helping two teams find their own solutions.',
     category: 'Robotics', year: 'September 2026–present', role: 'WE FIRST president · Technical mentorship',
     status: 'In design', tone: 'progress', tags: ['Design reviews', 'Manufacturing', 'Mentorship'],
-    cover: {key: 'botbrawl-nv', alt: 'NV, a black three-pound combat robot built by Team Three Cheers, photographed at BotBrawl.', caption: 'Reference robot: NV (Easiest Thing in The World), Team Three Cheers, at the 2026 BotBrawl Summer Classic. Our robots are still in design.', credit: {label: 'Photo: Eric Laird / BotBrawl Canada', url: 'https://botbrawl.ca/blog/recap-summer-classic-26'}, referenceLabel: 'Reference robot · NV'},
+    cover: {key: 'botbrawl-logo', alt: 'BotBrawl Canada logo.', caption: 'BotBrawl Canada is the competition our teams are designing for. WE FIRST’s robots are still in design.', kind: 'logo-dark', credit: {label: 'Logo: BotBrawl Canada', url: 'https://botbrawl.ca/'}, referenceLabel: 'Competition reference'},
     summary: 'Supporting two teams designing 3 lb robots for Bot Brawl, with guidance on materials, drive arrangements, weapon design and manufacturing.',
     context: 'Combat robotics is part of WE FIRST, the university club I lead. Marc leads the combat project itself. My role is to support both robot teams and help their members develop sound designs without taking their discoveries away from them.',
     contributions: ['Provide club-level oversight and support across both teams.', 'Help students work through mechanical and manufacturing decisions.', 'Bring experience with materials, drive arrangements and weapon design to reviews.', 'Support Marc and the team leads while keeping detailed design ownership with the builders.'],
