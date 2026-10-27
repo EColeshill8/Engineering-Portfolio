@@ -1,0 +1,27 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Photo from '../components/Photo.astro';
+import Gallery from '../components/Gallery.astro';
+import Icon from '../components/Icon.astro';
+import { href, site } from '../data/site';
+const outdoors = [
+  {key:'rockies', alt:'Elias looking out over a mountain valley while hiking in the Rockies.',caption:'A trail, a view, and a change of pace in the Rockies.'},
+  {key:'nepal',alt:'A Nepal trekking route lined with colourful prayer flags.',caption:'A family trek toward Everest Base Camp in 2023, raising funds for Youth Haven.'},
+  {key:'biking',alt:'Elias mountain biking on a forest trail.',caption:'Time on the bike is time well spent.'}
+];
+const timeline = [
+  {year:'HIGH SCHOOL',title:'Learning by building—and teaching',text:'Personal electronics projects, a VEX robot, and an after-school VEX IQ club for 8–11 elementary students each year in Grades 11 and 12.'},
+  {year:'2024',title:'Student captain, FRC Team 9580',text:'A rookie season of mechanical design, fabrication, electrical work and learning how a team brings a robot together.'},
+  {year:'2024–25',title:'From student to mentor',text:'At Western, I became a general mentor for Team 4617, teaching mechanical skills and helping with the Reefscape elevator.'},
+  {year:'2025–NOW',title:'WE FIRST president & FRC lead mentor',text:'Supporting student projects, workshops and Team 4617, alongside team administration and faculty support.'},
+  {year:'SUMMER 2026',title:'Production engineering at FIO',text:'Root-cause analysis, equipment upgrades, prototype iteration and installation coordination in automotive manufacturing.'}
+];
+---
+<Layout title="About Me" active="about" description="Meet Elias Coleshill: a dual-degree engineering student, robotics builder and mentor who loves the outdoors." image="media/ski-1400.webp">
+  <div class="container">
+    <section class="about-intro"><div><span class="eyebrow">THE PERSON BEHIND THE PROJECTS</span><h1>Hi, I’m Elias<span>.</span></h1><p class="about-lead">I like taking a creative idea and figuring out how to make it real.</p><p>I’m in my third year at Western University, studying <strong>Mechatronics Systems Engineering</strong> and <strong>Artificial Intelligence Systems Engineering</strong> together in a five-year dual-degree program. I expect to graduate in 2029.</p><p>I’m drawn to robotics because it brings the physical and digital worlds together. Mechanical design, electronics and embedded software all have to agree before a machine does what you imagined.</p><p>I’m looking for a four-month co-op from <strong>May to August 2027</strong>. Robotics, product development, embedded controls and mechanical design all interest me; printers, satellites and mobile robots are a few of the things I’d love to help build.</p><div class="button-row"><a class="button primary" href={`mailto:${site.email}`}>Get in touch<Icon name="external" size={17}/></a><a class="button" href={href('files/Elias_Coleshill_Resume.pdf')} target="_blank" rel="noopener">My résumé<Icon name="download" size={17}/></a></div></div><figure><Photo image="ski" alt="Elias outdoors in ski gear on a snowy mountain." eager class="about-main-photo"/><figcaption class="photo-caption">A good day usually involves making something—or getting outside.</figcaption></figure></section>
+    <section class="about-details"><div><span class="eyebrow">BUILDING WITH OTHER PEOPLE</span><h2>The projects changed.<br/>The curiosity stayed.</h2><p>My own builds and teaching have grown together. I enjoy helping people read a datasheet, investigate a problem and find their own way through a design.</p><p>Today that includes leading WE FIRST and mentoring FRC students. I’m also affiliated with Western’s Sunstangs solar car team.</p><a class="text-link" href={href('projects/robotics-teaching/')} style="margin-top:24px">The teaching & mentoring story<Icon name="external" size={17}/></a></div><div class="timeline">{timeline.map(item => <div class="timeline-item"><span class="mono">{item.year}</span><div><h3>{item.title}</h3><p>{item.text}</p></div></div>)}</div></section>
+    <section class="about-award"><Photo image="award" alt="Elias receiving the Lady Godiva Award at the engineering formal."/><div><span class="eyebrow">LADY GODIVA AWARD / 2026</span><h2>Recognition for showing up.</h2><p>I received the Lady Godiva Award in the winter term of second year, recognizing commitment to the Western Engineering community through WE FIRST, robotics workshops and FRC mentoring.</p><p>The most rewarding part is seeing someone become confident enough to take a project in their own direction.</p></div></section>
+    <section class="outdoor-gallery"><div class="section-heading"><div><span class="eyebrow">AWAY FROM THE WORKBENCH</span><h2>There’s a whole world out there.</h2></div></div><p>I love skiing, mountain biking, climbing and hiking. In 2023, a family trek to Everest Base Camp also became a chance to raise funds for Youth Haven in Barrie. Time outdoors is a part of my life I always make room for.</p><Gallery photos={outdoors} label="A few changes of scenery"/></section>
+  </div>
+</Layout>

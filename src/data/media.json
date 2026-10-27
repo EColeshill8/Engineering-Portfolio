@@ -1,0 +1,461 @@
+{
+  "6502": {
+    "source": "6502 Computer.jpeg",
+    "width": 768,
+    "height": 1024,
+    "variants": {
+      "640": {
+        "file": "6502-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      "1400": {
+        "file": "6502-1400.webp",
+        "width": 768,
+        "height": 1024
+      }
+    }
+  },
+  "ski": {
+    "source": "Alpine Ski Racing.jpeg",
+    "width": 768,
+    "height": 1024,
+    "variants": {
+      "640": {
+        "file": "ski-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      "1400": {
+        "file": "ski-1400.webp",
+        "width": 768,
+        "height": 1024
+      }
+    }
+  },
+  "baker-bot": {
+    "source": "Baker Bot (1).jpeg",
+    "width": 1536,
+    "height": 2048,
+    "variants": {
+      "640": {
+        "file": "baker-bot-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      "1400": {
+        "file": "baker-bot-1400.webp",
+        "width": 1400,
+        "height": 1867
+      }
+    }
+  },
+  "baker-head": {
+    "source": "Baker Bot Head Part.jpeg",
+    "width": 1536,
+    "height": 2048,
+    "variants": {
+      "640": {
+        "file": "baker-head-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      "1400": {
+        "file": "baker-head-1400.webp",
+        "width": 1400,
+        "height": 1867
+      }
+    }
+  },
+  "frc-team": {
+    "source": "FRC 2024 Team.jpeg",
+    "width": 1038,
+    "height": 756,
+    "variants": {
+      "640": {
+        "file": "frc-team-640.webp",
+        "width": 640,
+        "height": 466
+      },
+      "1400": {
+        "file": "frc-team-1400.webp",
+        "width": 1038,
+        "height": 756
+      }
+    }
+  },
+  "frc-competition": {
+    "source": "FRC Newmarket Competition.jpeg",
+    "width": 1024,
+    "height": 768,
+    "variants": {
+      "640": {
+        "file": "frc-competition-640.webp",
+        "width": 640,
+        "height": 480
+      },
+      "1400": {
+        "file": "frc-competition-1400.webp",
+        "width": 1024,
+        "height": 768
+      }
+    }
+  },
+  "frc-robot": {
+    "source": "FRC Robot 2024.jpeg",
+    "width": 1536,
+    "height": 2048,
+    "variants": {
+      "640": {
+        "file": "frc-robot-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      "1400": {
+        "file": "frc-robot-1400.webp",
+        "width": 1400,
+        "height": 1867
+      }
+    }
+  },
+  "nepal": {
+    "source": "Hiking Himilayas.jpeg",
+    "width": 768,
+    "height": 1024,
+    "variants": {
+      "640": {
+        "file": "nepal-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      "1400": {
+        "file": "nepal-1400.webp",
+        "width": 768,
+        "height": 1024
+      }
+    }
+  },
+  "rockies": {
+    "source": "Hiking in the Rockies.jpeg",
+    "width": 1024,
+    "height": 768,
+    "variants": {
+      "640": {
+        "file": "rockies-640.webp",
+        "width": 640,
+        "height": 480
+      },
+      "1400": {
+        "file": "rockies-1400.webp",
+        "width": 1024,
+        "height": 768
+      }
+    }
+  },
+  "award": {
+    "source": "Lady Godiva Award in Engineering.jpeg",
+    "width": 2048,
+    "height": 1365,
+    "variants": {
+      "640": {
+        "file": "award-640.webp",
+        "width": 640,
+        "height": 427
+      },
+      "1400": {
+        "file": "award-1400.webp",
+        "width": 1400,
+        "height": 933
+      }
+    }
+  },
+  "ec-logo": {
+    "source": "Makers Mark - Logo.jpeg",
+    "width": 1254,
+    "height": 1254,
+    "variants": {
+      "640": {
+        "file": "ec-logo-640.webp",
+        "width": 640,
+        "height": 640
+      },
+      "1400": {
+        "file": "ec-logo-1400.webp",
+        "width": 1254,
+        "height": 1254
+      }
+    }
+  },
+  "biking": {
+    "source": "Mountain Biking.jpeg",
+    "width": 665,
+    "height": 1182,
+    "variants": {
+      "640": {
+        "file": "biking-640.webp",
+        "width": 640,
+        "height": 1138
+      },
+      "1400": {
+        "file": "biking-1400.webp",
+        "width": 665,
+        "height": 1182
+      }
+    }
+  },
+  "minibot-remote": {
+    "source": "PID Driving Robot (1).jpeg",
+    "width": 768,
+    "height": 1024,
+    "variants": {
+      "640": {
+        "file": "minibot-remote-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      "1400": {
+        "file": "minibot-remote-1400.webp",
+        "width": 768,
+        "height": 1024
+      }
+    }
+  },
+  "minibot": {
+    "source": "PID Driving Robot (2).jpeg",
+    "width": 768,
+    "height": 1024,
+    "variants": {
+      "640": {
+        "file": "minibot-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      "1400": {
+        "file": "minibot-1400.webp",
+        "width": 768,
+        "height": 1024
+      }
+    }
+  },
+  "ri3d-cad": {
+    "source": "Ri3D (2026) CAD.png",
+    "width": 1076,
+    "height": 825,
+    "variants": {
+      "640": {
+        "file": "ri3d-cad-640.webp",
+        "width": 640,
+        "height": 491
+      },
+      "1400": {
+        "file": "ri3d-cad-1400.webp",
+        "width": 1076,
+        "height": 825
+      }
+    }
+  },
+  "ri3d-cad-alt": {
+    "source": "Ri3D (2026) CAD).png",
+    "width": 915,
+    "height": 716,
+    "variants": {
+      "640": {
+        "file": "ri3d-cad-alt-640.webp",
+        "width": 640,
+        "height": 501
+      },
+      "1400": {
+        "file": "ri3d-cad-alt-1400.webp",
+        "width": 915,
+        "height": 716
+      }
+    }
+  },
+  "ri3d-brainstorm": {
+    "source": "Ri3D Brainstorming.jpeg",
+    "width": 768,
+    "height": 1024,
+    "variants": {
+      "640": {
+        "file": "ri3d-brainstorm-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      "1400": {
+        "file": "ri3d-brainstorm-1400.webp",
+        "width": 768,
+        "height": 1024
+      }
+    }
+  },
+  "ri3d-team": {
+    "source": "Ri3D team (2026).jpeg",
+    "width": 768,
+    "height": 1024,
+    "variants": {
+      "640": {
+        "file": "ri3d-team-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      "1400": {
+        "file": "ri3d-team-1400.webp",
+        "width": 768,
+        "height": 1024
+      }
+    }
+  },
+  "vex": {
+    "source": "VEX V5 Kiwi-Drive (2024).jpeg",
+    "width": 1024,
+    "height": 768,
+    "variants": {
+      "640": {
+        "file": "vex-640.webp",
+        "width": 640,
+        "height": 480
+      },
+      "1400": {
+        "file": "vex-1400.webp",
+        "width": 1024,
+        "height": 768
+      }
+    }
+  },
+  "recruiting": {
+    "source": "WE FIRST Recruiting.jpeg",
+    "width": 1086,
+    "height": 724,
+    "variants": {
+      "640": {
+        "file": "recruiting-640.webp",
+        "width": 640,
+        "height": 427
+      },
+      "1400": {
+        "file": "recruiting-1400.webp",
+        "width": 1086,
+        "height": 724
+      }
+    }
+  },
+  "workshop": {
+    "source": "WE FIRST Soldering Workshop (1).jpeg",
+    "width": 768,
+    "height": 1024,
+    "variants": {
+      "640": {
+        "file": "workshop-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      "1400": {
+        "file": "workshop-1400.webp",
+        "width": 768,
+        "height": 1024
+      }
+    }
+  },
+  "workshop-2": {
+    "source": "WE FIRST Soldering Workshop (2).jpeg",
+    "width": 768,
+    "height": 1024,
+    "variants": {
+      "640": {
+        "file": "workshop-2-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      "1400": {
+        "file": "workshop-2-1400.webp",
+        "width": 768,
+        "height": 1024
+      }
+    }
+  },
+  "weather-board": {
+    "source": "Weather Lights Circuit Board.jpeg",
+    "width": 768,
+    "height": 1024,
+    "variants": {
+      "640": {
+        "file": "weather-board-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      "1400": {
+        "file": "weather-board-1400.webp",
+        "width": 768,
+        "height": 1024
+      }
+    }
+  },
+  "wec-2024": {
+    "source": "WEC (2024).jpeg",
+    "width": 1536,
+    "height": 2048,
+    "variants": {
+      "640": {
+        "file": "wec-2024-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      "1400": {
+        "file": "wec-2024-1400.webp",
+        "width": 1400,
+        "height": 1867
+      }
+    }
+  },
+  "wec-team": {
+    "source": "WEC Senior (2025) Podium.jpeg",
+    "width": 1086,
+    "height": 724,
+    "variants": {
+      "640": {
+        "file": "wec-team-640.webp",
+        "width": 640,
+        "height": 427
+      },
+      "1400": {
+        "file": "wec-team-1400.webp",
+        "width": 1086,
+        "height": 724
+      }
+    }
+  },
+  "wec-build": {
+    "source": "WEC Senior (2025) Robot Assembly.jpeg",
+    "width": 768,
+    "height": 1024,
+    "variants": {
+      "640": {
+        "file": "wec-build-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      "1400": {
+        "file": "wec-build-1400.webp",
+        "width": 768,
+        "height": 1024
+      }
+    }
+  },
+  "wec-robot": {
+    "source": "WEC Senior (2025) Robot.jpeg",
+    "width": 1536,
+    "height": 2048,
+    "variants": {
+      "640": {
+        "file": "wec-robot-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      "1400": {
+        "file": "wec-robot-1400.webp",
+        "width": 1400,
+        "height": 1867
+      }
+    }
+  }
+}

@@ -1,0 +1,56 @@
+---
+import '../styles/global.css';
+import '@fontsource-variable/manrope';
+import { site, href } from '../data/site';
+import Icon from '../components/Icon.astro';
+interface Props { title?: string; description?: string; active?: 'home' | 'projects' | 'about'; image?: string }
+const { title = 'Robotics, systems & things worth building', description = site.description, active, image = 'media/baker-bot-1400.webp' } = Astro.props;
+const pageTitle = `${title} — ${site.name}`;
+const canonical = new URL(Astro.url.pathname, Astro.site || 'https://eliascoleshill.ca');
+const socialImage = new URL(href(image), Astro.site || 'https://eliascoleshill.ca');
+const nav = [{label:'Home', path:'', key:'home'}, {label:'Projects', path:'projects/', key:'projects'}, {label:'About Me', path:'about/', key:'about'}];
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#111315" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href={href('favicon.png')} type="image/png" />
+    <meta property="og:type" content="website" /><meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={pageTitle} /><meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} /><meta property="og:image" content={socialImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json" set:html={JSON.stringify({'@context':'https://schema.org','@type':'Person',name:site.name,url:Astro.site?.href || 'https://eliascoleshill.ca',sameAs:[site.github,site.linkedin],email:`mailto:${site.email}`,affiliation:{'@type':'CollegeOrUniversity',name:'Western University'}})} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+      <div class="header-inner container">
+        <a class="brand" href={href()} aria-label="Elias Coleshill — home"><img class="brand-logo" src={href('media/ec-logo-640.webp')} alt="EC maker’s mark" width="48" height="48" /><span>Elias<br/>Coleshill</span></a>
+        <nav class="site-nav" id="site-navigation" aria-label="Main navigation" data-site-nav>
+          {nav.map(item => <a href={href(item.path)} aria-current={active === item.key ? 'page' : undefined}>{item.label}</a>)}
+        </nav>
+        <a class="header-contact" href={`mailto:${site.email}`}><span class="availability-dot"></span><span>Let’s connect</span><Icon name="external" size={16}/></a>
+        <button class="menu-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="site-navigation" data-menu-toggle><Icon name="menu" /></button>
+      </div>
+    </header>
+    <main id="main-content"><slot /></main>
+    <footer class="site-footer container">
+      <div class="footer-invitation"><div><span class="eyebrow">LOOKING AHEAD</span><h2>Let’s build something<br/><span>worth figuring out.</span></h2><p>Seeking a four-month engineering co-op · May–August 2027</p></div><a class="contact-orbit" href={`mailto:${site.email}`} aria-label={`Email ${site.email}`}><Icon name="external" size={38}/></a></div>
+      <div class="footer-links"><a class="footer-email" href={`mailto:${site.email}`}>{site.email}<Icon name="external" size={18}/></a><div><a href={href('files/Elias_Coleshill_Resume.pdf')} target="_blank" rel="noopener">Résumé<Icon name="download" size={16}/></a><a href={site.github} target="_blank" rel="noopener noreferrer">GitHub<Icon name="external" size={16}/></a><a href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn<Icon name="external" size={16}/></a></div></div>
+      <div class="footer-bottom mono"><span>© {new Date().getFullYear()} Elias Coleshill</span><span>Built with curiosity. Based in Ontario.</span><a href="#main-content">BACK TO TOP ↑</a></div>
+    </footer>
+    <dialog class="lightbox" data-lightbox aria-label="Expanded project photograph">
+      <button class="lightbox-close icon-button" data-lightbox-close aria-label="Close photograph"><Icon name="close" size={26}/></button>
+      <div class="lightbox-content"><img data-lightbox-image alt=""/><div class="lightbox-caption"><p data-lightbox-caption></p><span data-lightbox-count class="mono" aria-live="polite"></span></div></div>
+      <button class="lightbox-prev icon-button" data-lightbox-prev aria-label="Previous photograph"><Icon name="chevron" size={28}/></button>
+      <button class="lightbox-next icon-button" data-lightbox-next aria-label="Next photograph"><Icon name="chevron" size={28}/></button>
+    </dialog>
+    <noscript><style>.filter-bar,.model-launch,.video-launch,.menu-toggle{display:none!important}.site-nav{display:flex!important}</style></noscript>
+    <script>import '../scripts/client';</script>
+  </body>
+</html>

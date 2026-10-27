@@ -1,0 +1,27 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import Photo from '../components/Photo.astro';
+import Icon from '../components/Icon.astro';
+import { projects } from '../data/projects';
+import { href } from '../data/site';
+---
+<Layout active="home">
+  <section class="home-hero container">
+    <div class="hero-topline"><span class="eyebrow">ENGINEERING / CURIOSITY / HANDS-ON WORK</span><a class="availability" href="mailto:encoleshill@icloud.com"><span class="availability-dot"></span>CO-OP · MAY–AUG 2027<Icon name="external" size={14}/></a></div>
+    <h1>Elias Coleshill<span>.</span></h1>
+    <div class="hero-bottom"><p class="hero-statement">I turn ideas into things that move,<br/>connect systems, and help people<br/>learn by making.</p><div class="hero-education"><p>Third-year dual-degree student<br/>at Western University.</p><span>Mechatronics Systems Engineering<br/>& Artificial Intelligence Systems Engineering</span><br/><a class="text-link" href={href('about/')}>A little about me<Icon name="external" size={16}/></a></div></div>
+  </section>
+  <section class="work-section container" aria-labelledby="featured-work">
+    <div class="section-heading"><h2 id="featured-work">Selected work</h2><span class="mono">01—03 / CURRENT FOCUS</span></div>
+    <div class="project-grid featured-grid">{projects.slice(0,3).map((project,index) => <ProjectCard project={project} index={index} featured />)}</div>
+  </section>
+  <section class="work-section container" aria-labelledby="more-work">
+    <div class="section-heading"><h2 id="more-work">More things I’ve worked on</h2><a class="text-link" href={href('projects/')}>Browse & filter<Icon name="external" size={17}/></a></div>
+    <div class="project-grid">{projects.slice(3).map((project,index) => <ProjectCard project={project} index={index+3}/>)}</div>
+  </section>
+  <section class="about-teaser container">
+    <div class="teaser-image"><Photo image="rockies" alt="Looking across a mountain valley on a hiking trip in the Rockies."/></div>
+    <div class="teaser-copy"><span class="eyebrow">BEYOND THE WORKBENCH</span><h2>Usually building.<br/>Sometimes out here.</h2><p>I love robotics, but I also love a mountain trail, a bike ride and a day on skis. Teaching, teamwork and time outdoors are a big part of who I am.</p><a class="text-link" href={href('about/')}>Meet the person behind the projects<Icon name="external" size={17}/></a></div>
+  </section>
+</Layout>

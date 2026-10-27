@@ -1,0 +1,21 @@
+---
+import type { Photo as PhotoType } from '../data/projects';
+import assets from '../data/media.json';
+import { href } from '../data/site';
+import Photo from './Photo.astro';
+import Icon from './Icon.astro';
+interface Props { photos: PhotoType[]; label?: string }
+const { photos, label = 'A closer look' } = Astro.props;
+---
+{photos.length > 0 && <section class="project-gallery" aria-label={label}>
+  <div class="section-heading"><h2>{label}</h2><span class="mono">SELECT AN IMAGE TO EXPAND</span></div>
+  <div class:list={['gallery-grid', {'gallery-single': photos.length === 1}]} data-gallery>
+    {photos.map(photo => <figure>
+      <a class="gallery-trigger" href={href(`media/${(assets as Record<string, any>)[photo.key].variants['1400'].file}`)} data-gallery-trigger data-src={href(`media/${(assets as Record<string, any>)[photo.key].variants['1400'].file}`)} data-caption={photo.caption} data-alt={photo.alt} aria-label={`Expand image: ${photo.alt}`}>
+        <Photo image={photo.key} alt={photo.alt} position={photo.position} />
+        <span class="gallery-expand"><Icon name="expand" /></span>
+      </a>
+      <figcaption>{photo.caption}</figcaption>
+    </figure>)}
+  </div>
+</section>}

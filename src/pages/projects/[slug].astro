@@ -1,0 +1,38 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Photo from '../../components/Photo.astro';
+import Icon from '../../components/Icon.astro';
+import Gallery from '../../components/Gallery.astro';
+import ModelViewer from '../../components/ModelViewer.astro';
+import Video from '../../components/Video.astro';
+import EngineDiagram from '../../components/EngineDiagram.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { projects, type Project } from '../../data/projects';
+import { href } from '../../data/site';
+import assets from '../../data/media.json';
+export function getStaticPaths() {return projects.map(project => ({params:{slug:project.slug},props:{project}}));}
+const { project } = Astro.props as {project:Project};
+const related = project.related.map(slug => projects.find(p => p.slug === slug)).filter(Boolean) as Project[];
+const og = project.cover ? `media/${(assets as Record<string,any>)[project.cover.key].variants['1400'].file}` : 'favicon.png';
+---
+<Layout title={project.title} description={project.summary} active="projects" image={og}>
+  <div class="container">
+    <header class="project-header"><a class="back-link" href={href('projects/')}><Icon name="arrow" size={17}/>All projects</a><div class="project-heading-row"><div><span class="eyebrow">{project.category.toUpperCase()}</span><h1>{project.title}</h1><p class="project-subtitle">{project.subtitle}</p></div><ul class="tags" aria-label="Project skills">{project.tags.map(tag => <li>{tag}</li>)}</ul></div></header>
+    {project.cover ? <figure><div class="project-hero-image"><Photo image={project.cover.key} alt={project.cover.alt} position={project.cover.position} eager sizes="(max-width: 1300px) 95vw, 1280px"/></div><figcaption class="project-hero-caption">{project.cover.caption}</figcaption></figure> : <div class="project-title-graphic"><strong>Observe.<br/>Prototype.<br/><span style="color:var(--accent)">Improve.</span></strong><p>Production engineering connects a problem on the floor to a practical change in the equipment.</p></div>}
+    <div class="project-layout">
+      <aside class="project-facts" aria-label="Project at a glance"><dl class="fact"><dt>MY ROLE</dt><dd>{project.role}</dd></dl><dl class="fact"><dt>WHEN</dt><dd>{project.year}</dd></dl><dl class="fact"><dt>STATUS</dt><dd class="status-label">{project.status}</dd></dl><nav class="in-page-links" aria-label="On this page"><a href="#overview">Overview</a>{project.sections.map((section,index) => <a href={`#section-${index+1}`}>{section.title}</a>)}<a href="#outcome">Outcome</a>{project.model && <a href="#assembly">Interactive assembly</a>}</nav></aside>
+      <div class="project-story">
+        <section class="project-context" id="overview"><p>{project.summary}</p><p>{project.context}</p><div class="contributions"><h2>My contribution</h2><ul>{project.contributions.map(item => <li>{item}</li>)}</ul></div></section>
+        {project.sections.map((section,index) => <section class="story-section" id={`section-${index+1}`}><span class="eyebrow">{String(index+1).padStart(2,'0')} / THE PROCESS</span><h2>{section.title}</h2>{section.paragraphs.map(p => <p>{p}</p>)}</section>)}
+        <section class="project-outcome" id="outcome"><span class="eyebrow">WHERE IT LANDED</span><h2>{project.outcome.title}</h2><p>{project.outcome.text}</p></section>
+        {project.slug === 'weather-lights' && <EngineDiagram/>}
+      </div>
+    </div>
+    <div class="project-wide">
+      {project.model && <div id="assembly" style="scroll-margin-top:110px"><ModelViewer model={project.model} name={project.title} poster={project.model === 'ri3d' ? 'ri3d-cad' : 'baker-bot'}/></div>}
+      {project.video && <Video id={project.video} title="WE FIRST RI3D 2026 release video" poster="ri3d-team"/>}
+      <Gallery photos={project.gallery}/>
+    </div>
+    <section class="related-section" aria-labelledby="related-heading"><div class="section-heading"><h2 id="related-heading">Keep exploring</h2><a class="text-link" href={href('projects/')}>All projects<Icon name="external" size={17}/></a></div><div class="project-grid project-related-grid">{related.map(item => <ProjectCard project={item} index={projects.indexOf(item)}/>)}</div></section>
+  </div>
+</Layout>

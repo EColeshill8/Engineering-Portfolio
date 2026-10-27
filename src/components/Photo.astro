@@ -1,0 +1,10 @@
+---
+import assets from '../data/media.json';
+import { href } from '../data/site';
+interface Props { image: string; alt: string; eager?: boolean; class?: string; position?: string; sizes?: string }
+const { image, alt, eager = false, class: className = '', position, sizes = '(max-width: 700px) 100vw, 60vw' } = Astro.props;
+const asset = (assets as Record<string, any>)[image];
+if (!asset) throw new Error(`Unknown image: ${image}`);
+const full = asset.variants['1400'], small = asset.variants['640'];
+---
+<img src={href(`media/${full.file}`)} srcset={`${href(`media/${small.file}`)} ${small.width}w, ${href(`media/${full.file}`)} ${full.width}w`} sizes={sizes} width={full.width} height={full.height} alt={alt} loading={eager ? 'eager' : 'lazy'} decoding="async" fetchpriority={eager ? 'high' : 'auto'} class={className} style={position ? `object-position:${position}` : undefined} />

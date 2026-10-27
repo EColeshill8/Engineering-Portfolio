@@ -1,0 +1,20 @@
+{
+  "ri3d": {
+    "file": "ri3d.glb",
+    "bytes": 38906780,
+    "parts": 174,
+    "triangles": 1439525,
+    "source": "Full Assembly - Ri3D - 2026.step",
+    "sourceSha256": "869f5ea77d3604844f8ca41896fca565595595887c57cc452f03a6aa07c72375",
+    "toleranceMeters": 0.00075
+  },
+  "baker-bot": {
+    "file": "baker-bot.glb",
+    "bytes": 57646604,
+    "parts": 532,
+    "triangles": 1944339,
+    "source": "General Assembly - Baker Bot.step",
+    "sourceSha256": "58365cebc65c8761b45f26c8df8def24f66dc370a53fc8ef017e9d3ec2e13a9f",
+    "toleranceMeters": 0.00075
+  }
+}

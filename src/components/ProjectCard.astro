@@ -1,0 +1,23 @@
+---
+import type { Project } from '../data/projects';
+import { href } from '../data/site';
+import Photo from './Photo.astro';
+import Icon from './Icon.astro';
+interface Props { project: Project; index?: number; featured?: boolean }
+const { project, index = 0, featured = false } = Astro.props;
+---
+<article class:list={['project-card', {featured, 'text-card': !project.cover}]} data-project-card data-category={project.category}>
+  <a class="card-link" href={href(`projects/${project.slug}/`)} aria-label={`Explore ${project.title}`}>
+    <div class="card-image">
+      {project.cover ? <Photo image={project.cover.key} alt={project.cover.alt} position={project.cover.position} sizes={featured ? '(max-width: 700px) 90vw, 33vw' : '(max-width: 700px) 90vw, (max-width: 1000px) 45vw, 33vw'} /> : <div class="industry-cover"><span class="mono">FIO / PRODUCTION ENGINEERING</span><span>Observe.<br/>Prototype.<br/><em>Improve.</em></span><span class="mono">FROM DIAGNOSIS TO INSTALLATION</span></div>}
+      <span class:list={['card-status', project.tone]}>{project.status}</span>
+      <span class="card-open"><Icon name="external" size={22} /></span>
+    </div>
+    <div class="card-copy">
+      <div class="card-meta mono"><span>{project.category}</span><span>{String(index + 1).padStart(2, '0')}</span></div>
+      <h3>{project.title}</h3>
+      <p>{project.summary}</p>
+      <ul class="tags" aria-label="Project skills">{project.tags.slice(0, 3).map(tag => <li>{tag}</li>)}</ul>
+    </div>
+  </a>
+</article>

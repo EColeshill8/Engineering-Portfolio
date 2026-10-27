@@ -1,0 +1,32 @@
+import {NodeIO} from '@gltf-transform/core';
+import {ALL_EXTENSIONS} from '@gltf-transform/extensions';
+import {dedup, prune, weld, simplify, join, meshopt} from '@gltf-transform/functions';
+import {MeshoptEncoder, MeshoptDecoder, MeshoptSimplifier} from 'meshoptimizer';
+import fs from 'node:fs';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const io = new NodeIO().registerExtensions(ALL_EXTENSIONS).registerDependencies({'meshopt.encoder':MeshoptEncoder,'meshopt.decoder':MeshoptDecoder});
+await Promise.all([MeshoptEncoder.ready,MeshoptSimplifier.ready,MeshoptDecoder.ready]);
+const webPath = path.join(root,'src/data/models-web.json');
+const web = JSON.parse(fs.readFileSync(webPath));
+const input = JSON.parse(fs.readFileSync(path.join(root,'src/data/models.json')));
+for (const [slug, info] of Object.entries(input)) {
+  if (process.argv[2] && process.argv[2] !== slug) continue;
+  const sourcePath = path.join(root,`public/models/${info.file}`);
+  if (!fs.existsSync(sourcePath)) continue;
+  const document = await io.read(sourcePath);
+  await document.transform(dedup(),weld(),simplify({simplifier:MeshoptSimplifier,ratio:0.4,error:0.0005,lockBorder:true}),join({keepNamed:false}),prune(),meshopt({encoder:MeshoptEncoder,level:'high',quantizePosition:14,quantizeNormal:10}));
+  const filename = `${slug}-web.glb`;
+  await io.write(path.join(root,`public/models/${filename}`),document);
+  const bytes = fs.statSync(path.join(root,`public/models/${filename}`)).size;
+  let triangles=0;
+  for (const mesh of document.getRoot().listMeshes()) for (const primitive of mesh.listPrimitives()) triangles+=(primitive.getIndices()?.getCount() || 0)/3;
+  web[slug]={...info,file:filename,bytes,triangles,originalTriangles:info.triangles,originalBytes:info.bytes,compression:'EXT_meshopt_compression'};
+  fs.writeFileSync(webPath,JSON.stringify(web,null,2));
+  const archive = path.resolve(root,'../../work/cad-raw');
+  fs.mkdirSync(archive,{recursive:true});
+  fs.copyFileSync(sourcePath,path.join(archive,info.file));
+  fs.unlinkSync(sourcePath);
+  console.log(`${slug}: ${(info.bytes/1048576).toFixed(1)} → ${(bytes/1048576).toFixed(1)} MiB, ${Math.round(triangles).toLocaleString()} triangles`);
+}

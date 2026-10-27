@@ -1,0 +1,11 @@
+---
+import Icon from './Icon.astro';
+---
+<section class="engine-demo" data-engine-demo aria-labelledby="engine-title">
+  <span class="eyebrow">THE SOFTWARE IDEA</span><h2 id="engine-title">One transition. One owner.</h2>
+  <p>Two colour engines share the display through a scheduler and fader. Select a stage to explore the flow.</p>
+  <div class="engine-tabs" role="group" aria-label="Explore the display cycle"><button data-engine="temperature" aria-pressed="true">01 Temperature</button><button data-engine="transition" aria-pressed="false">02 Transition</button><button data-engine="weather" aria-pressed="false">03 Weather</button></div>
+  <div class="engine-flow" data-stage="temperature"><div data-engine-node="temperature"><span class="mono">ENGINE A</span><strong>Temperature</strong></div><Icon name="arrow" /><div data-engine-node="transition"><span class="mono">SCHEDULER</span><strong>Fader</strong></div><Icon name="arrow" /><div data-engine-node="weather"><span class="mono">ENGINE B</span><strong>Weather</strong></div></div>
+  <p class="engine-explanation" aria-live="polite" data-engine-explanation>The temperature engine steps through morning, afternoon, evening and night forecast indications.</p>
+  <p class="media-note">Illustrative control flow based on the implemented architecture. This does not reproduce the device’s exact colours or timing.</p>
+</section>

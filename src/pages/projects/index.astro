@@ -1,0 +1,13 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { projects, categories } from '../../data/projects';
+---
+<Layout title="Projects" active="projects">
+  <section class="page-intro container"><span class="eyebrow">A COLLECTION OF IDEAS MADE PHYSICAL</span><h1>Projects<span style="color:var(--accent)">.</span></h1><p>Robots, embedded systems and engineering under constraints. A closer look at what I contributed, how the designs changed, and what I learned.</p></section>
+  <section class="gallery-page container" aria-label="Project collection">
+    <h2 class="sr-only">Project directory</h2>
+    <div class="section-heading"><div class="filter-bar" role="group" aria-label="Filter projects by category">{categories.map(category => <button data-filter={category} aria-pressed={category === 'All'}>{category}</button>)}</div><span class="project-count mono" data-project-count role="status">{String(projects.length).padStart(2,'0')} projects</span></div>
+    <div class="project-grid">{projects.map((project,index) => <ProjectCard project={project} index={index}/>)}</div>
+  </section>
+</Layout>

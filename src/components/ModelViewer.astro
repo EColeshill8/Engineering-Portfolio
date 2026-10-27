@@ -1,0 +1,22 @@
+---
+import models from '../data/models-web.json';
+import media from '../data/media.json';
+import { href } from '../data/site';
+import Photo from './Photo.astro';
+import Icon from './Icon.astro';
+interface Props { model: string; poster: string; name: string }
+const { model, poster, name } = Astro.props;
+const info = (models as Record<string, any>)[model];
+const posterSrc = href(`media/${(media as Record<string, any>)[poster].variants['1400'].file}`);
+---
+<section class="model-section" aria-labelledby="model-heading">
+  <div class="section-heading"><div><span class="eyebrow">EXPLORE THE ASSEMBLY</span><h2 id="model-heading">Take it for a spin.</h2></div><Icon name="cube" size={30} /></div>
+  <div class="model-shell" data-model-shell data-model-src={info ? href(`models/${info.file}`) : undefined} data-decoder-src={href('vendor/meshopt_decoder.js')} data-poster={posterSrc} data-model-name={`${name} interactive assembly`}>
+    <div class="model-stage" data-model-stage>
+      <Photo image={poster} alt={`${name} — select Explore 3D to load the interactive assembly.`} class="model-poster" />
+      {info && <button class="model-launch button" data-model-launch><Icon name="cube" />Explore 3D<span class="model-size">{(info.bytes / 1048576).toFixed(1)} MB</span></button>}
+    </div>
+    <div class="model-toolbar"><p data-model-status role="status">{info ? 'Load the model, then drag to rotate and scroll or pinch to zoom. Keyboard controls are available inside the viewer.' : 'The interactive export is being prepared. The assembly image remains available above.'}</p><div class="model-actions" hidden data-model-actions><button aria-label="Reset 3D view" data-model-reset><Icon name="reset" />Reset</button><button aria-label="Expand 3D viewer" data-model-expand><Icon name="expand" />Expand</button></div></div>
+  </div>
+  <p class="media-note">A web tessellation of the supplied CAD assembly. Geometry has been simplified for viewing; this is not an animated demonstration of the physical robot.</p>
+</section>
