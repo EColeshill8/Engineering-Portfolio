@@ -7,7 +7,7 @@
     "dev": "node scripts/astro.mjs dev --host 127.0.0.1",
     "build": "node scripts/astro.mjs build",
     "preview": "node scripts/astro.mjs preview --host 127.0.0.1",
-    "verify": "node scripts/verify-site.mjs",
+    "verify": "node --disable-warning=ExperimentalWarning scripts/test-motion.mjs && node scripts/verify-site.mjs",
     "convert:cad": "node scripts/convert-cad.cjs && node scripts/optimize-cad.mjs"
   },
   "dependencies": {

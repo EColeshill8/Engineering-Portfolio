@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const dist=path.join(root,'dist');
@@ -49,13 +50,30 @@ for(const slug of ['ri3d','baker-bot']){
 if(fs.readdirSync(path.join(dist,'models')).filter(name=>name.endsWith('.glb')).length!==2)failures.push('raw CAD exports must not be deployed');
 const media=JSON.parse(fs.readFileSync(path.join(root,'src/data/media.json')));
 for(const item of Object.values(media))for(const variant of Object.values(item.variants))if(!fs.existsSync(path.join(dist,'media',variant.file)))failures.push(`missing photo ${variant.file}`);
+const videos=JSON.parse(fs.readFileSync(path.join(root,'src/data/videos.json')));
+for(const [key,item] of Object.entries(videos)){
+  const bytes=fs.readFileSync(path.join(dist,'videos',item.file));
+  if(bytes.length!==item.bytes || createHash('sha256').update(bytes).digest('hex')!==item.sha256)failures.push(`${key}: video does not match prepared manifest`);
+  const atoms=[];
+  for(let offset=0;offset+8<=bytes.length;){
+    const size=bytes.readUInt32BE(offset);
+    if(size<8 || offset+size>bytes.length){failures.push(`${key}: invalid MP4 container`);break;}
+    atoms.push(bytes.toString('ascii',offset+4,offset+8));offset+=size;
+  }
+  if(atoms[0]!=='ftyp' || !atoms.includes('moov') || !atoms.includes('mdat') || atoms.indexOf('moov')>atoms.indexOf('mdat'))failures.push(`${key}: MP4 is not ready for progressive playback`);
+  if(!media[item.poster])failures.push(`${key}: missing poster image`);
+}
+const baker=fs.readFileSync(path.join(dist,'projects/baker-bot/index.html'),'utf8');
+const headVideo=baker.match(/<video\b[^>]*data-loop-video[^>]*>/)?.[0] || '';
+if(!['muted','loop','playsinline','controls','poster='].every(attribute=>headVideo.includes(attribute)) || !baker.includes('baker-head-test.mp4') || !baker.includes('whole-robot coordination and AI-driven gestures remain in development'))failures.push('Baker Bot head test, playback controls, poster or subsystem disclosure missing');
 const projectDirs=fs.readdirSync(path.join(dist,'projects'),{withFileTypes:true}).filter(x=>x.isDirectory());
 if(projectDirs.length!==12)failures.push(`expected 12 project pages, found ${projectDirs.length}`);
 if(!fs.readFileSync(path.join(dist,'projects/wec-2024/index.html'),'utf8').includes('6th place'))failures.push('WEC 2024 correction missing');
 if(!fs.existsSync(path.join(dist,'sitemap.xml')) || !fs.existsSync(path.join(dist,'robots.txt')))failures.push('missing search metadata');
 const combat=fs.readFileSync(path.join(dist,'projects/combat-robotics/index.html'),'utf8');
 if(!combat.includes('TEMPORARY REFERENCE MEDIA') || !combat.includes('botbrawl-logo-1400.webp') || !combat.includes('Logo: BotBrawl Canada') || !combat.includes('Liam Haddock') || !combat.includes('XHBQaKOk97Y'))failures.push('combat logo, reference disclosure, credits or video missing');
+if(!combat.includes('combat-clutch-1400.webp') || !combat.includes('design study, not a built mechanism'))failures.push('combat concept sketch or design-stage disclosure missing');
 const fio=fs.readFileSync(path.join(dist,'projects/fio-production-engineering/index.html'),'utf8');
 if(!fio.includes('fio-logo-1400.webp') || !fio.includes('futabanorthamerica.com/ontario'))failures.push('official FIO logo or source credit missing');
 if(failures.length){console.error(failures.join('\n'));process.exitCode=1;}
-else console.log(`PASS: ${files.length} HTML pages, ${projectDirs.length} case studies, ${links} local references, ${Object.keys(media).length} image sources and 2 shaded compressed GLB models. Base: ${base || '/'}`);
+else console.log(`PASS: ${files.length} HTML pages, ${projectDirs.length} case studies, ${links} local references, ${Object.keys(media).length} image sources, ${Object.keys(videos).length} progressive MP4 and 2 shaded compressed GLB models. Base: ${base || '/'}`);

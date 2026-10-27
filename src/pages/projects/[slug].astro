@@ -5,6 +5,7 @@ import Icon from '../../components/Icon.astro';
 import Gallery from '../../components/Gallery.astro';
 import ModelViewer from '../../components/ModelViewer.astro';
 import Video from '../../components/Video.astro';
+import MotionVideo from '../../components/MotionVideo.astro';
 import EngineDiagram from '../../components/EngineDiagram.astro';
 import ReferenceMedia from '../../components/ReferenceMedia.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
@@ -20,8 +21,9 @@ const og = project.cover ? `media/${(assets as Record<string,any>)[project.cover
   <div class="container">
     <header class="project-header"><a class="back-link" href={href('projects/')}><Icon name="arrow" size={17}/>All projects</a><div class="project-heading-row"><div><span class="eyebrow">{project.category.toUpperCase()}</span><h1>{project.title}</h1><p class="project-subtitle">{project.subtitle}</p></div><ul class="tags" aria-label="Project skills">{project.tags.map(tag => <li>{tag}</li>)}</ul></div></header>
     {project.cover ? <figure><div class:list={['project-hero-image', {'brand-image': !!project.cover.kind, 'brand-image-dark': project.cover.kind === 'logo-dark'}]}><Photo image={project.cover.key} alt={project.cover.alt} position={project.cover.position} eager sizes="(max-width: 1300px) 95vw, 1280px"/>{project.cover.referenceLabel && <span class="reference-badge">{project.cover.referenceLabel}</span>}</div><figcaption class="project-hero-caption">{project.cover.caption}{project.cover.credit && <a class="media-credit" href={project.cover.credit.url} target="_blank" rel="noopener noreferrer">{project.cover.credit.label}<Icon name="external" size={12}/></a>}</figcaption></figure> : <div class="project-title-graphic"><strong>Observe.<br/>Prototype.<br/><span style="color:var(--accent)">Improve.</span></strong><p>Production engineering connects a problem on the floor to a practical change in the equipment.</p></div>}
+    {project.motion && <MotionVideo clip={project.motion}/>}
     <div class="project-layout">
-      <aside class="project-facts" aria-label="Project at a glance"><dl class="fact"><dt>MY ROLE</dt><dd>{project.role}</dd></dl><dl class="fact"><dt>WHEN</dt><dd>{project.year}</dd></dl><dl class="fact"><dt>STATUS</dt><dd class="status-label">{project.status}</dd></dl><nav class="in-page-links" aria-label="On this page"><a href="#overview">Overview</a>{project.sections.map((section,index) => <a href={`#section-${index+1}`}>{section.title}</a>)}<a href="#outcome">Outcome</a>{project.model && <a href="#assembly">Interactive assembly</a>}</nav></aside>
+      <aside class="project-facts" aria-label="Project at a glance"><dl class="fact"><dt>MY ROLE</dt><dd>{project.role}</dd></dl><dl class="fact"><dt>WHEN</dt><dd>{project.year}</dd></dl><dl class="fact"><dt>STATUS</dt><dd class="status-label">{project.status}</dd></dl><nav class="in-page-links" aria-label="On this page"><a href="#overview">Overview</a>{project.motion && <a href="#head-motion">{project.motion.navLabel}</a>}{project.sections.map((section,index) => <a href={`#section-${index+1}`}>{section.title}</a>)}<a href="#outcome">Outcome</a>{project.model && <a href="#assembly">Interactive assembly</a>}</nav></aside>
       <div class="project-story">
         <section class="project-context" id="overview"><p>{project.summary}</p><p>{project.context}</p><div class="contributions"><h2>My contribution</h2><ul>{project.contributions.map(item => <li>{item}</li>)}</ul></div></section>
         {project.sections.map((section,index) => <section class="story-section" id={`section-${index+1}`}><span class="eyebrow">{String(index+1).padStart(2,'0')} / THE PROCESS</span><h2>{section.title}</h2>{section.paragraphs.map(p => <p>{p}</p>)}</section>)}

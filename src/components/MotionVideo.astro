@@ -1,0 +1,31 @@
+---
+import type { MotionClip } from '../data/projects';
+import videos from '../data/videos.json';
+import media from '../data/media.json';
+import { href } from '../data/site';
+import Icon from './Icon.astro';
+interface Props { clip: MotionClip }
+const { clip } = Astro.props;
+const info = (videos as Record<string, any>)[clip.key];
+if (!info) throw new Error(`Unknown project video: ${clip.key}`);
+const source = href(`videos/${info.file}?v=${info.sha256.slice(0,12)}`);
+const poster = href(`media/${(media as Record<string,any>)[info.poster].variants['1400'].file}`);
+---
+<section class="motion-feature" id="head-motion" aria-labelledby="head-motion-heading" data-loop-clip>
+  <div class="motion-copy">
+    <span class="eyebrow">BENCH TEST · BAKER BOT HEAD</span>
+    <h2 id="head-motion-heading">{clip.title}</h2>
+    <p>{clip.description}</p>
+    <div class="motion-playback"><span class="mono">SILENT LOOP</span><button class="button button-secondary" type="button" data-loop-toggle hidden aria-controls="head-test-video">Play head test</button></div>
+    <p class="motion-preference">Plays automatically while in view. You can pause it anytime; reduced-motion preferences are respected.</p>
+    <a class="text-link" href={source} target="_blank" rel="noopener noreferrer">Open video<Icon name="external" size={15}/></a>
+    <p class="motion-error" role="status" data-loop-error hidden>The video could not load here. Use the Open video link to view the clip directly.</p>
+  </div>
+  <figure class="motion-media">
+    <video id="head-test-video" class="motion-video" width={info.width} height={info.height} poster={poster} muted loop playsinline controls preload="metadata" aria-label="Baker Bot jaw and eyelid bench test" aria-describedby="head-motion-caption" data-loop-video>
+      <source src={source} type="video/mp4"/>
+      Your browser cannot play this video. <a href={source}>Open the head-test video.</a>
+    </video>
+    <figcaption id="head-motion-caption">{clip.caption}</figcaption>
+  </figure>
+</section>

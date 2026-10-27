@@ -10,7 +10,7 @@
 ## Useful additions, without blocking the existing site
 
 - Weather-light installation photograph and actual transition footage. The present cover is accurately captioned prototype-board hardware; the interactive diagram illustrates architecture, not exact colour rules.
-- A short Baker Bot eyelid/jaw clip. The actual full CAD model and head photo are already present.
+- [x] Add the Baker Bot eyelid/jaw bench-test clip, with silent looping playback, pause controls and an honest head-subsystem caption.
 - Combat-robot concept CAD/screenshots and competition footage as the teams progress. Replace the clearly labelled BotBrawl reference cover, photos and highlights with our own media through `src/data/projects.ts`.
 - Optional gear-generator attribution link and code-repository links when available. No repository URLs were invented.
 

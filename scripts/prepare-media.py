@@ -23,7 +23,8 @@ names = {
  'workshop': 'WE FIRST Soldering Workshop (1).jpeg', 'workshop-2': 'WE FIRST Soldering Workshop (2).jpeg',
  'weather-board': 'Weather Lights Circuit Board.jpeg', 'wec-2024': 'WEC (2024).jpeg',
  'wec-team': 'WEC Senior (2025) Podium.jpeg', 'wec-build': 'WEC Senior (2025) Robot Assembly.jpeg',
- 'wec-robot': 'WEC Senior (2025) Robot.jpeg'
+ 'wec-robot': 'WEC Senior (2025) Robot.jpeg',
+ 'combat-clutch': 'Saw Axe Combat Robot Clutch Idea.JPG'
 }
 manifest_path = root / 'src' / 'data' / 'media.json'
 manifest = json.loads(manifest_path.read_text(encoding='utf-8')) if manifest_path.exists() else {}

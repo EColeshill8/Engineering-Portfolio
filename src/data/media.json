@@ -559,5 +559,39 @@
         "height": 491
       }
     }
+  },
+  "baker-head-test-poster": {
+    "source": "Generated Media/baker-head-test-poster.png",
+    "width": 480,
+    "height": 854,
+    "variants": {
+      "640": {
+        "file": "baker-head-test-poster-640.webp",
+        "width": 480,
+        "height": 854
+      },
+      "1400": {
+        "file": "baker-head-test-poster-1400.webp",
+        "width": 480,
+        "height": 854
+      }
+    }
+  },
+  "combat-clutch": {
+    "source": "Saw Axe Combat Robot Clutch Idea.JPG",
+    "width": 4284,
+    "height": 5712,
+    "variants": {
+      "640": {
+        "file": "combat-clutch-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      "1400": {
+        "file": "combat-clutch-1400.webp",
+        "width": 1400,
+        "height": 1867
+      }
+    }
   }
 }

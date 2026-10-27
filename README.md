@@ -38,6 +38,7 @@ Preview the production build at the Local URL printed by the last command. `dist
 | `src/scripts/client.ts` | Filters, menu, lightbox, video and CAD interaction. |
 | `public/media/` | Optimized image copies. Original media was preserved separately. |
 | `public/models/` | The two compressed, web-ready GLB assemblies. |
+| `public/videos/` | Silent, web-ready project clips; source metadata is in `src/data/videos.json`. |
 | `public/vendor/` | Locally served mesh decoder and its license. |
 | `public/files/Elias_Coleshill_Resume.pdf` | Separate corrected **review draft**, not the original supplied résumé. |
 | `LAUNCH-CHECKLIST.md` | Items to review before publishing. |
@@ -85,6 +86,16 @@ See `MEDIA-CREDITS.md` and `src/data/reference-media.json` for the source links 
 
 ### Video
 
+The Baker Bot case study prominently features the original 37-second jaw/eyelid bench test. Its upright H.264 web copy is approximately 1.7 MB, with audio removed and a poster fallback. It loops silently while visible, pauses offscreen or in a background tab, and respects reduced-motion preferences. Visitors can pause/resume with the labelled button or native video controls, or open the MP4 directly. It demonstrates the head subsystem, not completed AI-driven whole-robot motion.
+
+To regenerate this clip and its poster, make FFmpeg available on PATH (or supply `--ffmpeg` with its executable path), install Pillow, then run:
+
+```sh
+python scripts/prepare-project-video.py
+```
+
+Alternatively, install the isolated helper with `python -m pip install --target .tools/python imageio-ffmpeg==0.6.0`; the script discovers its bundled FFmpeg automatically. `.tools/` and generated review frames are ignored by Git. The script preserves the original video, corrects its rotation, strips audio/private metadata, creates a progressive MP4 and poster variants, and records sizes/hashes in `src/data/videos.json`. These tools are only needed to regenerate media, not for normal builds or deployment.
+
 The RI3D button loads a `youtube-nocookie.com` iframe only when selected, with a direct YouTube link always available. YouTube oEmbed and the in-browser player verified the supplied video as **“REBUILT Ri3D Robot Reveal (Houdini), WEFIRST”**, by **Western Engineering FIRST**. Playback is still subject to YouTube's future availability and visitor network settings.
 
 ### Résumé
@@ -129,7 +140,7 @@ The source repository is [EColeshill8/Engineering-Portfolio](https://github.com/
 
 ## Verification
 
-`pnpm verify` checks all generated HTML pages, internal file/fragment references, image variants, metadata, case-study count, the WEC correction, and both compressed GLB containers. It runs after the production build and in CI.
+`pnpm verify` checks all generated HTML pages, internal file/fragment references, image variants, metadata, case-study count, the WEC correction, both compressed GLB containers, MP4 integrity/streaming layout, and the head-test/concept-sketch disclosures. It runs after the production build and in CI.
 
 The browser checks covered desktop/mobile layout bounds, category filtering, mobile navigation, lightbox open/Escape/focus restoration, both models loading real geometry, model keyboard/reset controls, the weather-diagram keyboard interaction and the actual RI3D video player. See `VERIFICATION.md` for final results and limits.
 

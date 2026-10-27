@@ -1,0 +1,16 @@
+{
+  "baker-head-test": {
+    "file": "baker-head-test.mp4",
+    "poster": "baker-head-test-poster",
+    "source": "Baker Bot Head Moving Test.mp4",
+    "width": 480,
+    "height": 854,
+    "durationSeconds": 37.1,
+    "fps": 30,
+    "bytes": 1716195,
+    "sha256": "94606808b79459291347c66e28ae2c520b9c79d81a4d055ef5dfab0a2ed843a9",
+    "sourceSha256": "4a566d8ab43c5f611869ee9f4513f0ed5e9a2f965b06123b1d4c4ebe2ebbe207",
+    "codec": "H.264 / yuv420p",
+    "audio": false
+  }
+}

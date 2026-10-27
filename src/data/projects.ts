@@ -1,5 +1,6 @@
 export type MediaCredit = { label: string; url: string };
-export type Photo = { key: string; alt: string; caption: string; position?: string; kind?: 'logo' | 'logo-dark'; credit?: MediaCredit; referenceLabel?: string };
+export type Photo = { key: string; alt: string; caption: string; position?: string; fit?: 'cover' | 'contain'; kind?: 'logo' | 'logo-dark'; credit?: MediaCredit; referenceLabel?: string };
+export type MotionClip = { key: string; title: string; description: string; caption: string; navLabel: string };
 export type ReferenceMedia = {
   notice: string; photos: Photo[];
   video: { id: string; title: string; poster: string; caption: string; credit: MediaCredit };
@@ -10,7 +11,7 @@ export type Project = {
   role: string; status: string; tone?: 'progress' | 'award'; tags: string[];
   cover?: Photo; summary: string; context: string; contributions: string[];
   sections: StorySection[]; outcome: { title: string; text: string };
-  gallery: Photo[]; model?: string; video?: string; referenceMedia?: ReferenceMedia; related: string[];
+  gallery: Photo[]; model?: string; video?: string; motion?: MotionClip; referenceMedia?: ReferenceMedia; related: string[];
 };
 
 export const projects: Project[] = [
@@ -21,6 +22,7 @@ export const projects: Project[] = [
     tags: ['System integration', 'Mechanical design', 'Team leadership'],
     cover: {key: 'baker-bot', alt: 'The waist-up Baker Bot on a workbench, with its head, arms and control electronics assembled.', caption: 'Baker Bot during assembly. The hardware is complete; coordinated software is still being integrated.', position: '50% 31%'},
     summary: 'Leading a 12-person student build of an AI-enabled co-lecturer for Professor Baker, while independently developing the robot’s expressive head.',
+    motion: {key: 'baker-head-test', title: 'Jaw and eyelids, in motion.', navLabel: 'Head motion test', description: 'A close-up bench test of the head mechanism I developed: the eyelids blink and the jaw opens and closes, with the actuator linkages visible.', caption: 'Head-subsystem bench test. This shows the working head hardware; whole-robot coordination and AI-driven gestures remain in development.'},
     context: 'The goal is a teaching tool that Professor Baker can talk to and play off during lectures. An AI response will be accompanied by gestures and facial movement suited to its context and tone.',
     contributions: ['Organize the subteams, team leads and overall integration.', 'Develop the head’s jaw and blinking-eyelid mechanisms.', 'Coordinate mechanical, electrical and software interfaces across a distributed team.', 'Write a small amount of embedded code to move the head components.'],
     sections: [
@@ -45,7 +47,7 @@ export const projects: Project[] = [
       {title: 'Guidance without taking over', paragraphs: ['I help the teams design and build, but try to leave the specific direction and discoveries to them. A useful review should help a builder understand the tradeoffs and make a better decision, rather than simply replace their idea with mine.', 'The project’s current story is about setting up that process and supporting the design work. Build, test and competition results will become part of the page as the robots take shape.']}
     ],
     outcome: {title: 'The next milestone is the build.', text: 'The vertical- and horizontal-spinner concepts are in development. No completed robots or fight results are being claimed at this stage.'},
-    gallery: [{key: 'workshop', alt: 'Students working together at a WE FIRST electronics workshop.', caption: 'The hands-on learning environment behind WE FIRST’s projects and workshops.'}],
+    gallery: [{key: 'combat-clutch', alt: 'Notebook sketch of a saw-axe clutch concept, with shaft, bearing and mechanism details.', caption: 'Exploratory saw-axe clutch concept from the project notes. This is a design study, not a built mechanism.', fit: 'contain'}, {key: 'workshop', alt: 'Students working together at a WE FIRST electronics workshop.', caption: 'The hands-on learning environment behind WE FIRST’s projects and workshops.'}],
     referenceMedia: {
       notice: 'The BotBrawl photographs and video below show other teams and the competition we are preparing for. They are temporary reference media, not WE FIRST builds, attendance or results. We will replace them with our own build and competition footage as the project progresses.',
       photos: [

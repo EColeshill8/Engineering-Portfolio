@@ -54,6 +54,48 @@ document.querySelectorAll<HTMLElement>('[data-video]').forEach(frame => frame.qu
   frame.replaceChildren(iframe); iframe.focus();
 }));
 
+document.querySelectorAll<HTMLElement>('[data-loop-clip]').forEach(section => {
+  const video = section.querySelector<HTMLVideoElement>('[data-loop-video]')!;
+  const toggle = section.querySelector<HTMLButtonElement>('[data-loop-toggle]')!;
+  const error = section.querySelector<HTMLElement>('[data-loop-error]')!;
+  const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let inView = false, userPaused = false, pagePaused = false;
+  video.muted = true;
+  video.defaultMuted = true;
+  toggle.hidden = false;
+  const updateButton = () => {toggle.textContent = video.paused ? 'Play head test' : 'Pause head test';};
+  const pauseForPage = () => {
+    if (!video.paused) {pagePaused = true; video.pause();}
+  };
+  const play = async () => {
+    try {await video.play();} catch {updateButton();} // Native controls remain available if autoplay is blocked.
+  };
+  const syncPlayback = () => {
+    const canAutoplay = inView && !document.hidden && !motion.matches && !userPaused;
+    video.toggleAttribute('autoplay', canAutoplay);
+    if (!inView || document.hidden) pauseForPage();
+    else if (canAutoplay) void play();
+  };
+  video.addEventListener('play', () => {userPaused = false; updateButton();});
+  video.addEventListener('pause', () => {
+    if (pagePaused) pagePaused = false;
+    else {userPaused = true; video.removeAttribute('autoplay');}
+    updateButton();
+  });
+  const showVideoError = () => {error.hidden = false; updateButton();};
+  video.addEventListener('error', showVideoError);
+  video.querySelector('source')?.addEventListener('error', showVideoError);
+  toggle.addEventListener('click', () => {
+    if (video.paused) {userPaused = false; void play();}
+    else {userPaused = true; video.pause();}
+  });
+  motion.addEventListener('change', () => {if (motion.matches) pauseForPage(); syncPlayback();});
+  document.addEventListener('visibilitychange', syncPlayback);
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(entries => {inView = entries[0].isIntersecting; syncPlayback();}, {threshold:0.15}).observe(video);
+  } else {inView = true; syncPlayback();}
+});
+
 document.querySelectorAll<HTMLElement>('[data-model-shell]').forEach(shell => {
   const launch = shell.querySelector<HTMLButtonElement>('[data-model-launch]');
   const stage = shell.querySelector<HTMLElement>('[data-model-stage]')!;
