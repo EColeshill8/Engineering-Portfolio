@@ -1,7 +1,7 @@
 # Before launch
 
 - [ ] Review the site's case-study wording and statuses, especially Baker Bot's ongoing software and combat robotics' design stage.
-- [ ] Review the separate two-page résumé draft and replace its review footer / provide the final approved PDF before applications. Original résumé remains unchanged.
+- [x] Replace the old review draft with the supplied October 29, 2026 résumé. The source PDF remains unchanged and the live copy uses the stable résumé URL.
 - [x] Put the standalone portfolio folder at the GitHub repository root, choose Pages → GitHub Actions, and run the included workflow.
 - [x] Purchase/configure eliascoleshill.ca, complete GitHub ownership verification and DNS setup, enable HTTPS and verify the primary domain.
 - [ ] Confirm HTTPS certificate provisioning finishes for www.eliascoleshill.ca as well as the primary domain. The HTTP www redirect already reaches the HTTPS primary domain.

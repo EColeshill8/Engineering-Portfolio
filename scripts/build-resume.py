@@ -9,7 +9,8 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.pagesizes import letter
 
 root=Path(__file__).resolve().parents[1]
-out=root/'public/files/Elias_Coleshill_Resume.pdf'
+out=root/'Portfolio Content/Generated Resume/Elias_Coleshill_Resume_review_draft.pdf'
+out.parent.mkdir(parents=True,exist_ok=True)
 pdfmetrics.registerFont(TTFont('ResumeArial',r'C:\Windows\Fonts\arial.ttf'))
 pdfmetrics.registerFont(TTFont('ResumeArialBold',r'C:\Windows\Fonts\arialbd.ttf'))
 pdfmetrics.registerFontFamily('ResumeArial',normal='ResumeArial',bold='ResumeArialBold')

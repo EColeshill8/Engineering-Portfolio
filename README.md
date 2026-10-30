@@ -40,7 +40,7 @@ Preview the production build at the Local URL printed by the last command. `dist
 | `public/models/` | The two compressed, web-ready GLB assemblies. |
 | `public/videos/` | Silent, web-ready project clips; source metadata is in `src/data/videos.json`. |
 | `public/vendor/` | Locally served mesh decoder and its license. |
-| `public/files/Elias_Coleshill_Resume.pdf` | Separate corrected **review draft**, not the original supplied résumé. |
+| `public/files/Elias_Coleshill_Resume.pdf` | Current résumé supplied and approved for the live portfolio on October 30, 2026. |
 | `LAUNCH-CHECKLIST.md` | Items to review before publishing. |
 
 Use `href()` from `site.ts` for internal URLs so pages work at both a custom domain and a GitHub repository subpath. Cards and project pages share the same data. When adding a project, provide a unique slug and a related-project list; extend the artifact verifier's expected project count if the collection size changes.
@@ -100,9 +100,9 @@ The RI3D button loads a `youtube-nocookie.com` iframe only when selected, with a
 
 ### Résumé
 
-The supplied résumé remains unchanged. A separate two-page review copy incorporates confirmed corrections and supplies the local site's working download. It is visibly marked as a review draft. **Review and replace/approve it before sending applications or deploying.**
+The live résumé is the two-page PDF supplied on October 29, 2026. It is copied into `public/files/` without modifying the source document, so every résumé link on the site continues to use the same stable URL.
 
-`scripts/build-resume.py` is the editable source for that review copy. Regeneration needs ReportLab and the Windows Arial fonts used in the script; it is not part of the normal website build or GitHub workflow.
+`scripts/build-resume.py` remains available only for generating a separate historical review draft under the ignored `Portfolio Content/Generated Resume/` folder. It does not overwrite the approved live résumé. Regeneration needs ReportLab and the Windows Arial fonts used in the script; it is not part of the normal website build or GitHub workflow.
 
 ## GitHub Pages deployment
 
