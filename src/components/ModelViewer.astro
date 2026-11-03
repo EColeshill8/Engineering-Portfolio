@@ -4,13 +4,14 @@ import media from '../data/media.json';
 import { href } from '../data/site';
 import Photo from './Photo.astro';
 import Icon from './Icon.astro';
-interface Props { model: string; poster: string; name: string }
-const { model, poster, name } = Astro.props;
+interface Props { model: string; poster: string; name: string; heading?: string; note?: string }
+const { model, poster, name, heading = model === 'baker-bot' ? 'Take it for a spin.' : `${name} CAD`, note = model === 'baker-bot' ? 'Detailed Baker Bot CAD. Slow rotation pauses when you interact.' : 'Drag to rotate the assembly and zoom in to inspect the components.' } = Astro.props;
+const headingId = `${model}-model-heading`;
 const info = (models as Record<string, any>)[model];
 const posterSrc = href(`media/${(media as Record<string, any>)[poster].variants['1400'].file}`);
 ---
-<section class="model-section" aria-labelledby="model-heading">
-  <div class="section-heading"><div><span class="eyebrow">EXPLORE THE ASSEMBLY</span><h2 id="model-heading">Take it for a spin.</h2></div><Icon name="cube" size={30} /></div>
+<section class="model-section" aria-labelledby={headingId}>
+  <div class="section-heading"><div><span class="eyebrow">EXPLORE THE ASSEMBLY</span><h2 id={headingId}>{heading}</h2></div><Icon name="cube" size={30} /></div>
   <div class="model-shell" data-model-shell data-model-src={info ? href(`models/${info.file}?v=${info.bytes}`) : undefined} data-model-orbit={model === 'baker-bot' ? '105deg 75deg 95%' : '35deg 68deg 90%'} data-decoder-src={href('vendor/meshopt_decoder.js')} data-poster={posterSrc} data-model-name={`${name} interactive assembly`}>
     <div class="model-stage" data-model-stage>
       <Photo image={poster} alt={`${name} — select Explore 3D to load the interactive assembly.`} class="model-poster" />
@@ -18,5 +19,5 @@ const posterSrc = href(`media/${(media as Record<string, any>)[poster].variants[
     </div>
     <div class="model-toolbar"><p data-model-status role="status">{info ? 'The assembly loads when it comes into view. Drag to rotate; scroll or pinch to zoom.' : 'The interactive export is being prepared. The assembly image remains available above.'}</p><div class="model-actions" hidden data-model-actions><button aria-pressed="false" data-model-spin>Pause rotation</button><button aria-label="Reset 3D view" data-model-reset><Icon name="reset" />Reset</button><button aria-label="Expand 3D viewer" data-model-expand><Icon name="expand" />Expand</button></div></div>
   </div>
-  <p class="media-note">Detailed Baker Bot CAD. Slow rotation pauses when you interact.</p>
+  <p class="media-note">{note}</p>
 </section>

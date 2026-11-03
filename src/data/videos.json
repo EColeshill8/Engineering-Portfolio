@@ -12,5 +12,19 @@
     "sourceSha256": "4a566d8ab43c5f611869ee9f4513f0ed5e9a2f965b06123b1d4c4ebe2ebbe207",
     "codec": "H.264 / yuv420p",
     "audio": false
+  },
+  "ri3d-build-highlights": {
+    "file": "ri3d-build-highlights.mp4",
+    "poster": "ri3d-highlight-poster",
+    "source": "Ri3D Final Copy.mov",
+    "width": 720,
+    "height": 1280,
+    "durationSeconds": 22.33,
+    "fps": 30,
+    "bytes": 5387840,
+    "sha256": "71fbd3a3480b07f1489f62dfb9f824cf7bc255a660963a0713e9fd88d5c0f233",
+    "sourceSha256": "9444f857b2c58fa6be60ee45fd51d7dce6215480d3eb79603313fdd0039e795d",
+    "codec": "H.264 / yuv420p",
+    "audio": false
   }
 }

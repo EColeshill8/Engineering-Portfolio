@@ -6,7 +6,8 @@ const root = path.resolve(__dirname, '..');
 const source = path.resolve(process.argv[2] || path.join(root, 'Portfolio Content'));
 const items = [
   ['ri3d', 'Full Assembly - Ri3D - 2026.step'],
-  ['baker-bot', 'General Assembly - Baker Bot.step']
+  ['baker-bot', 'General Assembly - Baker Bot.step'],
+  ['baker-head-exploded', 'Baker Bot - Head Assembly (Exploded).step']
 ];
 const manifestPath = path.join(root, 'src/data/models.json');
 const manifest = fs.existsSync(manifestPath) ? JSON.parse(fs.readFileSync(manifestPath)) : {};
@@ -85,7 +86,8 @@ function makeGLB(result) {
 (async () => {
   const occt = await require('occt-import-js')();
   for (const [slug, filename] of items) {
-    const tolerance = slug === 'baker-bot' ? 0.00075 : 0.00035;
+    if (process.argv[3] && process.argv[3] !== slug) continue;
+    const tolerance = slug === 'baker-head-exploded' ? 0.00015 : slug === 'baker-bot' ? 0.00075 : 0.00035;
     const angularDeflection = slug === 'baker-bot' ? 0.4 : 0.22;
     console.log(`Reading ${filename}`);
     const bytes = fs.readFileSync(path.join(source, filename));

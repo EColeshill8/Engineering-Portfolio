@@ -1,0 +1,14 @@
+---
+import videos from '../data/videos.json';
+import media from '../data/media.json';
+import { href } from '../data/site';
+interface Props { clip: string; title: string; caption: string }
+const { clip, title, caption } = Astro.props;
+const info = (videos as Record<string,any>)[clip];
+const source = href(`videos/${info.file}?v=${info.sha256.slice(0,12)}`);
+const poster = href(`media/${(media as Record<string,any>)[info.poster].variants['1400'].file}`);
+---
+<section class="project-local-video" aria-labelledby={`${clip}-heading`}>
+  <div class="section-heading"><h2 id={`${clip}-heading`}>{title}</h2><span class="mono">{Math.round(info.durationSeconds)} SECONDS · SILENT</span></div>
+  <figure><video controls playsinline muted preload="none" width={info.width} height={info.height} poster={poster} aria-label={title} aria-describedby={`${clip}-caption`}><source src={source} type="video/mp4"/>Your browser cannot play this video. <a href={source}>Open the video.</a></video><figcaption id={`${clip}-caption`}>{caption} <a class="text-link" href={source} target="_blank" rel="noopener">Open video ↗</a></figcaption></figure>
+</section>

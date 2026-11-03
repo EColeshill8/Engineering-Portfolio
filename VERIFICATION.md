@@ -1,5 +1,19 @@
 # Implementation verification
 
+## Portfolio expansion — 3 November 2026
+
+Reworked the eleven other case studies, Home and About copy using Elias’s edited Baker Bot writing as the reference: direct subtitles/captions, more explanation of mechanisms, control decisions, testing and limitations, and a natural first-person voice. An exact source-block comparison against commit `d424d91` confirmed the original Baker Bot content is unchanged apart from the new model reference. Its existing model heading/note and shared footer wording are preserved as well. Added the current implementation handbook and linked it from the original local handoff.
+
+Inspected all seventeen new photographs in contact sheets and added optimized 640/1400 WebP copies. RI3D has eight horizontal-gallery items and the supplied 22.3-second test video, encoded as a silent 720 × 1280 progressive H.264 clip (5,387,840 bytes). Three video sample frames were inspected. About has a nine-photo cycling gallery with pause/play, keyboard and touch navigation, visibility handling and reduced-motion support. The personal 1 lb saw-axe and WE FIRST’s 3 lb program now have distinct attribution; the clutch CAD/sketch belong to the personal project. No confidential FIO media or firmware credentials are deployed.
+
+The head STEP converted at 0.15 mm tolerance: 71 parts, 141,267 original triangles and 131,299 optimized triangles, in a 719,184-byte Meshopt GLB. Both the head viewer and exploded PNG sit inside “Designing the Head”; the full Baker Bot viewer remains separate. Bounding-box analysis and an offline three-view geometry render confirmed the supplied STEP contains the assembled head (approximately 160 × 174 × 211 mm), so the viewer is labelled “Interactive head CAD.” The static PNG shows the exploded layout. A genuinely exploded 3D view requires an export that preserves the separated part positions.
+
+The weather simulator ports the supplied temperature/sky palettes, HSV interpolation, quadratic cloud brightness, rain check, channel scaling and scheduler. Gold-reference tests pass at the 9°C discontinuity, cloud extremes, 60% daytime-rain boundary, mode transitions and day-cycle reset. Random effects and screen glow are labelled browser approximations; the preview does not call a weather API. The source archive and its private configuration remain ignored.
+
+Production builds and artifact verification pass at both `/` and `/Engineering-Portfolio`: 16 HTML pages, 12 case studies, 538 local references, 54 image sources, two progressive MP4s and three compressed GLBs. Controlled DOM-event tests execute the actual new handlers and pass forecast changes, rain-fallback status, manual/reduced-motion pause, hidden-tab/viewport behaviour, gallery keyboard navigation and slideshow pause. Local HTTP checks returned 200 for the updated routes, head GLB and RI3D MP4.
+
+Visual browser verification is limited in this session. The in-app browser host was unavailable; the Windows browser helper then stopped because it could not confidently determine Chrome’s current URL. No further browser input was attempted. Source images, optimized images, video sample frames and an offline CAD render were inspected, but responsive page rendering and actual browser playback were not re-verified. Those limits are not represented as passing browser checks.
+
 Checked locally on 24 October 2026 with Node 24.22.1, pnpm 11.25.0 and Astro 7.4.2.
 
 ## Build and generated files

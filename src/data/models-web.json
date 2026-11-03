@@ -26,5 +26,19 @@
     "compression": "EXT_meshopt_compression",
     "materialTreatment": "satin-metal / matte-polymer viewing palette",
     "geometryTreatment": "retained existing detailed assembly"
+  },
+  "baker-head-exploded": {
+    "file": "baker-head-exploded-web.glb",
+    "bytes": 719184,
+    "parts": 71,
+    "triangles": 131299,
+    "source": "Baker Bot - Head Assembly (Exploded).step",
+    "sourceSha256": "a59e51634b1f1dc265b2da433ac81fa5f4e6afc1dbdfd3fcd707facf2eedbc94",
+    "toleranceMeters": 0.00015,
+    "angularDeflection": 0.22,
+    "materialTreatment": "satin-metal / matte-polymer viewing palette",
+    "originalTriangles": 141267,
+    "originalBytes": 3933588,
+    "compression": "EXT_meshopt_compression"
   }
 }

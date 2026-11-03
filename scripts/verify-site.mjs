@@ -35,7 +35,7 @@ for(const file of files){
   for(const match of html.matchAll(/<img\b[^>]*>/g))if(!/\balt=/.test(match[0]))failures.push(`${file}: image without alt attribute`);
 }
 const models=JSON.parse(fs.readFileSync(path.join(root,'src/data/models-web.json')));
-for(const slug of ['ri3d','baker-bot']){
+for(const slug of ['ri3d','baker-bot','baker-head-exploded']){
   const model=models[slug];
   if(!model){failures.push(`missing ${slug} model`);continue;}
   const bytes=fs.readFileSync(path.join(dist,'models',model.file));
@@ -43,11 +43,11 @@ for(const slug of ['ri3d','baker-bot']){
   const json=JSON.parse(bytes.subarray(20,20+bytes.readUInt32LE(12)).toString());
   if(!json.meshes?.length || !json.extensionsUsed?.includes('EXT_meshopt_compression'))failures.push(`${slug}: missing compressed geometry`);
   if(bytes.length!==model.bytes)failures.push(`${slug}: manifest size mismatch`);
-  if(model.toleranceMeters > (slug==='ri3d' ? 0.00035 : 0.00075))failures.push(`${slug}: CAD export exceeds the detail tolerance`);
+  if(model.toleranceMeters > (slug==='baker-head-exploded' ? 0.00015 : slug==='ri3d' ? 0.00035 : 0.00075))failures.push(`${slug}: CAD export exceeds the detail tolerance`);
   if(model.triangles < model.originalTriangles * (slug==='ri3d' ? 0.8 : 0.75))failures.push(`${slug}: geometry was simplified below the detail budget`);
   if(json.materials.some(material=>Math.max(...material.pbrMetallicRoughness.baseColorFactor.slice(0,3))>0.85))failures.push(`${slug}: an untuned white CAD material remains`);
 }
-if(fs.readdirSync(path.join(dist,'models')).filter(name=>name.endsWith('.glb')).length!==2)failures.push('raw CAD exports must not be deployed');
+if(fs.readdirSync(path.join(dist,'models')).filter(name=>name.endsWith('.glb')).length!==3)failures.push('expected three optimized CAD models; raw exports must not be deployed');
 const media=JSON.parse(fs.readFileSync(path.join(root,'src/data/media.json')));
 for(const item of Object.values(media))for(const variant of Object.values(item.variants))if(!fs.existsSync(path.join(dist,'media',variant.file)))failures.push(`missing photo ${variant.file}`);
 const videos=JSON.parse(fs.readFileSync(path.join(root,'src/data/videos.json')));
@@ -68,15 +68,22 @@ const headVideo=baker.match(/<video\b[^>]*data-loop-video[^>]*>/)?.[0] || '';
 const headCaption=baker.match(/<figcaption\b[^>]*id="head-motion-caption"[^>]*>([\s\S]*?)<\/figcaption>/i)?.[1] || '';
 const hasSubsystemDisclosure=/(?:head|jaw|eyelid|subsystem)/i.test(headCaption) && /(?:AI|whole-robot|coordinated)/i.test(headCaption) && /(?:development|progress|not yet|remain)/i.test(headCaption);
 if(!['muted','loop','playsinline','controls','poster=','aria-describedby="head-motion-caption"'].every(attribute=>headVideo.includes(attribute)) || !baker.includes('baker-head-test.mp4') || !hasSubsystemDisclosure)failures.push('Baker Bot head test, playback controls, poster or subsystem disclosure missing');
-if(!baker.includes('id="exploded-head"') || !baker.includes('baker-head-exploded-1400.webp') || !baker.includes(models['baker-bot'].file))failures.push('Baker Bot exploded head image or existing interactive assembly missing');
+if(!baker.includes('id="exploded-head"') || !baker.includes('baker-head-exploded-1400.webp') || !baker.includes(models['baker-head-exploded'].file) || !baker.includes(models['baker-bot'].file))failures.push('Baker Bot exploded head image/model or existing interactive assembly missing');
 const projectDirs=fs.readdirSync(path.join(dist,'projects'),{withFileTypes:true}).filter(x=>x.isDirectory());
 if(projectDirs.length!==12)failures.push(`expected 12 project pages, found ${projectDirs.length}`);
 if(!fs.readFileSync(path.join(dist,'projects/wec-2024/index.html'),'utf8').includes('6th place'))failures.push('WEC 2024 correction missing');
 if(!fs.existsSync(path.join(dist,'sitemap.xml')) || !fs.existsSync(path.join(dist,'robots.txt')))failures.push('missing search metadata');
 const combat=fs.readFileSync(path.join(dist,'projects/combat-robotics/index.html'),'utf8');
 if(!combat.includes('TEMPORARY REFERENCE MEDIA') || !combat.includes('botbrawl-logo-1400.webp') || !combat.includes('Logo: BotBrawl Canada') || !combat.includes('Liam Haddock') || !combat.includes('XHBQaKOk97Y'))failures.push('combat logo, reference disclosure, credits or video missing');
-if(!combat.includes('combat-clutch-1400.webp') || !combat.includes('design study, not a built mechanism'))failures.push('combat concept sketch or design-stage disclosure missing');
+if(!combat.includes('combat-clutch-1400.webp') || !combat.includes('saw-axe-cad-1400.webp') || !combat.includes('combat-meeting-1400.webp') || !/personal 1 lb/i.test(combat) || !/prototype/i.test(combat))failures.push('combat personal-project attribution, clutch prototype or club meeting image missing');
+const weather=fs.readFileSync(path.join(dist,'projects/weather-lights/index.html'),'utf8');
+if(!weather.includes('data-weather-demo') || !weather.includes('weather-enclosure-1400.webp') || !weather.includes('name="morning"') || !weather.includes('name="rainProbability"'))failures.push('weather simulator controls or enclosure photo missing');
+const ri3d=fs.readFileSync(path.join(dist,'projects/ri3d/index.html'),'utf8');
+if(!ri3d.includes('data-carousel-track') || !ri3d.includes('ri3d-build-4-1400.webp') || !ri3d.includes('ri3d-test-1400.webp'))failures.push('RI3D horizontal build gallery missing');
+const about=fs.readFileSync(path.join(dist,'about/index.html'),'utf8');
+if(!about.includes('data-cycling="true"') || !about.includes('squamish-1-1400.webp') || !about.includes('guitar-1400.webp'))failures.push('About cycling gallery or personal media missing');
+if(fs.readdirSync(dist,{recursive:true}).some(name=>/(?:secrets\.h|WeatherLights\.zip|platformio\.ini)$/i.test(name)))failures.push('private firmware archive/configuration must not be deployed');
 const fio=fs.readFileSync(path.join(dist,'projects/fio-production-engineering/index.html'),'utf8');
 if(!fio.includes('fio-logo-1400.webp') || !fio.includes('futabanorthamerica.com/ontario'))failures.push('official FIO logo or source credit missing');
 if(failures.length){console.error(failures.join('\n'));process.exitCode=1;}
-else console.log(`PASS: ${files.length} HTML pages, ${projectDirs.length} case studies, ${links} local references, ${Object.keys(media).length} image sources, ${Object.keys(videos).length} progressive MP4 and 2 shaded compressed GLB models. Base: ${base || '/'}`);
+else console.log(`PASS: ${files.length} HTML pages, ${projectDirs.length} case studies, ${links} local references, ${Object.keys(media).length} image sources, ${Object.keys(videos).length} progressive MP4 and ${Object.keys(models).length} shaded compressed GLB models. Base: ${base || '/'}`);

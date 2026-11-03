@@ -61,7 +61,10 @@ info = {
     'sourceSha256': hashlib.sha256(source.read_bytes()).hexdigest(),
     'codec': 'H.264 / yuv420p', 'audio': False,
 }
-(root / 'src/data/videos.json').write_text(json.dumps({'baker-head-test': info}, indent=2), encoding='utf-8')
+video_manifest_path = root / 'src/data/videos.json'
+video_manifest = json.loads(video_manifest_path.read_text(encoding='utf-8')) if video_manifest_path.exists() else {}
+video_manifest['baker-head-test'] = info
+video_manifest_path.write_text(json.dumps(video_manifest, indent=2), encoding='utf-8')
 
 # Small frame samples for human review; none of these originals are deployed.
 sheet = Image.new('RGB', (4 * 250, 470), '#18212b')

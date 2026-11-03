@@ -1,6 +1,8 @@
 # Elias Coleshill — engineering portfolio
 
-An Astro static site with Home, a filterable project gallery, About, and twelve individual case studies. Includes locally hosted imagery/fonts, keyboard-accessible photo galleries, an illustrative weather-engine diagram, two compressed CAD viewers and the RI3D video.
+An Astro static site with Home, a filterable project gallery, About, and twelve individual case studies. Includes locally hosted imagery/fonts, keyboard-accessible galleries, a firmware-based weather-light simulator, three compressed CAD viewers, and project videos.
+
+Read [portfolio-implementation-handbook.md](portfolio-implementation-handbook.md) for Elias’s current copy preferences, contribution boundaries, editing locations and media workflow. The existing Baker Bot writing is the style reference and should be preserved unless Elias requests edits.
 
 ## Run locally
 
@@ -70,6 +72,8 @@ The first command tessellates the STEP assemblies with OpenCascade via `occt-imp
 
 The current exact file sizes, conversion settings and triangle counts are recorded in `src/data/models-web.json`. RI3D was retessellated at 0.35 mm tolerance and now retains about 3.16 million triangles, roughly 4.7 times its first web export. Baker Bot retains its existing approximately 1.54-million-triangle geometry with revised materials; a finer full STEP conversion was stopped after extended processing. Both use the new shading and material presentation.
 
+The third model is the head-only STEP, converted at 0.15 mm tolerance to a roughly 0.7 MB web copy. To regenerate just that file, run `node scripts/convert-cad.cjs "Portfolio Content" baker-head-exploded` and `node scripts/optimize-cad.mjs baker-head-exploded`. The filename says “Exploded,” but the supplied STEP contains assembled positions; the website labels it accordingly and shows the exploded PNG beside it.
+
 For quick material-only revisions without another STEP tessellation, use `node scripts/restyle-cad.mjs baker-bot` (or `ri3d`). This preserves existing geometry and updates the web manifest's size.
 
 Source hashes and conversion parameters are recorded in `src/data/models.json`; optimized file sizes/counts are in `models-web.json`. The web copies are for exploration, not manufacturing. Rotation/zoom/reset and keyboard interaction are provided; the geometry is not rigged to animate robot joints.
@@ -88,7 +92,9 @@ See `MEDIA-CREDITS.md` and `src/data/reference-media.json` for the source links 
 
 The Baker Bot case study prominently features the original 37-second jaw/eyelid bench test. Its upright H.264 web copy is approximately 1.7 MB, with audio removed and a poster fallback. It loops silently while visible, pauses offscreen or in a background tab, and respects reduced-motion preferences. Visitors can pause/resume with the labelled button or native video controls, or open the MP4 directly. It demonstrates the head subsystem, not completed AI-driven whole-robot motion.
 
-To regenerate this clip and its poster, make FFmpeg available on PATH (or supply `--ffmpeg` with its executable path), install Pillow, then run:
+RI3D also includes the supplied 22-second prototype test clip. Regenerate it with `python scripts/prepare-ri3d-video.py --ffmpeg PATH_TO_FFMPEG`. This produces a silent, progressive MP4, poster variants and review frames while preserving the existing Baker Bot video manifest.
+
+To regenerate the Baker Bot clip and its poster, make FFmpeg available on PATH (or supply `--ffmpeg` with its executable path), install Pillow, then run:
 
 ```sh
 python scripts/prepare-project-video.py
@@ -97,6 +103,10 @@ python scripts/prepare-project-video.py
 Alternatively, install the isolated helper with `python -m pip install --target .tools/python imageio-ffmpeg==0.6.0`; the script discovers its bundled FFmpeg automatically. `.tools/` and generated review frames are ignored by Git. The script preserves the original video, corrects its rotation, strips audio/private metadata, creates a progressive MP4 and poster variants, and records sizes/hashes in `src/data/videos.json`. These tools are only needed to regenerate media, not for normal builds or deployment.
 
 The RI3D button loads a `youtube-nocookie.com` iframe only when selected, with a direct YouTube link always available. YouTube oEmbed and the in-browser player verified the supplied video as **“REBUILT Ri3D Robot Reveal (Houdini), WEFIRST”**, by **Western Engineering FIRST**. Playback is still subject to YouTube's future availability and visitor network settings.
+
+### Weather-light simulator
+
+`src/lib/weather-engine.mjs` contains the public display calculations, and `src/scripts/weather-demo.ts` handles inputs and playback. `WeatherSimulator.astro` supplies the controls. The preview starts from a clear 12/18/14/8°C feels-like forecast with 20% cloud cover and runs at 4× playback speed, which visitors can change. Colour and scheduling tests live in `scripts/test-weather.mjs`; controlled interaction tests are in `scripts/test-interactions.mjs`. Screen glow/random effects are labelled approximations. The local firmware ZIP contains private configuration and must remain outside the public repository.
 
 ### Résumé
 
@@ -140,7 +150,7 @@ The source repository is [EColeshill8/Engineering-Portfolio](https://github.com/
 
 ## Verification
 
-`pnpm verify` checks all generated HTML pages, internal file/fragment references, image variants, metadata, case-study count, the WEC correction, both compressed GLB containers, MP4 integrity/streaming layout, and the head-test/concept-sketch disclosures. It runs after the production build and in CI.
+`pnpm verify` checks generated HTML, internal file/fragment references, image variants, metadata, case-study count, the WEC correction, all three compressed GLB containers, MP4 integrity/streaming layout and project disclosures. It also tests motion behaviour and the weather simulator’s firmware reference values, rain filtering, cloud dimming and schedule. It runs after the production build and in CI.
 
 The browser checks covered desktop/mobile layout bounds, category filtering, mobile navigation, lightbox open/Escape/focus restoration, both models loading real geometry, model keyboard/reset controls, the weather-diagram keyboard interaction and the actual RI3D video player. See `VERIFICATION.md` for final results and limits.
 

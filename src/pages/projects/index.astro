@@ -4,7 +4,7 @@ import ProjectCard from '../../components/ProjectCard.astro';
 import { projects, categories } from '../../data/projects';
 ---
 <Layout title="Projects" active="projects">
-  <section class="page-intro container"><span class="eyebrow">A COLLECTION OF IDEAS MADE PHYSICAL</span><h1>Projects<span style="color:var(--accent)">.</span></h1><p>Robots, embedded systems and engineering under constraints. A closer look at what I contributed, how the designs changed, and what I learned.</p></section>
+  <section class="page-intro container"><span class="eyebrow">ROBOTICS / MECHANICAL DESIGN / CONTROLS</span><h1>Projects<span style="color:var(--accent)">.</span></h1><p>My personal projects, team builds and production engineering work. Each page explains what I worked on, the design decisions I made and what happened during testing.</p></section>
   <section class="gallery-page container" aria-label="Project collection">
     <h2 class="sr-only">Project directory</h2>
     <div class="section-heading"><div class="filter-bar" role="group" aria-label="Filter projects by category">{categories.map(category => <button data-filter={category} aria-pressed={category === 'All'}>{category}</button>)}</div><span class="project-count mono" data-project-count role="status">{String(projects.length).padStart(2,'0')} projects</span></div>

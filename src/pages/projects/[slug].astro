@@ -6,7 +6,9 @@ import Gallery from '../../components/Gallery.astro';
 import ModelViewer from '../../components/ModelViewer.astro';
 import Video from '../../components/Video.astro';
 import MotionVideo from '../../components/MotionVideo.astro';
-import EngineDiagram from '../../components/EngineDiagram.astro';
+import WeatherSimulator from '../../components/WeatherSimulator.astro';
+import PhotoCarousel from '../../components/PhotoCarousel.astro';
+import ProjectVideo from '../../components/ProjectVideo.astro';
 import ReferenceMedia from '../../components/ReferenceMedia.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
 import { projects, type Project } from '../../data/projects';
@@ -23,19 +25,21 @@ const og = project.cover ? `media/${(assets as Record<string,any>)[project.cover
     {project.cover ? <figure><div class:list={['project-hero-image', {'brand-image': !!project.cover.kind, 'brand-image-dark': project.cover.kind === 'logo-dark'}]}><Photo image={project.cover.key} alt={project.cover.alt} position={project.cover.position} eager sizes="(max-width: 1300px) 95vw, 1280px"/>{project.cover.referenceLabel && <span class="reference-badge">{project.cover.referenceLabel}</span>}</div><figcaption class="project-hero-caption">{project.cover.caption}{project.cover.credit && <a class="media-credit" href={project.cover.credit.url} target="_blank" rel="noopener noreferrer">{project.cover.credit.label}<Icon name="external" size={12}/></a>}</figcaption></figure> : <div class="project-title-graphic"><strong>Observe.<br/>Prototype.<br/><span style="color:var(--accent)">Improve.</span></strong><p>Production engineering connects a problem on the floor to a practical change in the equipment.</p></div>}
     {project.motion && <MotionVideo clip={project.motion}/>}
     <div class="project-layout">
-      <aside class="project-facts" aria-label="Project at a glance"><dl class="fact"><dt>MY ROLE</dt><dd>{project.role}</dd></dl><dl class="fact"><dt>WHEN</dt><dd>{project.year}</dd></dl><dl class="fact"><dt>STATUS</dt><dd class="status-label">{project.status}</dd></dl><nav class="in-page-links" aria-label="On this page"><a href="#overview">Overview</a>{project.motion && <a href="#head-motion">{project.motion.navLabel}</a>}{project.sections.map((section,index) => <a href={`#section-${index+1}`}>{section.title}</a>)}<a href="#outcome">Outcome</a>{project.exploded && <a href="#exploded-head">Exploded head</a>}{project.model && <a href="#assembly">Interactive assembly</a>}</nav></aside>
+      <aside class="project-facts" aria-label="Project at a glance"><dl class="fact"><dt>MY ROLE</dt><dd>{project.role}</dd></dl><dl class="fact"><dt>WHEN</dt><dd>{project.year}</dd></dl><dl class="fact"><dt>STATUS</dt><dd class="status-label">{project.status}</dd></dl><nav class="in-page-links" aria-label="On this page"><a href="#overview">Overview</a>{project.motion && <a href="#head-motion">{project.motion.navLabel}</a>}{project.sections.map((section,index) => <a href={`#section-${index+1}`}>{section.title}</a>)}{project.exploded && <a href="#exploded-head">Exploded head</a>}<a href="#outcome">Outcome</a>{project.slug === 'weather-lights' && <a href="#weather-preview">Try the weather lights</a>}{project.model && <a href="#assembly">Interactive assembly</a>}</nav></aside>
       <div class="project-story">
         <section class="project-context" id="overview"><p>{project.summary}</p><p>{project.context}</p><div class="contributions"><h2>My contribution</h2><ul>{project.contributions.map(item => <li>{item}</li>)}</ul></div></section>
-        {project.sections.map((section,index) => <section class="story-section" id={`section-${index+1}`}><span class="eyebrow">{String(index+1).padStart(2,'0')} / THE PROCESS</span><h2>{section.title}</h2>{section.paragraphs.map(p => <p>{p}</p>)}</section>)}
+        {project.sections.map((section,index) => <section class="story-section" id={`section-${index+1}`}><span class="eyebrow">{String(index+1).padStart(2,'0')} / THE PROCESS</span><h2>{section.title}</h2>{section.paragraphs.map(p => <p>{p}</p>)}{project.exploded && index === 0 && <div id="exploded-head" class="head-assembly"><Gallery photos={[project.exploded]} label="Head assembly, exploded"/>{project.explodedModel && <ModelViewer model={project.explodedModel} name="Baker Bot head" poster={project.exploded.key} heading="Interactive head CAD" note="Rotate and zoom to inspect the assembled head. The image above shows the exploded layout."/>}</div>}{section.photos && <Gallery photos={section.photos} label={project.slug === 'combat-robotics' ? 'WE FIRST design meeting' : section.title}/>}</section>)}
         <section class="project-outcome" id="outcome"><span class="eyebrow">WHERE IT LANDED</span><h2>{project.outcome.title}</h2><p>{project.outcome.text}</p></section>
-        {project.slug === 'weather-lights' && <EngineDiagram/>}
       </div>
     </div>
     <div class="project-wide">
-      {project.exploded && <div id="exploded-head" style="scroll-margin-top:110px"><Gallery photos={[project.exploded]} label="Head assembly, exploded"/></div>}
+      {project.slug === 'weather-lights' && <WeatherSimulator/>}
+      {project.galleryMode === 'slider' && <PhotoCarousel photos={project.gallery} id={`${project.slug}-photos`} label="RI3D build and testing photos"/>}
+      {project.slug === 'ri3d' && <ProjectVideo clip="ri3d-build-highlights" title="RI3D prototype testing" caption="Ball-feed and shooter testing with the completed prototype."/>}
       {project.model && <div id="assembly" style="scroll-margin-top:110px"><ModelViewer model={project.model} name={project.title} poster={project.model === 'ri3d' ? 'ri3d-cad' : 'baker-bot'}/></div>}
       {project.video && <Video id={project.video} title="WE FIRST RI3D 2026 release video" poster="ri3d-team"/>}
-      <Gallery photos={project.gallery}/>
+      {project.galleryMode !== 'slider' && <Gallery photos={project.gallery}/>}
+      {project.slug === 'baker-bot' && <Gallery photos={[{key:'baker-head-detail',alt:'Baker Bot head held close to the camera, showing the eyes, jaw and rear mechanisms.',caption:'The assembled head with its eyelid linkages and offset jaw drive.'},{key:'baker-portrait',alt:'Elias holding the assembled Baker Bot next to him in the workshop.',caption:'The assembled Baker Bot in the workshop.'}]} label="Head and robot assembly photos"/>}
       {project.referenceMedia && <ReferenceMedia media={project.referenceMedia}/>}
     </div>
     <section class="related-section" aria-labelledby="related-heading"><div class="section-heading"><h2 id="related-heading">Keep exploring</h2><a class="text-link" href={href('projects/')}>All projects<Icon name="external" size={17}/></a></div><div class="project-grid project-related-grid">{related.map(item => <ProjectCard project={item} index={projects.indexOf(item)}/>)}</div></section>

@@ -1,0 +1,31 @@
+---
+import type { Photo as PhotoType } from '../data/projects';
+import assets from '../data/media.json';
+import { href } from '../data/site';
+import Photo from './Photo.astro';
+import Icon from './Icon.astro';
+interface Props { photos: PhotoType[]; id: string; label: string; cycling?: boolean }
+const { photos, id, label, cycling = false } = Astro.props;
+---
+<section class:list={['photo-carousel', {'photo-carousel-cycling': cycling}]} aria-labelledby={`${id}-heading`} aria-roledescription="carousel" data-carousel data-cycling={cycling ? 'true' : undefined}>
+  <div class="carousel-heading">
+    <h2 id={`${id}-heading`}>{label}</h2>
+    <div class="carousel-controls" data-carousel-controls hidden>
+      {cycling && <button type="button" class="carousel-cycle" data-carousel-cycle aria-pressed="false">Play slideshow</button>}
+      <button type="button" class="icon-button" data-carousel-prev aria-label={`Previous photo in ${label}`} aria-controls={`${id}-track`}><Icon name="chevron"/></button>
+      <span class="mono" data-carousel-count aria-live="polite">1 / {photos.length}</span>
+      <button type="button" class="icon-button" data-carousel-next aria-label={`Next photo in ${label}`} aria-controls={`${id}-track`}><Icon name="chevron"/></button>
+    </div>
+  </div>
+  <div class="carousel-track" id={`${id}-track`} data-gallery data-carousel-track tabindex="0" aria-label={`${label}. Scroll horizontally or use the arrow buttons.`}>
+    {photos.map((photo, index) => <figure class="carousel-slide" role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${photos.length}`}>
+      <a class="gallery-trigger" href={href(`media/${(assets as Record<string, any>)[photo.key].variants['1400'].file}`)} data-gallery-trigger data-src={href(`media/${(assets as Record<string, any>)[photo.key].variants['1400'].file}`)} data-caption={photo.caption} data-alt={photo.alt} aria-label={`Expand image: ${photo.alt}`}>
+        <Photo image={photo.key} alt={photo.alt} position={photo.position} sizes={cycling ? '(max-width: 700px) 92vw, 1000px' : '(max-width: 700px) 85vw, 570px'}/>
+        <span class="gallery-expand"><Icon name="expand"/></span>
+      </a>
+      <figcaption>{photo.caption}</figcaption>
+    </figure>)}
+  </div>
+  <p class="carousel-hint">Scroll or swipe to browse. Select a photo to expand it.</p>
+</section>
+<script>import '../scripts/carousels';</script>

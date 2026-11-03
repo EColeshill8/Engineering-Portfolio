@@ -1,0 +1,31 @@
+---
+import Icon from './Icon.astro';
+const periods = [{key:'morning',label:'Morning',value:12},{key:'day',label:'Afternoon',value:18},{key:'evening',label:'Evening',value:14},{key:'night',label:'Night',value:8}];
+---
+<section class="weather-simulator" id="weather-preview" aria-labelledby="weather-preview-heading" data-weather-demo>
+  <div class="section-heading"><div><span class="eyebrow">INTERACTIVE PREVIEW</span><h2 id="weather-preview-heading">Try the weather lights</h2></div><Icon name="cube" size={28}/></div>
+  <p>Set a forecast and watch the colour the strip would display. The automatic cycle shows temperature for 20 seconds, then weather for 10 seconds, with a two-second fade between them.</p>
+  <div class="weather-console">
+    <div class="weather-output">
+      <div class="weather-stage" data-weather-stage style="--led-rgb:250,125,0" role="img" aria-label="LED strip preview: temperature display" data-weather-visual>
+        <div class="weather-stage-label mono">RGB LED STRIP</div>
+        <div class="weather-glow" aria-hidden="true"></div>
+        <div class="weather-strip" aria-hidden="true">{Array.from({length:24},()=> <span></span>)}</div>
+        <div class="weather-stage-bottom"><strong data-weather-phase>Temperature</strong><span data-weather-period>Morning · 12°C</span></div>
+      </div>
+      <div class="weather-readout"><span><span class="mono">OUTPUT RGB</span><strong data-weather-rgb>—</strong></span><span><span class="mono">CLOUD BRIGHTNESS</span><strong data-weather-brightness>98%</strong></span></div>
+      <div class="weather-playback"><button class="button" type="button" data-weather-play aria-pressed="false">Pause preview</button><label>Playback speed<select data-weather-speed aria-label="Preview playback speed"><option value="1">1× real time</option><option value="4" selected>4× faster</option></select></label></div>
+      <p class="weather-status" data-weather-status role="status">Example forecast: clear sky with 20% cloud cover.</p>
+    </div>
+    <form class="weather-inputs" data-weather-form>
+      <fieldset><legend>Feels-like temperature</legend><div class="weather-temperature-grid">{periods.map(period=><label for={`weather-${period.key}`}><span>{period.label}<output data-temperature-value>{period.value}°C</output></span><input id={`weather-${period.key}`} name={period.key} type="range" min="-40" max="45" step="0.5" value={period.value}/></label>)}</div></fieldset>
+      <div class="weather-input-row"><label for="weather-condition">Weather<select id="weather-condition" name="condition"><option value="800">Clear / cloudy sky</option><option value="300">Drizzle</option><option value="500">Rain</option><option value="200">Thunderstorm</option><option value="600">Snow</option><option value="700">Fog / mist</option></select></label><label for="weather-clouds"><span>Cloud cover<output data-clouds-value>20%</output></span><input id="weather-clouds" name="clouds" type="range" min="0" max="100" value="20"/></label></div>
+      <fieldset class="weather-rain-options" data-weather-rain hidden><legend>Daytime rain check</legend><label for="weather-pop"><span>Highest hourly rain probability<output data-rain-value>80%</output></span><input id="weather-pop" name="rainProbability" type="range" min="0" max="100" value="80"/></label><label class="weather-checkbox"><input name="daytimeRain" type="checkbox" checked/>Rain is forecast between 7 a.m. and 7 p.m.</label></fieldset>
+      <div class="weather-input-row"><label for="weather-mode">Display<select id="weather-mode" name="display"><option value="cycle">Automatic cycle</option><option value="temperature">Temperature only</option><option value="weather">Weather only</option></select></label><label for="weather-period" data-weather-stage-select hidden>Forecast period<select id="weather-period" name="period">{periods.map((period,index)=><option value={index}>{period.label}</option>)}</select></label></div>
+      <div class="weather-form-footer"><label class="weather-checkbox"><input name="effects" type="checkbox" checked/>Animate weather effects</label><button type="reset" class="text-link">Reset forecast<Icon name="reset" size={16}/></button></div>
+    </form>
+  </div>
+  <p class="media-note">The temperature gradient, cloud dimming, daytime-rain filter and cycle timing follow my firmware. The on-screen glow and random weather effects are a browser approximation. These are sample inputs, not a live forecast.</p>
+  <noscript><p>Enable JavaScript to change the forecast and run the preview.</p></noscript>
+</section>
+<script>import '../scripts/weather-demo';</script>

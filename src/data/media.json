@@ -610,5 +610,311 @@
         "height": 892
       }
     }
+  },
+  "baker-portrait": {
+    "source": "Cool Photo of Baker Bot.jpeg",
+    "width": 4284,
+    "height": 5712,
+    "variants": {
+      "640": {
+        "file": "baker-portrait-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      "1400": {
+        "file": "baker-portrait-1400.webp",
+        "width": 1400,
+        "height": 1867
+      }
+    }
+  },
+  "baker-head-detail": {
+    "source": "Cool Baker Bot Head.jpeg",
+    "width": 4284,
+    "height": 5712,
+    "variants": {
+      "640": {
+        "file": "baker-head-detail-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      "1400": {
+        "file": "baker-head-detail-1400.webp",
+        "width": 1400,
+        "height": 1867
+      }
+    }
+  },
+  "combat-meeting": {
+    "source": "WE FIRST Bot Brawl Meeting.jpeg",
+    "width": 5712,
+    "height": 4284,
+    "variants": {
+      "640": {
+        "file": "combat-meeting-640.webp",
+        "width": 640,
+        "height": 480
+      },
+      "1400": {
+        "file": "combat-meeting-1400.webp",
+        "width": 1400,
+        "height": 1050
+      }
+    }
+  },
+  "saw-axe-cad": {
+    "source": "CAD of Saw Axe Combat Robot Clutch Concept.jpeg",
+    "width": 4284,
+    "height": 5712,
+    "variants": {
+      "640": {
+        "file": "saw-axe-cad-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      "1400": {
+        "file": "saw-axe-cad-1400.webp",
+        "width": 1400,
+        "height": 1867
+      }
+    }
+  },
+  "weather-enclosure": {
+    "source": "Weather Lights with Enclosure.jpeg",
+    "width": 3024,
+    "height": 4032,
+    "variants": {
+      "640": {
+        "file": "weather-enclosure-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      "1400": {
+        "file": "weather-enclosure-1400.webp",
+        "width": 1400,
+        "height": 1867
+      }
+    }
+  },
+  "ri3d-build-1": {
+    "source": "Ri3D Building (1).jpeg",
+    "width": 3024,
+    "height": 4032,
+    "variants": {
+      "640": {
+        "file": "ri3d-build-1-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      "1400": {
+        "file": "ri3d-build-1-1400.webp",
+        "width": 1400,
+        "height": 1867
+      }
+    }
+  },
+  "ri3d-build-2": {
+    "source": "Ri3D Building (2).jpeg",
+    "width": 3024,
+    "height": 4032,
+    "variants": {
+      "640": {
+        "file": "ri3d-build-2-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      "1400": {
+        "file": "ri3d-build-2-1400.webp",
+        "width": 1400,
+        "height": 1867
+      }
+    }
+  },
+  "ri3d-build-3": {
+    "source": "Ri3D Building (3).jpeg",
+    "width": 3024,
+    "height": 4032,
+    "variants": {
+      "640": {
+        "file": "ri3d-build-3-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      "1400": {
+        "file": "ri3d-build-3-1400.webp",
+        "width": 1400,
+        "height": 1867
+      }
+    }
+  },
+  "ri3d-build-4": {
+    "source": "Ri3D Building (4).jpeg",
+    "width": 3024,
+    "height": 4032,
+    "variants": {
+      "640": {
+        "file": "ri3d-build-4-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      "1400": {
+        "file": "ri3d-build-4-1400.webp",
+        "width": 1400,
+        "height": 1867
+      }
+    }
+  },
+  "ri3d-test": {
+    "source": "Ri3D Testing.jpeg",
+    "width": 3024,
+    "height": 4032,
+    "variants": {
+      "640": {
+        "file": "ri3d-test-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      "1400": {
+        "file": "ri3d-test-1400.webp",
+        "width": 1400,
+        "height": 1867
+      }
+    }
+  },
+  "ri3d-planning": {
+    "source": "Ri3D Brainstorming (2).jpeg",
+    "width": 3024,
+    "height": 4032,
+    "variants": {
+      "640": {
+        "file": "ri3d-planning-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      "1400": {
+        "file": "ri3d-planning-1400.webp",
+        "width": 1400,
+        "height": 1867
+      }
+    }
+  },
+  "alps-1": {
+    "source": "Hiking in the Alps (1).jpeg",
+    "width": 5712,
+    "height": 4284,
+    "variants": {
+      "640": {
+        "file": "alps-1-640.webp",
+        "width": 640,
+        "height": 480
+      },
+      "1400": {
+        "file": "alps-1-1400.webp",
+        "width": 1400,
+        "height": 1050
+      }
+    }
+  },
+  "alps-2": {
+    "source": "Hiking in the Alps (2).jpeg",
+    "width": 3024,
+    "height": 4032,
+    "variants": {
+      "640": {
+        "file": "alps-2-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      "1400": {
+        "file": "alps-2-1400.webp",
+        "width": 1400,
+        "height": 1867
+      }
+    }
+  },
+  "alps-view": {
+    "source": "Alps Cool Photo.jpeg",
+    "width": 3840,
+    "height": 2160,
+    "variants": {
+      "640": {
+        "file": "alps-view-640.webp",
+        "width": 640,
+        "height": 360
+      },
+      "1400": {
+        "file": "alps-view-1400.webp",
+        "width": 1400,
+        "height": 788
+      }
+    }
+  },
+  "squamish-1": {
+    "source": "Climbing in Squamish (1).jpeg",
+    "width": 3024,
+    "height": 4032,
+    "variants": {
+      "640": {
+        "file": "squamish-1-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      "1400": {
+        "file": "squamish-1-1400.webp",
+        "width": 1400,
+        "height": 1867
+      }
+    }
+  },
+  "squamish-2": {
+    "source": "Climbing in Squamish (2).jpeg",
+    "width": 3024,
+    "height": 4032,
+    "variants": {
+      "640": {
+        "file": "squamish-2-640.webp",
+        "width": 640,
+        "height": 853
+      },
+      "1400": {
+        "file": "squamish-2-1400.webp",
+        "width": 1400,
+        "height": 1867
+      }
+    }
+  },
+  "guitar": {
+    "source": "Guitar.jpeg",
+    "width": 1600,
+    "height": 1068,
+    "variants": {
+      "640": {
+        "file": "guitar-640.webp",
+        "width": 640,
+        "height": 427
+      },
+      "1400": {
+        "file": "guitar-1400.webp",
+        "width": 1400,
+        "height": 935
+      }
+    }
+  },
+  "ri3d-highlight-poster": {
+    "source": "Generated Media/ri3d-highlight-poster.png",
+    "width": 720,
+    "height": 1280,
+    "variants": {
+      "640": {
+        "file": "ri3d-highlight-poster-640.webp",
+        "width": 640,
+        "height": 1138
+      },
+      "1400": {
+        "file": "ri3d-highlight-poster-1400.webp",
+        "width": 720,
+        "height": 1280
+      }
+    }
   }
 }
