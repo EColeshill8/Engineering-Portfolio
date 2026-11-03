@@ -68,6 +68,7 @@ const headVideo=baker.match(/<video\b[^>]*data-loop-video[^>]*>/)?.[0] || '';
 const headCaption=baker.match(/<figcaption\b[^>]*id="head-motion-caption"[^>]*>([\s\S]*?)<\/figcaption>/i)?.[1] || '';
 const hasSubsystemDisclosure=/(?:head|jaw|eyelid|subsystem)/i.test(headCaption) && /(?:AI|whole-robot|coordinated)/i.test(headCaption) && /(?:development|progress|not yet|remain)/i.test(headCaption);
 if(!['muted','loop','playsinline','controls','poster=','aria-describedby="head-motion-caption"'].every(attribute=>headVideo.includes(attribute)) || !baker.includes('baker-head-test.mp4') || !hasSubsystemDisclosure)failures.push('Baker Bot head test, playback controls, poster or subsystem disclosure missing');
+if(!baker.includes('id="exploded-head"') || !baker.includes('baker-head-exploded-1400.webp') || !baker.includes(models['baker-bot'].file))failures.push('Baker Bot exploded head image or existing interactive assembly missing');
 const projectDirs=fs.readdirSync(path.join(dist,'projects'),{withFileTypes:true}).filter(x=>x.isDirectory());
 if(projectDirs.length!==12)failures.push(`expected 12 project pages, found ${projectDirs.length}`);
 if(!fs.readFileSync(path.join(dist,'projects/wec-2024/index.html'),'utf8').includes('6th place'))failures.push('WEC 2024 correction missing');

@@ -593,5 +593,22 @@
         "height": 1867
       }
     }
+  },
+  "baker-head-exploded": {
+    "source": "Baker Bot Head Exploded CAD.png",
+    "width": 1153,
+    "height": 892,
+    "variants": {
+      "640": {
+        "file": "baker-head-exploded-640.webp",
+        "width": 640,
+        "height": 495
+      },
+      "1400": {
+        "file": "baker-head-exploded-1400.webp",
+        "width": 1153,
+        "height": 892
+      }
+    }
   }
 }

@@ -11,7 +11,7 @@ export type Project = {
   role: string; status: string; tone?: 'progress' | 'award'; tags: string[];
   cover?: Photo; summary: string; context: string; contributions: string[];
   sections: StorySection[]; outcome: { title: string; text: string };
-  gallery: Photo[]; model?: string; video?: string; motion?: MotionClip; referenceMedia?: ReferenceMedia; related: string[];
+  gallery: Photo[]; exploded?: Photo; model?: string; video?: string; motion?: MotionClip; referenceMedia?: ReferenceMedia; related: string[];
 };
 
 export const projects: Project[] = [
@@ -31,6 +31,7 @@ export const projects: Project[] = [
       {title: 'The remaining integration', paragraphs: ['The robot has motorized elbows, neck rotation and multidirectional tilt, a jaw and eyelids. Its hardware combines a Jetson, ESP32 control and custom PCBs. Mechanical and electrical work is complete, and the subsystems have been tested separately.', 'The remaining work connects embedded motor control, gesture scheduling and emotional/context cues from the cloud AI. My personal programming contribution so far is limited to head-movement methods; the wider software pipeline is a team effort and is not yet a finished demonstration.']}
     ],
     outcome: {title: 'Hardware Complete. Software in Progress.', text: 'The built subsystems are working individually. Coordinated movement and AI driven context-to-gesture control remain in progress. The goal is to have all subsystems working together for a demonstration in December 2026.'},
+    exploded: {key: 'baker-head-exploded', alt: 'Exploded CAD view of the Baker Bot head showing the shell, jaw, eyelids, servos, gears, linkages, internal frame and fasteners.', caption: 'Exploded CAD of the Baker Bot head showing how all of the mechanical and electrical components fit together inside the human-head form factor.', fit: 'contain'},
     gallery: [{key: 'baker-head', alt: 'The Baker Bot head held in a hand, showing the cavity and internal mechanisms.', caption: 'The head I developed with its jaw and eyelid hardware packaged inside the original proportions.'}],
     model: 'baker-bot', related: ['ri3d', 'weather-lights', 'robotics-teaching']
   },

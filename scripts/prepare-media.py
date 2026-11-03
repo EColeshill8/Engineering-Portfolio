@@ -12,6 +12,7 @@ out.mkdir(parents=True, exist_ok=True)
 names = {
  '6502': '6502 Computer.jpeg', 'ski': 'Alpine Ski Racing.jpeg',
  'baker-bot': 'Baker Bot (1).jpeg', 'baker-head': 'Baker Bot Head Part.jpeg',
+ 'baker-head-exploded': 'Baker Bot Head Exploded CAD.png',
  'frc-team': 'FRC 2024 Team.jpeg', 'frc-competition': 'FRC Newmarket Competition.jpeg',
  'frc-robot': 'FRC Robot 2024.jpeg', 'nepal': 'Hiking Himilayas.jpeg',
  'rockies': 'Hiking in the Rockies.jpeg', 'award': 'Lady Godiva Award in Engineering.jpeg',
