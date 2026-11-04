@@ -9,15 +9,19 @@ const { model, poster, name, heading = model === 'baker-bot' ? 'Take it for a sp
 const headingId = `${model}-model-heading`;
 const info = (models as Record<string, any>)[model];
 const posterSrc = href(`media/${(media as Record<string, any>)[poster].variants['1400'].file}`);
+const explodes = !!info?.animation;
 ---
 <section class="model-section" aria-labelledby={headingId}>
   <div class="section-heading"><div><span class="eyebrow">EXPLORE THE ASSEMBLY</span><h2 id={headingId}>{heading}</h2></div><Icon name="cube" size={30} /></div>
-  <div class="model-shell" data-model-shell data-model-src={info ? href(`models/${info.file}?v=${info.bytes}`) : undefined} data-model-orbit={model === 'baker-bot' ? '105deg 75deg 95%' : '35deg 68deg 90%'} data-decoder-src={href('vendor/meshopt_decoder.js')} data-poster={posterSrc} data-model-name={`${name} interactive assembly`}>
+  <div class:list={['model-scroll-track',{'model-scroll-track-exploded':explodes}]} data-model-scroll-track={explodes ? '' : undefined}>
+  <div class:list={['model-shell',{'model-shell-exploded':explodes}]} data-model-shell data-model-src={info ? href(`models/${info.file}?v=${info.bytes}`) : undefined} data-model-orbit={model === 'baker-bot' ? '105 75' : explodes ? '35 72' : '35 65'} data-poster={posterSrc} data-model-name={`${name} interactive assembly`}>
     <div class="model-stage" data-model-stage>
       <Photo image={poster} alt={`${name} — select Explore 3D to load the interactive assembly.`} class="model-poster" />
       {info && <button class="model-launch button" data-model-launch><Icon name="cube" />Explore 3D<span class="model-size">{(info.bytes / 1048576).toFixed(1)} MB</span></button>}
     </div>
-    <div class="model-toolbar"><p data-model-status role="status">{info ? 'The assembly loads when it comes into view. Drag to rotate; scroll or pinch to zoom.' : 'The interactive export is being prepared. The assembly image remains available above.'}</p><div class="model-actions" hidden data-model-actions><button aria-pressed="false" data-model-spin>Pause rotation</button><button aria-label="Reset 3D view" data-model-reset><Icon name="reset" />Reset</button><button aria-label="Expand 3D viewer" data-model-expand><Icon name="expand" />Expand</button></div></div>
+    {explodes && <div class="model-explosion" hidden data-model-explosion-controls><label for={`${model}-explosion`}>Explode head</label><input id={`${model}-explosion`} data-model-explode type="range" min="0" max="100" step="1" value="0"/><output for={`${model}-explosion`} data-model-progress>0%</output><button data-model-follow hidden>Follow scroll</button></div>}
+    <div class="model-toolbar"><p data-model-status role="status">{info ? 'The assembly loads when it comes into view. Drag to rotate; scroll or pinch to zoom.' : 'The interactive export is being prepared. The assembly image remains available above.'}</p><div class="model-actions" hidden data-model-actions><button aria-pressed="false" data-model-spin>Pause rotation</button><button aria-pressed="true" data-model-edges>Edges</button><button aria-label="Reset 3D view" data-model-reset><Icon name="reset" />Reset</button><button aria-label="Expand 3D viewer" data-model-expand><Icon name="expand" />Expand</button></div></div>
+  </div>
   </div>
   <p class="media-note">{note}</p>
 </section>

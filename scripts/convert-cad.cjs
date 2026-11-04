@@ -87,8 +87,8 @@ function makeGLB(result) {
   const occt = await require('occt-import-js')();
   for (const [slug, filename] of items) {
     if (process.argv[3] && process.argv[3] !== slug) continue;
-    const tolerance = slug === 'baker-head-exploded' ? 0.00015 : slug === 'baker-bot' ? 0.00075 : 0.00035;
-    const angularDeflection = slug === 'baker-bot' ? 0.4 : 0.22;
+    const tolerance = slug === 'baker-head-exploded' ? 0.0001 : slug === 'baker-bot' ? 0.00018 : 0.0002;
+    const angularDeflection = 0.16;
     console.log(`Reading ${filename}`);
     const bytes = fs.readFileSync(path.join(source, filename));
     const result = occt.ReadStepFile(bytes, {linearUnit: 'meter', linearDeflectionType: 'absolute_value', linearDeflection: tolerance, angularDeflection});
@@ -98,7 +98,9 @@ function makeGLB(result) {
     manifest[slug] = {file: `${slug}.glb`, bytes: output.data.length, parts: output.parts, triangles: output.triangles,
       source: filename, sourceSha256: crypto.createHash('sha256').update(bytes).digest('hex'), toleranceMeters: tolerance,
       angularDeflection, materialTreatment: 'satin-metal / matte-polymer viewing palette'};
-    fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
+    const latest = JSON.parse(fs.readFileSync(manifestPath));
+    latest[slug] = manifest[slug];
+    fs.writeFileSync(manifestPath, JSON.stringify(latest, null, 2));
     console.log(`${slug}: ${output.parts} parts, ${output.triangles} triangles, ${(output.data.length / 1048576).toFixed(1)} MiB`);
   }
 })().catch(e => {console.error(e); process.exitCode = 1;});

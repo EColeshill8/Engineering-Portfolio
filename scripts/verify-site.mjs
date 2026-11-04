@@ -43,9 +43,13 @@ for(const slug of ['ri3d','baker-bot','baker-head-exploded']){
   const json=JSON.parse(bytes.subarray(20,20+bytes.readUInt32LE(12)).toString());
   if(!json.meshes?.length || !json.extensionsUsed?.includes('EXT_meshopt_compression'))failures.push(`${slug}: missing compressed geometry`);
   if(bytes.length!==model.bytes)failures.push(`${slug}: manifest size mismatch`);
-  if(model.toleranceMeters > (slug==='baker-head-exploded' ? 0.00015 : slug==='ri3d' ? 0.00035 : 0.00075))failures.push(`${slug}: CAD export exceeds the detail tolerance`);
-  if(model.triangles < model.originalTriangles * (slug==='ri3d' ? 0.8 : 0.75))failures.push(`${slug}: geometry was simplified below the detail budget`);
-  if(json.materials.some(material=>Math.max(...material.pbrMetallicRoughness.baseColorFactor.slice(0,3))>0.85))failures.push(`${slug}: an untuned white CAD material remains`);
+  if(model.toleranceMeters > (slug==='ri3d' ? 0.0002 : 0.00018))failures.push(`${slug}: CAD export exceeds the detail tolerance`);
+  if(model.triangles < model.originalTriangles*.98)failures.push(`${slug}: geometry lost more than the degenerate-face cleanup budget`);
+  if(!model.lineSegments || !json.meshes.some(m=>m.primitives.some(p=>p.mode===1)))failures.push(`${slug}: feature edge geometry missing`);
+  if(json.materials.some(material=>material.alphaMode!=='BLEND' && Math.max(...material.pbrMetallicRoughness.baseColorFactor.slice(0,3))>0.85))failures.push(`${slug}: an untuned white CAD material remains`);
+  if(slug==='ri3d' && (model.transparentParts!==3 || !json.materials.some(m=>m.alphaMode==='BLEND')))failures.push('RI3D clear hopper walls missing');
+  if(slug==='baker-bot' && model.transparentParts<5)failures.push('Baker Bot named polycarbonate panels missing');
+  if(slug==='baker-head-exploded' && !json.animations?.some(a=>a.name==='Head explode'&&a.channels.length===71))failures.push('Reversible head explosion animation missing');
 }
 if(fs.readdirSync(path.join(dist,'models')).filter(name=>name.endsWith('.glb')).length!==3)failures.push('expected three optimized CAD models; raw exports must not be deployed');
 const media=JSON.parse(fs.readFileSync(path.join(root,'src/data/media.json')));
@@ -69,6 +73,7 @@ const headCaption=baker.match(/<figcaption\b[^>]*id="head-motion-caption"[^>]*>(
 const hasSubsystemDisclosure=/(?:head|jaw|eyelid|subsystem)/i.test(headCaption) && /(?:AI|whole-robot|coordinated)/i.test(headCaption) && /(?:development|progress|not yet|remain)/i.test(headCaption);
 if(!['muted','loop','playsinline','controls','poster=','aria-describedby="head-motion-caption"'].every(attribute=>headVideo.includes(attribute)) || !baker.includes('baker-head-test.mp4') || !hasSubsystemDisclosure)failures.push('Baker Bot head test, playback controls, poster or subsystem disclosure missing');
 if(!baker.includes('id="exploded-head"') || !baker.includes('baker-head-exploded-1400.webp') || !baker.includes(models['baker-head-exploded'].file) || !baker.includes(models['baker-bot'].file))failures.push('Baker Bot exploded head image/model or existing interactive assembly missing');
+if(!baker.includes('data-model-scroll-track') || !baker.includes('data-model-explode') || !baker.includes('data-model-follow'))failures.push('Head scroll animation / manual controls missing');
 const projectDirs=fs.readdirSync(path.join(dist,'projects'),{withFileTypes:true}).filter(x=>x.isDirectory());
 if(projectDirs.length!==12)failures.push(`expected 12 project pages, found ${projectDirs.length}`);
 if(!fs.readFileSync(path.join(dist,'projects/wec-2024/index.html'),'utf8').includes('6th place'))failures.push('WEC 2024 correction missing');

@@ -3,8 +3,36 @@
 .head-assembly .project-gallery {padding-top:15px;}
 .head-assembly .gallery-grid figure {max-width:none;}
 .head-assembly .gallery-trigger img {height:auto;max-height:600px;background:#fff;}
-.head-assembly .model-stage {height:450px;}
+.head-assembly .model-stage {height:clamp(350px,60svh,570px);}
 .head-assembly .model-section h2 {font-size:1.45rem;}
+
+/* Neutral studio space keeps dark hardware and pale shells distinct. The 3D
+   scene supplies a key, fill, rim and grounding shadow above this backdrop. */
+.model-shell {background:#101923;border-color:#344351;}
+.model-stage {background:radial-gradient(ellipse at 45% 35%,#344553 0%,#1b2936 55%,#101923 100%);}
+.assembly-viewer {display:block;cursor:grab;outline-offset:-4px;}
+.assembly-viewer:active {cursor:grabbing;}
+.assembly-viewer:focus-visible {outline:2px solid var(--accent);}
+.model-scroll-track-exploded:has(.model-loaded) {height:calc(100svh + 380px);min-height:920px;}
+.model-shell-exploded {position:sticky;top:100px;}
+.model-shell-exploded:not(.model-loaded) {position:relative;top:auto;}
+.model-explosion {display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:12px 20px;background:#17232e;border-top:1px solid #344351;font-size:.78rem;}
+.model-explosion input {flex:1;min-width:90px;accent-color:var(--accent);min-height:30px;}
+.model-explosion output {font-variant-numeric:tabular-nums;min-width:3.1em;text-align:right;}
+.model-explosion button {font-size:.75rem;color:var(--accent);min-height:36px;}
+.model-actions button[aria-pressed="true"][data-model-edges] {color:var(--accent);}
+.model-toolbar {flex-wrap:wrap;}
+.model-toolbar p {flex:1 1 280px;}
+.model-actions {flex-wrap:wrap;}
+@media (max-width:600px) {
+  .model-scroll-track-exploded:has(.model-loaded) {min-height:850px;height:calc(100svh + 320px);}
+  .model-shell-exploded {top:80px;}
+  .model-explosion {padding:10px 14px;gap:8px;}
+}
+@media (prefers-reduced-motion:reduce) {
+  .model-scroll-track-exploded:has(.model-loaded) {height:auto;min-height:0;}
+  .model-shell-exploded {position:relative;top:auto;}
+}
 .head-assembly .section-heading {flex-wrap:wrap;gap:12px;}
 .story-section .project-gallery p {font-size:.8rem;}
 .photo-carousel {padding:40px 0 25px;min-width:0;}

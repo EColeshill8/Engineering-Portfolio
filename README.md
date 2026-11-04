@@ -39,7 +39,8 @@ Preview the production build at the Local URL printed by the last command. `dist
 | `src/styles/global.css` | Palette, typography, layout and responsive styles. |
 | `src/scripts/client.ts` | Filters, menu, lightbox, video and CAD interaction. |
 | `public/media/` | Optimized image copies. Original media was preserved separately. |
-| `public/models/` | The two compressed, web-ready GLB assemblies. |
+| `public/models/` | Three compressed GLBs, including the animated head. |
+| `src/scripts/cad-viewer.ts` | Three.js lighting, camera, model loading, rotation and scroll animation. |
 | `public/videos/` | Silent, web-ready project clips; source metadata is in `src/data/videos.json`. |
 | `public/vendor/` | Locally served mesh decoder and its license. |
 | `public/files/Elias_Coleshill_Resume.pdf` | Current résumé supplied and approved for the live portfolio on October 30, 2026. |
@@ -63,24 +64,29 @@ The original media lives in `Portfolio Content/` beside the website source and i
 
 ### CAD
 
+Conversion is optional and needs the original files. Install the native converter using Python 3.12 (use the same interpreter for conversion):
+
 ```sh
-node scripts/convert-cad.cjs "Portfolio Content"
-node scripts/optimize-cad.mjs
+python -m pip install --target .tools/cad-native --no-deps cadquery-ocp-novtk==7.8.1.1.post1
 ```
 
-The first command tessellates the STEP assemblies with OpenCascade via `occt-import-js`. The second preserves a higher detail budget, joins compatible render primitives and applies Meshopt compression. Generated uncompressed GLBs are archived under the ignored `Portfolio Content/Generated CAD/` directory, inside this project and outside the deployed site. Original STEP files are untouched.
+```sh
+pnpm convert:cad
+```
 
-The current exact file sizes, conversion settings and triangle counts are recorded in `src/data/models-web.json`. RI3D was retessellated at 0.35 mm tolerance and now retains about 3.16 million triangles, roughly 4.7 times its first web export. Baker Bot retains its existing approximately 1.54-million-triangle geometry with revised materials; a finer full STEP conversion was stopped after extended processing. Both use the new shading and material presentation.
+This uses native OpenCascade for Baker Bot and `occt-import-js` for RI3D, then prepares all three web models. The WASM Baker Bot conversion proved too slow at the new precision; the native fallback succeeded. Uncompressed GLBs are archived under the ignored `Portfolio Content/Generated CAD/` directory. Source files remain untouched. Full conversion can take a long time; normal builds do not perform conversion.
 
-The third model is the head-only STEP, converted at 0.15 mm tolerance to a roughly 0.7 MB web copy. To regenerate just that file, run `node scripts/convert-cad.cjs "Portfolio Content" baker-head-exploded` and `node scripts/optimize-cad.mjs baker-head-exploded`. The filename says “Exploded,” but the supplied STEP contains assembled positions; the website labels it accordingly and shows the exploded PNG beside it.
+The current sizes, conversion settings and triangle counts are recorded in `src/data/models-web.json`. The November studio pipeline uses 0.20 mm tolerance for RI3D, 0.18 mm for Baker Bot, and 0.16 rad angular deflection. It retains the tessellation without triangle simplification, apart from degenerate-face cleanup. Feature lines use a 35-degree crease threshold, so internal triangulation is hidden. Each original part remains identifiable. The three 1.5 mm RI3D hopper walls and named polycarbonate parts use transparent materials; opaque panels and mechanisms retain separate finishes.
 
-For quick material-only revisions without another STEP tessellation, use `node scripts/restyle-cad.mjs baker-bot` (or `ri3d`). This preserves existing geometry and updates the web manifest's size.
+The head uses `Portfolio Content/Head Assembly Exxxploded.glb`, which contains assembled positions and 71 named parts. `scripts/prepare-cad.mjs` authors a reversible `Head explode` animation from those parts, guided by the supplied exploded PNG. The offsets are an explanatory layout, not a simulated disassembly process. Rebuild just the head with `node scripts/prepare-cad.mjs baker-head-exploded`. `headOffset()` is the place to adjust component travel.
 
-Source hashes and conversion parameters are recorded in `src/data/models.json`; optimized file sizes/counts are in `models-web.json`. The web copies are for exploration, not manufacturing. Rotation/zoom/reset and keyboard interaction are provided; the geometry is not rigged to animate robot joints.
+For material/edge changes without retessellation, rerun `node scripts/prepare-cad.mjs baker-bot` (or `ri3d`); it can read the archived raw GLB. The older `optimize-cad.mjs` / `restyle-cad.mjs` scripts predate the studio pipeline and should not be used on the new assets.
 
-The viewer and optional Google effects add-on are loaded when an assembly enters the viewport, with an Explore 3D button and retry fallback. The presentation uses satin-metal / matte-polymer materials, lower exposure, filmic tone mapping, contact shading and edge smoothing. Materials are visualization choices, not a claim about every physical part's finish. The viewer rotates at four degrees per second, pauses for inspection or when offscreen, and starts stationary when the visitor requests reduced motion. Pause / Resume and Reset controls are available.
+Source hashes and conversion parameters are recorded in `src/data/models.json`; prepared asset metadata is in `models-web.json`. The web copies are for exploration. The head animation separates assembly components; it does not animate working joints.
 
-The Meshopt decoder is served from this site. If updating that dependency, refresh `public/vendor/meshopt_decoder.js` from `meshoptimizer/meshopt_decoder.cjs` and preserve its license.
+`src/scripts/cad-viewer.ts` loads Three.js when an assembly enters the viewport. It uses antialiasing, 1.5–2× pixel density, neutral tone mapping, a warm key light, softer cool fill/rim lights, subdued reflections and grounding shadows. Feature edges can be toggled. Materials are visualization choices. Rotation starts automatically at six degrees per second, pauses while inspecting, and resumes after 1.6 seconds. Manual pause persists. Offscreen/hidden viewers stop rendering; reduced-motion visitors start stationary and use the head slider instead of scroll animation. Arrow keys rotate, +/− zoom, and Home resets. Click/focus enables wheel zoom; scrolling beside the head scrubs the explosion. Still posters and a retry button remain available after failure.
+
+The Meshopt decoder is bundled locally from Three.js. `scripts/test-cad.mjs` loads the actual GLBs through the browser's GLTFLoader implementation and checks surface normals, geometry counts, feature lines, panel transparency, animation endpoints and reversal. It also checks rotation/scroll state rules. This is not a GPU or real-browser visual test.
 
 ### Public reference media
 

@@ -1,5 +1,19 @@
 # Implementation verification
 
+## CAD studio and head animation — 4 November 2026
+
+Replaced the Google viewer integration with a lazy-loaded Three.js studio: neutral tone mapping, antialiasing at 1.5–2× pixel density, a defined warm key light, cool fill/rim lights, low-intensity reflections, grounding shadows and a darker backdrop. Offline feature-edge geometry omits triangulation. The Edges button toggles outlines. All models start rotating while visible, pause during inspection and resume after 1.6 seconds; explicit manual pause and reduced motion remain respected. Rendering stops offscreen or in a hidden tab. Keyboard orbit/zoom/reset and native fullscreen controls are present.
+
+Retessellated RI3D at 0.20 mm / 0.16 rad: approximately 6.96 million triangles, three identified 1.5 mm clear hopper walls. The finer WASM conversion of Baker Bot was too slow; native OpenCascade 7.8.1 completed the 0.18 mm / 0.16 rad export, preserving component identities and colours. Its web derivative has approximately 5.85 million triangles and five transparent polycarbonate panels. Original STEP and GLB sources are unchanged; raw and diagnostic exports remain ignored and outside `public/`.
+
+The supplied head GLB still contains assembled positions. Authored a 71-part `Head explode` animation from its named components and the supplied exploded PNG. The prepared model retains about 188,000 non-degenerate triangles and is approximately 1.1 MB. Its sticky viewer scrubs with page scroll, reverses back to the assembled position and offers a manual slider plus Follow scroll. Reduced-motion visitors use the slider. The separate full Baker Bot assembly remains. The case-study content in `src/data/projects.ts` is unchanged; only the head viewer's new operational note was updated.
+
+Automated CAD checks use the same GLTFLoader/Meshopt decoder as the viewer to load the actual assets, checking triangle counts, normals, feature lines, clear panels and animation reversal. Head bounds change from roughly 0.160 × 0.212 × 0.174 m to 0.514 × 0.432 × 0.464 m. Pure motion tests check initial rotation, temporary drag/wheel/keyboard holds, delayed resumption, manual pause, visibility and reduced motion. Controlled bootstrap tests execute the actual page loading code and pass visible-only loading, retry, context failure, timeout and disposal of a late result. These are not real browser/GPU tests.
+
+The geometry/layout of assembled, halfway and exploded head states was inspected in an offline render. The in-app browser host was unavailable. Windows Computer Use then stopped because it could not determine the current browser URL confidently; no further browser input was attempted. Actual GPU shading, responsive page rendering, touch/fullscreen interaction and device frame rates could not be visually verified during this update. A browser/device visual review remains useful.
+
+Production builds and the full automated suite pass at both `/` and `/Engineering-Portfolio`; the final output is restored to `/`. Artifact verification covers 16 HTML pages, 12 case studies, 535 local references, 54 image sources, two progressive MP4s and three compressed GLBs. The renderer remains lazy-loaded; its larger Three.js chunk is not part of the initial page script.
+
 ## Portfolio expansion — 3 November 2026
 
 Reworked the eleven other case studies, Home and About copy using Elias’s edited Baker Bot writing as the reference: direct subtitles/captions, more explanation of mechanisms, control decisions, testing and limitations, and a natural first-person voice. An exact source-block comparison against commit `d424d91` confirmed the original Baker Bot content is unchanged apart from the new model reference. Its existing model heading/note and shared footer wording are preserved as well. Added the current implementation handbook and linked it from the original local handoff.

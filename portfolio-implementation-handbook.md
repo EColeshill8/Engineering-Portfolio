@@ -1,6 +1,6 @@
 # Portfolio implementation handbook
 
-Updated 3 November 2026. This is the current guide to Elias’s portfolio preferences and the implementation. Read it before changing copy or adding media. The original planning handoff and interview remain useful factual sources; the latest direct answers take precedence.
+Updated 4 November 2026. This is the current guide to Elias’s portfolio preferences and the implementation. Read it before changing copy or adding media. The original planning handoff and interview remain useful factual sources; the latest direct answers take precedence.
 
 ## Writing and factual detail
 
@@ -28,7 +28,9 @@ Updated 3 November 2026. This is the current guide to Elias’s portfolio prefer
 - Inspect every new image before captioning it. Use location details only when supplied; do not infer dates, named routes, people or performance from an image alone.
 - Baker Bot’s exploded head image and interactive head model belong INSIDE “Designing the Head.” Keep the separate full Baker Bot viewer as well. Each model needs unique IDs, its own controls and a poster fallback.
 - A STEP with exploded part positions creates a rotatable exploded model; it does not automatically provide an assemble/explode animation. Do not advertise an animation that was not supplied or authored.
-- The November head STEP named “Exploded” converts to bounds of roughly 160 × 211 × 174 mm, consistent with the assembled head. It is presented as “Interactive head CAD,” next to the actual exploded PNG. A future export must retain separated component positions before that viewer is labelled exploded. Check the file geometry rather than trusting its name.
+- Both the November head STEP and the newer `Head Assembly Exxxploded.glb` contain assembled positions. The GLB retains 71 named parts, so the studio pipeline authors an assemble/explode animation from it using the PNG as a layout reference. The resulting explosion is an explanatory website layout, not a validated removal sequence. Check actual geometry and animation channels rather than trusting filenames.
+- CAD should have crisp curved geometry and feature edges, a darker neutral studio space, defined key/fill/rim lighting and real transparency for known clear panels. Avoid blown-out white surfaces, uniform all-direction illumination and visible triangulation. Keep part identities through conversion so transparent and opaque surfaces can be treated separately.
+- Models rotate automatically while visible and resume 1.6 seconds after interaction. Only the explicit Pause button or reduced-motion preference should keep them stopped. The head explodes as visitors scroll past its sticky viewer, with a keyboard-accessible slider and Follow scroll control. Keep both the main Baker Bot model and the head model.
 - RI3D build photos use a horizontal, swipeable gallery with previous/next controls, keyboard navigation and click-to-expand. The About page’s trips/hobbies gallery cycles while visible, with pause/play and reduced-motion support.
 - Preserve original portrait framing with contain-fit images when cropping would hide hardware or people. Keep controls and captions legible on mobile.
 - Pause offscreen/tab-hidden animations. Respect manual pause and reduced motion. Galleries and model failures should leave usable still images and content.
@@ -47,9 +49,9 @@ Updated 3 November 2026. This is the current guide to Elias’s portfolio prefer
 
 - Permanent repository: `C:\Users\encol\Documents\Important Items\Elias Portfolio`. Do not move final code or repositories back under the Codex workspace.
 - Project copy: `src/data/projects.ts`. Home: `src/pages/index.astro`. About: `src/pages/about.astro`. Shared layout/footer: `src/layouts/Layout.astro`.
-- Model chrome and default notes: `src/components/ModelViewer.astro`; live loaded-model instructions: `src/scripts/client.ts`. Avoid changing Baker Bot’s existing copy through shared defaults.
+- Model chrome and default notes: `src/components/ModelViewer.astro`; load/retry integration: `src/scripts/client.ts`; lighting, camera and motion: `src/scripts/cad-viewer.ts`; pure state rules: `src/lib/cad-motion.mjs`. Avoid changing Baker Bot’s case-study copy through shared defaults.
 - Add image keys in `scripts/prepare-media.py`, then run `python scripts/prepare-media.py "Portfolio Content"`. It creates 640/1400 WebP variants without upscaling or modifying originals.
-- Convert only the new head: `node scripts/convert-cad.cjs "Portfolio Content" baker-head-exploded`, then `node scripts/optimize-cad.mjs baker-head-exploded`. The other models need not be rebuilt.
+- Current CAD pipeline: `pnpm convert:cad` (Python 3.12 with the optional native dependency in the README). Baker Bot uses native OpenCascade because its finer WASM conversion took too long; RI3D uses the existing WASM converter. For just the head, run `node scripts/prepare-cad.mjs baker-head-exploded`. The preparation script also reads archived full-robot GLBs for material revisions without retessellating STEP. Both the native Baker Bot GLB and the head GLB need explicit Z-up to Y-up normalization. Do not run the older optimization/restyling scripts over the studio assets. Full source geometry is kept apart from degenerate-face cleanup; compression and offline feature lines provide efficient web derivatives.
 - Run `pnpm build` and `pnpm verify`. The verifier should check working media/structure and substantive disclosures, not demand exact editable prose.
 - Preview responsive layouts, horizontal galleries, pause controls, weather inputs, model loading/failure and keyboard access. State any browser-verification limit accurately.
 - Commit only intended changes, push `main`, and confirm the Pages workflow completes. Deployment is authorized when Elias asks to upload the finished update.

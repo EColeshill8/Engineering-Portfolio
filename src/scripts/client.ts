@@ -103,22 +103,14 @@ document.querySelectorAll<HTMLElement>('[data-model-shell]').forEach(shell => {
   const actions = shell.querySelector<HTMLElement>('[data-model-actions]')!;
   const spin = shell.querySelector<HTMLButtonElement>('[data-model-spin]')!;
   const poster = stage.querySelector<HTMLImageElement>('.model-poster');
-  const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const startingOrbit = shell.dataset.modelOrbit || '35deg 68deg 90%';
-  let viewer: any, timeout: ReturnType<typeof setTimeout>, attempts = 0;
-  let loading = false, loaded = false, inView = false, rotationWanted = !motion.matches;
-  const syncRotation = () => {
-    if (viewer) viewer.toggleAttribute('auto-rotate', loaded && inView && !document.hidden && rotationWanted);
-    spin.textContent = rotationWanted ? 'Pause rotation' : 'Resume rotation';
-    spin.setAttribute('aria-pressed', String(rotationWanted));
-  };
-  const pauseForInspection = () => {
-    rotationWanted = false;
-    syncRotation();
-  };
+  let viewer: {dispose:()=>void}|undefined, timeout: ReturnType<typeof setTimeout>, attempts = 0;
+  let loading = false, loaded = false, generation = 0;
   const fail = () => {
-    clearTimeout(timeout); loading = false; loaded = false;
-    viewer?.remove(); viewer = undefined; launch!.hidden = false; launch!.disabled = false;
+    clearTimeout(timeout); loading = false; loaded = false; generation++;
+    viewer?.dispose(); viewer = undefined; launch!.hidden = false; launch!.disabled = false;
+    shell.querySelectorAll('canvas').forEach(canvas=>canvas.remove());
+    shell.querySelector('[data-model-explosion-controls]')?.setAttribute('hidden','');
+    shell.classList.remove('model-loaded');
     if (poster) poster.hidden = false;
     launch!.textContent = 'Try the 3D model again'; actions.hidden = true;
     status.textContent = 'The model could not load. You can retry; the assembly photographs remain available.';
@@ -126,70 +118,30 @@ document.querySelectorAll<HTMLElement>('[data-model-shell]').forEach(shell => {
   const loadModel = async () => {
     if (!launch || loading || loaded) return;
     loading = true;
+    attempts++;const request=++generation;
     launch.disabled = true; status.textContent = 'Loading the interactive assembly…';
+    timeout = setTimeout(fail,90000);
     try {
-      await import('@google/model-viewer');
-      let effectsAvailable = false;
-      try {await import('@google/model-viewer-effects'); effectsAvailable = true;} catch { /* Basic lighting remains available if the optional effects fail. */ }
-      const ModelClass = customElements.get('model-viewer') as any;
-      ModelClass.meshoptDecoderLocation = shell.dataset.decoderSrc;
-      viewer = document.createElement('model-viewer');
-      const url = new URL(shell.dataset.modelSrc!, window.location.href);
-      if (attempts++) url.searchParams.set('retry', String(attempts));
-      const modelSrc = url.href;
-      for (const [key, value] of Object.entries({
-        src: modelSrc, alt: shell.dataset.modelName!, 'camera-controls': '',
-        'touch-action': 'pan-y', 'shadow-intensity': '1.1', 'shadow-softness': '0.8',
-        exposure: '0.85', 'tone-mapping': 'aces', 'environment-image': 'legacy',
-        'camera-orbit': startingOrbit, 'field-of-view': '30deg',
-        'rotation-per-second': '4deg', 'auto-rotate-delay': '0',
-        'interaction-prompt': 'auto', loading: 'eager'
-      })) viewer.setAttribute(key, value);
-      viewer.className = 'assembly-viewer';
-      if (effectsAvailable) {
-        const composer = document.createElement('effect-composer');
-        composer.setAttribute('render-mode', 'quality');
-        const occlusion = document.createElement('ssao-effect');
-        occlusion.setAttribute('strength', '1.8');
-        const smoothing = document.createElement('smaa-effect');
-        const grade = document.createElement('color-grade-effect');
-        grade.setAttribute('contrast', '0.08');
-        grade.setAttribute('saturation', '-0.04');
-        composer.append(occlusion, smoothing, grade);
-        viewer.append(composer);
-      }
-      viewer.addEventListener('load', () => {
-        clearTimeout(timeout); loading = false; loaded = true;
-        launch.hidden = true; launch.disabled = false; actions.hidden = false;
-        if (poster) poster.hidden = true;
-        status.textContent = 'Drag to inspect. Scroll or pinch to zoom. Arrow keys rotate the focused model. Use Pause / Resume to control the turntable.';
-        syncRotation();
-      }, {once:true});
-      viewer.addEventListener('pointerdown', pauseForInspection, {passive:true});
-      viewer.addEventListener('wheel', pauseForInspection, {passive:true});
-      viewer.addEventListener('keydown', pauseForInspection);
-      viewer.addEventListener('error', fail, {once:true});
-      stage.append(viewer); timeout = setTimeout(fail, 60000);
-    } catch {fail();}
+      const {createCADViewer}=await import('./cad-viewer');
+      const result=await createCADViewer(shell);
+      if(request!==generation){result?.dispose();return;}
+      viewer=result;clearTimeout(timeout); loading=false;loaded=true;
+      launch.hidden=true;launch.disabled=false;actions.hidden=false;
+      if(poster)poster.hidden=true;
+      shell.classList.add('model-loaded');
+      shell.querySelector('[data-model-explosion-controls]')?.removeAttribute('hidden');
+      result?.refresh?.();
+      status.textContent='Drag to inspect. Click the model to enable wheel zoom; pinch or use + / −. Rotation resumes after you release it.';
+    } catch {if(request===generation)fail();}
   };
   launch?.addEventListener('click', loadModel);
-  spin.addEventListener('click', () => {rotationWanted = !rotationWanted; syncRotation();});
-  motion.addEventListener('change', () => {rotationWanted = !motion.matches; syncRotation();});
-  document.addEventListener('visibilitychange', syncRotation);
+  shell.addEventListener('model-error',fail);
   if ('IntersectionObserver' in window) {
     const visibility = new IntersectionObserver(entries => {
-      inView = entries[0].isIntersecting;
-      if (inView && !attempts) void loadModel();
-      syncRotation();
+      if (entries[0].isIntersecting && !attempts) void loadModel();
     }, {threshold:0.1});
     visibility.observe(stage);
-  } else {inView = true;}
-  shell.querySelector('[data-model-reset]')?.addEventListener('click', () => {
-    if (!viewer) return;
-    viewer.cameraOrbit=startingOrbit; viewer.cameraTarget='auto auto auto'; viewer.fieldOfView='30deg';
-    viewer.resetTurntableRotation(); viewer.jumpCameraToGoal();
-  });
-  shell.querySelector('[data-model-expand]')?.addEventListener('click', async () => {try {if (document.fullscreenElement) await document.exitFullscreen();else await shell.requestFullscreen();} catch {status.textContent='Fullscreen is unavailable here. The model can still be rotated and zoomed in this page.';}});
+  } else {void loadModel();}
 });
 
 const engineText: Record<string,string> = {
