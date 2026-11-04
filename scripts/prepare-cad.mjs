@@ -9,6 +9,7 @@ import {dedup, prune, weld, joinPrimitives, meshopt, getBounds} from '@gltf-tran
 import {MeshoptEncoder, MeshoptDecoder} from 'meshoptimizer';
 import {BufferGeometry, BufferAttribute, EdgesGeometry} from 'three';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
+import {HEAD_SOURCE_SHA,HEAD_STAGES,headPlan,headPose} from './head-explosion.mjs';
 
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const manifestPath=path.join(root,'src/data/models-web.json');
@@ -20,37 +21,6 @@ await Promise.all([MeshoptEncoder.ready,MeshoptDecoder.ready]);
 const io=new NodeIO().registerExtensions(ALL_EXTENSIONS).registerDependencies({'meshopt.encoder':MeshoptEncoder,'meshopt.decoder':MeshoptDecoder});
 const linear=n=>n<=.04045?n/12.92:((n+.055)/1.055)**2.4;
 const srgb=n=>n<=.0031308?n*12.92:1.055*n**(1/2.4)-.055;
-const vec=(a,b)=>a.map((v,i)=>v+b[i]);
-
-// Offsets in the head export's original Z-up axes, in metres. These are an
-// explanatory presentation layout, guided by Elias's exploded reference image.
-// Closely related pieces (e.g. a servo body, horn and pin) travel together.
-function headOffset(name,bounds){
-  const c=bounds.max.map((v,i)=>(v+bounds.min[i])/2), side=c[0]<0?-1:1;
-  if(name==='Skull Composite Part') return [0,-.16,.015];
-  if(name==='Skull Top Back') return [0,.13,.10];
-  if(name==='Skull Jaw') return [0,-.025,-.12];
-  if(/Head side part/i.test(name)) return [side*.13,0,0];
-  if(/Roof of Mouth/i.test(name)) return [0,0,-.035];
-  if(/Head Centre Part/i.test(name)) return [0,0,0];
-  if(/Eyeball Holder/i.test(name)) return [0,0,.075];
-  if(name==='Eyeball') return [side*.025,-.07,.06];
-  if(name==='Eyelid') return [side*.025,-.025,.13];
-  if(name==='Eyelid Pin') return [-.12,0,.075];
-  if(/sG90/i.test(name)) return [side*.018,0,.075];
-  if(/Jaw Servo Holder/i.test(name)) return [.035,.03,.035];
-  if(/Herringbone|Servo Adapter|^Default$|Jaw Pivot Pin/i.test(name)) return [side*.13,0,0];
-  if(/^Part [12]$/.test(name)) return [.075,.035,.025];
-  if(/Heat Set Insert/i.test(name)) {
-    if(Math.abs(c[0])>.038) return [side*.13,0,0];
-    return [0,0,c[2]>-.025?.075:.02];
-  }
-  if(/FHCS/i.test(name)) {
-    if(Math.abs(c[0])>.04) return [side*.18,0,0];
-    return [0,c[1]>0?.025:-.025,c[2]>-.025?.125:-.065];
-  }
-  throw new Error(`Unassigned head part: ${name}`);
-}
 
 for(const slug of ['baker-bot','ri3d','baker-head-exploded']){
   if(process.argv[2]&&process.argv[2]!==slug)continue;
@@ -80,17 +50,19 @@ for(const slug of ['baker-bot','ri3d','baker-head-exploded']){
   const world=parts.map(n=>n.getWorldMatrix());
   const bounds=parts.map(n=>getBounds(n));
   if(isHead){
+    if(crypto.createHash('sha256').update(fs.readFileSync(input)).digest('hex')!==HEAD_SOURCE_SHA)throw new Error('Head source changed: review explicit part-instance assignments before rebuilding.');
     // The Onshape GLB has Z-up geometry. Bake the existing instance transforms,
     // then add one canonical basis transform and an animated parent per part.
     const basis=doc.createNode('Head Z-up to Y-up').setRotation([-Math.SQRT1_2,0,0,Math.SQRT1_2]);
     const animation=doc.createAnimation('Head explode');
     const buffer=doc.getRoot().listBuffers()[0];
-    const time=doc.createAccessor('Explosion time',buffer).setType('SCALAR').setArray(new Float32Array([0,1]));
+    const times=Float32Array.from({length:201},(_,i)=>i/200);
+    const time=doc.createAccessor('Explosion time',buffer).setType('SCALAR').setArray(times);
     for(const [i,n] of parts.entries()){
-      const offset=headOffset(n.getName(),bounds[i]);
-      const parent=doc.createNode(`Explode ${i}: ${n.getName()}`).setExtras({explodeOffset:offset});
+      const offset=headPose(i,1),plan=headPlan(i);
+      const parent=doc.createNode(`Explode ${i}: ${n.getName()}`).setExtras({partId:i,explodeOffset:offset,explodeMoves:plan.moves,motionGroup:plan.group,partLabel:plan.label});
       parent.addChild(n); n.setMatrix(world[i]); basis.addChild(parent);
-      const output=doc.createAccessor(`Offset ${i}`,buffer).setType('VEC3').setArray(new Float32Array([0,0,0,...offset]));
+      const output=doc.createAccessor(`Offset ${i}`,buffer).setType('VEC3').setArray(new Float32Array([...times].flatMap(t=>headPose(i,t))));
       const sampler=doc.createAnimationSampler().setInput(time).setOutput(output).setInterpolation('LINEAR');
       animation.addSampler(sampler).addChannel(doc.createAnimationChannel().setTargetNode(parent).setTargetPath('translation').setSampler(sampler));
     }
@@ -168,7 +140,7 @@ for(const slug of ['baker-bot','ri3d','baker-head-exploded']){
   manifest[slug]={...(isHead?{}:sourceInfo),file,bytes:fs.statSync(output).size,parts:parts.length,triangles,originalTriangles,
     source:isHead?source:sourceInfo.source,sourceSha256:isHead?crypto.createHash('sha256').update(fs.readFileSync(input)).digest('hex'):sourceInfo.sourceSha256,
     materialTreatment:'part-specific satin metal / polymer; clear polycarbonate',geometryTreatment:'full tessellation, no triangle simplification; 35 degree feature edges',
-    compression:'EXT_meshopt_compression',lineSegments,transparentParts,...(isHead?{animation:'Head explode',animationParts:parts.length,layout:'Authored from assembled GLB and exploded reference image'}:{})};
+    compression:'EXT_meshopt_compression',lineSegments,transparentParts,...(isHead?{animation:'Head explode',animationParts:parts.length,animationStages:HEAD_STAGES,layout:'Explicit 71-part reference layout with staged axis-aligned extractions'}:{})};
   if(!isHead&&!native&&input===preferred){fs.copyFileSync(input,path.join(archive,path.basename(input)));fs.unlinkSync(input);}
   fs.writeFileSync(manifestPath,JSON.stringify(manifest,null,2));
   if(native){sources[slug]={...sourceInfo,parts:parts.length,triangles:originalTriangles};fs.writeFileSync(path.join(root,'src/data/models.json'),JSON.stringify(sources,null,2));}

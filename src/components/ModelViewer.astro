@@ -14,7 +14,7 @@ const explodes = !!info?.animation;
 <section class="model-section" aria-labelledby={headingId}>
   <div class="section-heading"><div><span class="eyebrow">EXPLORE THE ASSEMBLY</span><h2 id={headingId}>{heading}</h2></div><Icon name="cube" size={30} /></div>
   <div class:list={['model-scroll-track',{'model-scroll-track-exploded':explodes}]} data-model-scroll-track={explodes ? '' : undefined}>
-  <div class:list={['model-shell',{'model-shell-exploded':explodes}]} data-model-shell data-model-src={info ? href(`models/${info.file}?v=${info.bytes}`) : undefined} data-model-orbit={model === 'baker-bot' ? '105 75' : explodes ? '35 72' : '35 65'} data-poster={posterSrc} data-model-name={`${name} interactive assembly`}>
+  <div class:list={['model-shell',{'model-shell-exploded':explodes}]} data-model-shell data-model-src={info ? href(`models/${info.file}?v=${info.bytes}`) : undefined} data-model-orbit={model === 'baker-bot' ? '105 75' : explodes ? '35 62' : '35 65'} data-poster={posterSrc} data-model-name={`${name} interactive assembly`}>
     <div class="model-stage" data-model-stage>
       <Photo image={poster} alt={`${name} — select Explore 3D to load the interactive assembly.`} class="model-poster" />
       {info && <button class="model-launch button" data-model-launch><Icon name="cube" />Explore 3D<span class="model-size">{(info.bytes / 1048576).toFixed(1)} MB</span></button>}

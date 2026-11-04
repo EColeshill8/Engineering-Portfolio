@@ -13,7 +13,7 @@
 .assembly-viewer {display:block;cursor:grab;outline-offset:-4px;}
 .assembly-viewer:active {cursor:grabbing;}
 .assembly-viewer:focus-visible {outline:2px solid var(--accent);}
-.model-scroll-track-exploded:has(.model-loaded) {height:calc(100svh + 380px);min-height:920px;}
+.model-scroll-track-exploded:has(.model-loaded) {height:calc(100svh + 650px);min-height:1150px;}
 .model-shell-exploded {position:sticky;top:100px;}
 .model-shell-exploded:not(.model-loaded) {position:relative;top:auto;}
 .model-explosion {display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:12px 20px;background:#17232e;border-top:1px solid #344351;font-size:.78rem;}
@@ -25,13 +25,9 @@
 .model-toolbar p {flex:1 1 280px;}
 .model-actions {flex-wrap:wrap;}
 @media (max-width:600px) {
-  .model-scroll-track-exploded:has(.model-loaded) {min-height:850px;height:calc(100svh + 320px);}
+  .model-scroll-track-exploded:has(.model-loaded) {min-height:1100px;height:calc(100svh + 600px);}
   .model-shell-exploded {top:80px;}
   .model-explosion {padding:10px 14px;gap:8px;}
-}
-@media (prefers-reduced-motion:reduce) {
-  .model-scroll-track-exploded:has(.model-loaded) {height:auto;min-height:0;}
-  .model-shell-exploded {position:relative;top:auto;}
 }
 .head-assembly .section-heading {flex-wrap:wrap;gap:12px;}
 .story-section .project-gallery p {font-size:.8rem;}

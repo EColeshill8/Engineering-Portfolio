@@ -34,7 +34,7 @@
   },
   "baker-head-exploded": {
     "file": "baker-head-exploded-web.glb",
-    "bytes": 1092044,
+    "bytes": 1113828,
     "parts": 71,
     "triangles": 187600,
     "originalTriangles": 187600,
@@ -47,6 +47,16 @@
     "transparentParts": 0,
     "animation": "Head explode",
     "animationParts": 71,
-    "layout": "Authored from assembled GLB and exploded reference image"
+    "animationStages": [
+      0,
+      0.18,
+      0.34,
+      0.48,
+      0.64,
+      0.76,
+      0.9,
+      1
+    ],
+    "layout": "Explicit 71-part reference layout with staged axis-aligned extractions"
   }
 }

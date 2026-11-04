@@ -72,16 +72,19 @@ export async function createCADViewer(shell:HTMLElement){
     if(!range)return;
     range.value=String(Math.round(targetProgress*100));
     if(output)output.value=`${Math.round(targetProgress*100)}%`;
-    follow!.hidden=!manualExplosion||motion.matches;
+    follow!.hidden=!manualExplosion;
   };
-  function onScroll(){
-    if(track&&!manualExplosion&&!motion.matches&&!document.fullscreenElement){
+  function onScroll(event?:Event){
+    // A real page scroll always takes over from a manual slider adjustment.
+    // Reduced motion changes rotation/tweening, not this user-driven control.
+    if(event?.type==='scroll')manualExplosion=false;
+    if(track&&!manualExplosion&&!document.fullscreenElement){
       const top=parseFloat(getComputedStyle(shell).top)||100;
       targetProgress=scrollExplosion(track.getBoundingClientRect().top,track.offsetHeight,shell.offsetHeight,top);
       updateProgress();invalidate();
     }
   }
-  function onPreference(){rotation.preference(motion.matches);if(motion.matches){targetProgress=headProgress;manualExplosion=true;}updateProgress();updateButton();invalidate();}
+  function onPreference(){rotation.preference(motion.matches);onScroll();updateProgress();updateButton();invalidate();}
   function draw(now:number){
     frame=0;if(dead||!inView||document.hidden)return;
     if(now-last<1000/30){frame=requestAnimationFrame(draw);return;}

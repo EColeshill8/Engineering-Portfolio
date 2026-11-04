@@ -1,5 +1,13 @@
 # Implementation verification
 
+## Head explosion correction — 4 November 2026
+
+Replaced broad name-based offsets with explicit source-hash-protected assignments for all 71 part instances, using the supplied exploded CAD image as the layout reference. Servo components stay in rigid groups. The jaw bracket is separated above the motor, gears are offset from the side supports, inserts withdraw from their host holes, and bolts/axles have individual placements. Rebuilt the animation with staged axis-aligned moves, including a small front-shell clearance lift and a gear clearance path. Tightened the vertical stack and raised the front shell to better match the supplied image. Full Baker Bot and RI3D models/materials are unchanged by this correction.
+
+Triangle-level BVH checks pass at 201 poses: no newly intersecting component pairs during sampled motion and no intersections between separated components at the endpoint. Existing source CAD contacts are recorded as a baseline during the assembled stages; rigid servo groups are intentionally retained. Additional tests verify stage ordering, intact servo groups, bracket/gear/insert clearances, and restoration of assembled bounds. Offline assembled/intermediate/final renders were compared to the reference. These checks do not constitute a physical disassembly simulation or GPU/browser rendering verification.
+
+Scroll now follows by default even when rotation is paused or reduced motion is enabled. Reduced motion directly samples the user-controlled scroll position. Slider use no longer traps visitors in manual mode: the next page scroll resumes following without a button. Controlled tests execute the actual handler for these scenarios. The sticky scroll track remains present under reduced motion; its previous collapse was one cause of the disabled-looking behaviour.
+
 ## CAD studio and head animation — 4 November 2026
 
 Replaced the Google viewer integration with a lazy-loaded Three.js studio: neutral tone mapping, antialiasing at 1.5–2× pixel density, a defined warm key light, cool fill/rim lights, low-intensity reflections, grounding shadows and a darker backdrop. Offline feature-edge geometry omits triangulation. The Edges button toggles outlines. All models start rotating while visible, pause during inspection and resume after 1.6 seconds; explicit manual pause and reduced motion remain respected. Rendering stops offscreen or in a hidden tab. Keyboard orbit/zoom/reset and native fullscreen controls are present.

@@ -17,16 +17,20 @@ def accessor(i):
     if a.get('normalized'):data=data/np.iinfo(data.dtype).max
     return data
 def matrix(n,progress):
+    offset=np.zeros(3)
+    for move in n.get('extras',{}).get('explodeMoves',[]):
+        t=np.clip((progress-move['from'])/(move['to']-move['from']),0,1)
+        offset+=np.array(move['vector'])*(t*t*(3-2*t))
     if 'matrix' in n:
         m=np.array(n['matrix']).reshape(4,4).T
-        m[:3,3]+=np.array(n.get('extras',{}).get('explodeOffset',[0,0,0]))*progress
+        m[:3,3]+=offset
         return m
     x,y,z,w=n.get('rotation',[0,0,0,1])
     r=np.array([[1-2*(y*y+z*z),2*(x*y-z*w),2*(x*z+y*w),0],
                 [2*(x*y+z*w),1-2*(x*x+z*z),2*(y*z-x*w),0],
                 [2*(x*z-y*w),2*(y*z+x*w),1-2*(x*x+y*y),0],[0,0,0,1]],dtype=float)
     r[:3,:3]*=np.array(n.get('scale',[1,1,1]))
-    r[:3,3]=np.array(n.get('translation',[0,0,0]))+np.array(n.get('extras',{}).get('explodeOffset',[0,0,0]))*progress
+    r[:3,3]=np.array(n.get('translation',[0,0,0]))+offset
     return r
 def geometry(progress):
     faces=[];colors=[]
@@ -45,7 +49,7 @@ def geometry(progress):
 states=[geometry(p) for p in (0,.5,1)]
 allpoints=np.concatenate([s[0].reshape(-1,3) for s in states])
 centre=(allpoints.min(0)+allpoints.max(0))/2
-view=np.array([[.819,0,-.574],[-.149,.966,-.212],[.554,.259,.791]])
+view=np.array([[.819,0,-.574],[-.269,.883,-.384],[.506,.469,.723]])
 projected=(allpoints-centre)@view.T;extent=np.max(np.abs(projected[:,:2]),axis=0)
 scale=min(260/extent[0],310/extent[1])
 sheet=Image.new('RGB',(1800,720),'#1b2936');draw=ImageDraw.Draw(sheet)

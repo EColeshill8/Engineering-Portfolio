@@ -47,7 +47,22 @@ for(const [slug,info] of Object.entries(manifest)){
     assert(exploded.x>assembled.x*2,'head separates sideways');assert(exploded.y>assembled.y*1.6,'jaw/shell separate vertically');
     assert(exploded.z>assembled.z*2,'front/rear shells separate');
     mixer.setTime(0);assert(size().distanceTo(assembled)<1e-5,'scroll back restores exact assembled bounds');
-    mixer.setTime(clip.duration*.5);const middle=size();assert(middle.x>assembled.x&&middle.x<exploded.x);
+    const actors=new Map();gltf.scene.traverse(o=>{if(Number.isInteger(o.userData.partId))actors.set(o.userData.partId,o);});
+    assert.equal(actors.size,71,'every part has an explicit instance assignment');
+    const near=(a,b,message)=>assert(a.distanceTo(b)<.00002,message);
+    mixer.setTime(.5);
+    near(actors.get(34).position,new Vector3(0,0,0),'jaw bracket waits until the side mechanisms clear');
+    near(actors.get(29).position,new Vector3(0,0,0),'centre frame does not lift through the servo bracket');
+    assert(actors.get(5).position.y<-.19,'front shell clears before the internal stack opens');
+    mixer.setTime(.8);
+    for(const id of [57,59,60,61,63,64,67,68])near(actors.get(id).position,actors.get(65).position,'SG90 components stay aligned with the carrier');
+    near(actors.get(52).position,actors.get(53).position,'jaw servo shaft stays attached to its motor');
+    mixer.setTime(clip.duration*.999999);
+    assert(actors.get(34).position.z>actors.get(52).position.z+.025,'jaw bracket is separated above the motor');
+    assert(actors.get(49).position.x<actors.get(4).position.x-.025,'small gear is clear of the side support');
+    assert(actors.get(10).position.x>actors.get(4).position.x+.025,'driven gear is clear of the opposite support face');
+    assert(actors.get(26).position.x<actors.get(34).position.x-.02,'bracket inserts leave the correct side of their holes');
+    assert(actors.get(35).position.z<actors.get(29).position.z-.025,'bottom inserts withdraw below the centre frame');
     console.log(`Head bounds assembled ${assembled.toArray().map(n=>n.toFixed(3))}; exploded ${exploded.toArray().map(n=>n.toFixed(3))} m`);
   }
 }
