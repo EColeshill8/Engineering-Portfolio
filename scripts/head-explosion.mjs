@@ -35,7 +35,7 @@ place([0,2,6,14,15,23],'Base screw',[z(.18,.34,-.085)]);
 place([32,41,50,70],'Carrier screw',[z(.18,.34,.15)]);
 place([7],'Left carrier screw',[x(.18,.34,-.24),z(.48,.64,.095)]);
 place([11],'Right carrier screw',[x(.18,.34,.24),z(.48,.64,.095)]);
-place([8],'Left shell-side screw',[x(.18,.34,-.245),z(.48,.58,.07)]);
+place([8],'Left shell-side screw',[x(0,.10,-.245),z(.48,.58,.07)]);
 place([24],'Right shell-side screw',[x(0,.10,.245),z(.48,.58,.07)]);
 place([12],'Jaw gear screw',[x(.18,.34,.265),z(.48,.58,.07)]);
 place([13],'Left lower support screw',[x(0,.10,-.26),z(.48,.58,.07)]);

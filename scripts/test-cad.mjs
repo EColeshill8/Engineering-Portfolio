@@ -50,6 +50,9 @@ for(const [slug,info] of Object.entries(manifest)){
     const actors=new Map();gltf.scene.traverse(o=>{if(Number.isInteger(o.userData.partId))actors.set(o.userData.partId,o);});
     assert.equal(actors.size,71,'every part has an explicit instance assignment');
     const near=(a,b,message)=>assert(a.distanceTo(b)<.00002,message);
+    mixer.setTime(.05);
+    for(const [id,distance] of [[8,-.1225],[24,.1225],[13,-.13],[21,.13]])near(actors.get(id).position,new Vector3(distance,0,0),'all four exterior screws withdraw together in the first batch');
+    for(const id of [7,11,12])near(actors.get(id).position,new Vector3(0,0,0),'later screws wait for their own batch');
     mixer.setTime(.5);
     near(actors.get(34).position,new Vector3(0,0,0),'jaw bracket waits until the side mechanisms clear');
     near(actors.get(29).position,new Vector3(0,0,0),'centre frame does not lift through the servo bracket');
